@@ -1,0 +1,35 @@
+methods will typically be present in __proto__ of an object based on class
+and regular properties/field won't even if that properties is in parent class
+
+this happens to optimize the performance of the code
+because js doesn't have to re-create methods (normally code inside of a method is using dynamic data) everytime class is being initialized
+only the properties being re-created everytime
+
+it's not the same with object created based on funcion constructor
+methods created with function constructor will be created everytime the function is initialized
+the work around is to add new method into 'prototype' after defining the function
+
+so:
+
+class Person{
+
+  constructor() {
+    this.name = 'Vieri';
+    this.age = 21;
+  }
+  greet() {
+    console.log('Hi, my name is ' + this.name + ", i'm " + this.age);
+  }
+}
+
+equals to:
+
+function Person(){
+    this.age = 30;
+    this.name = 'Vieri';
+    
+}
+  
+Person.prototype.greet = function(){
+  console.log('Hi, my name is '+ this.name + ', i\'m '+this.age);    
+}

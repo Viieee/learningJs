@@ -1,0 +1,12 @@
+npm install --save-dev clean-webpack-plugin
+
+on the webpack config
+const cleanPlugin = require('clean-webpack-plugin');
+
+on the module.exports object
+plugins: [
+        new cleanPlugin.CleanWebpackPlugin()
+    ] // concept in webpack that allows you to apply various optimization or 
+    // transformation on the generated output folder
+
+when we rebuild the project, the unused file will be deleted

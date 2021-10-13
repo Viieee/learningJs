@@ -1,0 +1,8 @@
+object literals ({}) is great for grouping data and objects
+that you only create once, you dont plan on reusing it.
+theyre quick and easy to use
+
+classes are great to use if you have some logic to re-use later
+and if you re-create the same type of object over and over again.
+you can create new object with new data based on the class easier later,
+class is holding the structure of the object

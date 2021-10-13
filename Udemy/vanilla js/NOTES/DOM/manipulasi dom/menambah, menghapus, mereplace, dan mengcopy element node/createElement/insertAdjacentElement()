@@ -1,0 +1,7 @@
+Sama seperti html, element juga dapat ditambahkan dengan method insertAdjacent
+menggunakan insertAdjacentElement dengan argumen (posisiAturan, objek)
+position ada 4: beforebegin, afterbegin, beforeend, dan afterend
+    - beforebegin berarti sebelum element yang direference (pengguna method)
+    - afterbegin berarti dalam element sebelum first child
+    - beforeend berarti dalam element setelah last child
+    - afterend berarti setelah element

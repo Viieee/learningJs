@@ -1,0 +1,35 @@
+we need to 'unlock' it first
+how?
+we need to add a special keyword that makes it clear that we want to exporting the file and makes it available 
+for the other file to import
+
+that keyword is 'export'
+example:
+export class someClass{
+
+}
+
+you can also export functions, variables, constant and so on by exposing it first with export keyword.
+
+because when we use the traditional script importing method (in the html file)
+the entire code in the file will be globally available
+
+but if we dont do that it bassically locked from the outside and won't be globally available
+
+after we use the export key on the class,
+we have to import the file to the respective files we need the files in
+
+importing file use relative path to the importing file
+
+./ same folder
+../ up 1 folder
+
+example:
+import from './Component.js'
+
+its still cause an error,
+because you only selected the file name
+and when you importing a file you need to specify what you want to import from the particular file
+insert it in {} after the import keyword and before the from keyword
+example:
+import {Component} from './Component.js'

@@ -1,0 +1,12 @@
+what's starting point?
+it's a file that connects the html file to the js file 
+while it's true that js files can point into each other
+you still need one file to 'bridge' the js and the html file
+
+the difference between importing a starting point file and importing regular js file in html is
+that you need to add 'type=modular' attribute after the defer keyword
+
+this will informs the browser that this starting point script and every js script referenced by it 
+will use modules
+
+YOU NEED THIS METHOD ON EVERY SINGLE SCRIPT THAT REQUIRES POINTING INTO ANOTHER FILES

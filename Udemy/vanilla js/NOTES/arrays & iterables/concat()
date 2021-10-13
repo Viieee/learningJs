@@ -1,0 +1,16 @@
+concat() is used to combine two or more arrays 
+
+the referenced array will be copied and recreated
+so if the original array is changed, the new one that's being created with concat() won't be affected
+
+example:
+let testArray = [1,2,3,4,5]
+
+let moreArray = [76,98,77]
+
+const brandNewArray = testArray.concat(moreArray) -> [1, 2, 3, 4, 5, 76, 98, 77]
+
+testArray.push(8) -> [1, 2, 3, 4, 5, 8]
+moreArray -> [76, 98, 77]
+brandNewArray -> [1, 2, 3, 4, 5, 76, 98, 77]
+

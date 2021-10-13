@@ -1,0 +1,4 @@
+one thing we could do if a feature in our app is not supported by a browser is 
+to use feature detection and provide fallbacks for it
+so we want to avoid crashes and instead provide two different code branches that can 
+execute based on the support of the feature

@@ -1,0 +1,18 @@
+class Product { 
+    // fields adalah property dalam class
+    // nama field harus sama kayak object yang lain
+    // bila class memiliki constructor, tidak perlu mendefine fields
+    name = 'Default value';
+    imageUrl;
+    price;
+    description;
+
+    constructor(name,image,price,desc){
+        //this akan mengarah ke class ini
+        //name, imageUrl, price, description pada constructor adalah property
+        this.name = name;
+        this.imageUrl = image;
+        this.price = price;
+        this.description = desc;
+    }
+}

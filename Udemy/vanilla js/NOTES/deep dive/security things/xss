@@ -1,0 +1,11 @@
+dont use innerHtml, but use textContent instead if we want to inject a text dynamically
+
+or sanitize the innerHtml, that means you need to strip away any potential script 
+type input from user and 'clean it'
+
+you can use a package called sanitize-html, that is a server side sanitizer.
+And it will sanitize user input before you store the data into the database
+
+xss also works if you trying to store something in your database   
+you also need to make sure that all third party packages youre using on your projects is
+protected and up-to-date

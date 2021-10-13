@@ -1,0 +1,12 @@
+setting new prototype to an instantiated object
+const course = { // new object
+  title: 'Halo',
+  rating: 5
+}
+
+console.log(Object.getPrototypeOf(course)); // is the same as accessing __proto__ of an object
+Object.setPrototypeOf(course, {
+  printRating: function(){
+    console.log(this.rating);
+  }
+});

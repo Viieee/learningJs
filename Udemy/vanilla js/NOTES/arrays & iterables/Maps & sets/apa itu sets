@@ -1,0 +1,3 @@
+sets adalah iterable yang tidak memiliki order dan isi valuenya tidak boleh ada duplikat
+
+set biasanya digunakan untuk memanage unique values

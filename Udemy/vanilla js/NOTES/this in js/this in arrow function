@@ -1,0 +1,60 @@
+// In arrow functions, this retains the value of the enclosing lexical context's
+// this. In global code, it will be set to the global object:
+
+var globalObject = this; // window
+var foo = (() => this);
+console.log(foo() === globalObject); // true
+
+// Note: if this arg is passed to call, bind, 
+// or apply on invocation of an arrow function it will be ignored.
+// You can still prepend arguments to the call, but the first argument (thisArg) 
+// should be set to null.
+
+// Call as a method of an object
+var obj = {func: foo};
+console.log(obj.func())
+console.log(obj.func() === globalObject); // true
+
+// Attempt to set this using call
+console.log(foo.call(obj) === globalObject); // true
+
+// Attempt to set this using bind
+foo = foo.bind(obj);
+console.log(foo() === globalObject); // true
+
+// No matter what, foo's this is set to what it was when it was created 
+// (in the example above, the global object). The same applies to arrow 
+// functions created inside other functions: their this remains that of the 
+// enclosing lexical context.
+
+
+// Create obj with a method bar that returns a function that
+// returns its this. The returned function is created as
+// an arrow function, so its this is permanently bound to the
+// this of its enclosing function. The value of bar can be set
+// in the call, which in turn sets the value of the
+// returned function.
+var obj = {
+    bar: function() {
+      var x = (() => this);
+      return x;
+    }
+  };
+  
+  // Call bar as a method of obj, setting its this to obj
+  // Assign a reference to the returned function to fn
+  var fn = obj.bar();
+  
+  // Call fn without setting this, would normally default
+  // to the global object or undefined in strict mode
+  console.log(fn() === obj); // true
+  
+  // But caution if you reference the method of obj without calling it
+  var fn2 = obj.bar;
+  // Calling the arrow function's this from inside the bar method()
+  // will now return window, because it follows the this from fn2.
+  console.log(fn2()() == window); // true
+
+  arrow function will always point to local scope,
+  so if its in a class, it will refer to the class itself
+  the alternative to use arrow function is to use bind(this) method

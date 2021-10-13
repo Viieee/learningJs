@@ -1,0 +1,39 @@
+<html>
+    <body>
+        <h1 id="header">Hello</h1>
+        <button onclick="red()">Red</button>
+        <button onclick="green()">Green</button>
+        <script>
+            // function adalah sebuah block code yang melakukan sesuatu
+            // block code yang dimaksud diibaratkan seperti sebuah kotak didalam sebuah ruangan, ruangan merupakan sistem program
+            // function dibuat untuk menyelesaikan task tertentu biasanya hanya 1 task spesifik
+            // keuntungan melakukan task dalam sebuah function adalah bisa digunakan lagi nantinya tanpa harus menulis ulang code
+            function add(){
+                // function bernama add
+                console.log("add");
+            }
+            //fungsi harus dipanggil agar bisa berjalan
+            add();
+            // nilai yang ada di dalam () setelah nama fungsi disebut parameter
+            
+            function addlagi(a,b){
+                //addlagi adalah nama dari fungsi, a dan b adalah parameter dari fungsi
+                //parameter adalah nama variabel yang ada di () setelah deklarasi fungsi
+                return a + b;
+                //return akan menampilkan/menghasilkan data yang direturn saat function dipanggil
+            }
+            // nilai yang dimasukan kedalam parameter disebut argumen
+            var x=addlagi(4,5);
+            // 4 dan 5 adalah argumen
+            function red(){
+                // onclick pada tag button akan mengeksekusi function ini
+                document.getElementById("header").innerHTML="Red";
+                document.getElementById("header").style.color="red";
+            }
+            function green(){
+                document.getElementById("header").innerHTML="Green";
+                document.getElementById("header").style.color="green";
+            }
+        </script>
+    </body>
+</html>

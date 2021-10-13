@@ -1,0 +1,19 @@
+you can't retrieve a value on a set with index,
+why?
+because it doesn't have any index
+
+the only way to retrieve the values is to use for of loop
+
+example:
+const ids = [1,2,3]
+
+for(const entry of ids.entries()){
+    entry; -> this will return the value on id twice on array each time
+              [1,1]
+              [2,2]
+              [3,3]
+    if you don't want this then do this
+    entry[0] -> 1
+                2
+                3
+}

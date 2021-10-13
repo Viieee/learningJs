@@ -1,0 +1,3 @@
+npm install --save mysql2
+
+it will allows us to write and execute sql code in node and interact with the database

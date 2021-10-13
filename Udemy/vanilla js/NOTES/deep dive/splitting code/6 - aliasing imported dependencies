@@ -1,0 +1,10 @@
+you can change the name of the class/function/variables that you imported with the as syntax
+
+why?
+maybe for some cases where you want to avoid any name class on one file you can use this method
+
+example
+import {classA as newClassA} from './someFile.js';
+
+so everytime you want to refer and use classA you use newClassA as the name instead
+this method doesn't change the file name entirely, it only change the name for the file importing it that way

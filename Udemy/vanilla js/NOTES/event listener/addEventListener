@@ -1,0 +1,7 @@
+the most recommended way to add a listener into an element,
+the advantage of this method is that you can remove it and you can add multiple function handler into a single element
+
+this method takes 2 argument:
+1st one is the type of event that will be listened to 
+2nd one is the function that will be executed when the event is happening
+

@@ -1,0 +1,44 @@
+HTTP headers let the client and the server pass additional information with an HTTP request
+or response. An HTTP header consists of its case-insensitive name followed by a colon (:), 
+then by its value.
+
+example:
+
+:authority: jsonplaceholder.typicode.com
+:method: GET
+:path: /posts
+:scheme: https
+accept: */*
+accept-encoding: gzip, deflate, br
+accept-language: en-US,en;q=0.9
+content-type: application/json
+
+you can set new header in a few ways:
+1st way is to use setRequestHeader() method on a http request (XMLHttpRequest) object
+this method ask for 2 arguments 
+    1st argument is the name
+    2nd argument is the value
+think of it as an object
+
+example:
+const xhr = new XMLHttpRequest();
+xhr.setRequestHeader('Content-Type', 'application/json')
+
+once you add a new header with this method you can't delete it
+
+2nd way is to set the second argument on fetch
+because inside of the object you can insert method property there
+it will ask for an object 
+
+example:
+return fetch(url, {
+        method: method, // default is GET
+        body: JSON.stringify(data), // converting the data into json
+        headers: {
+            'Content-Type': 'application/json' // a way to tell the server that the data sent with the request is a json data
+        }
+    }).then(response=>{
+        return response.json(); 
+    })
+
+

@@ -1,0 +1,15 @@
+menggunakan 'in' 
+const person = {
+    aProperty: 'value',
+    name: 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    }
+}
+
+'name' in person -> true
+
+cara lain adalah mengecek bila property pada objek bernilai undefined,
+karena property yang nilainya undefined berarti property tsb dianggap tidak ada

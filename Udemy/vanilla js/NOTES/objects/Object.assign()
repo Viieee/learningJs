@@ -1,0 +1,16 @@
+cara lain untuk mencopy/me-merge property dari 1 atau lebih object adalah dengan menggunakan Object.assign()
+mencopy dengan cara ini akan membuat object baru,
+berarti bila object yang menjadi bahan merge diubah object baru ini tidak akan terpengaruh
+
+misal :
+const person = {name: 'MAX'}
+const person2 = {name: 'Vieri',
+                 age: 21}
+const person4 = {name: 'Adhitya',
+                 age: 19,
+                 sex: 'Male'}
+const person3 = Object.assign({}, person, person2, person4) -> {name: "Adhitya", age: 19, sex: "Male"}
+
+kalau ada nama property key yang sama maka yang dipakai adalah property yang diletakan paling belakan di argumen
+
+argumen 1 bisa juga diisi dengan object yang sudah ada, nantinya akan di merge

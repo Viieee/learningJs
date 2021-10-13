@@ -1,0 +1,5 @@
+menggunakan method closest()
+akan mereturn ancestor dari pengguna method dengan argumen target batas yg akan direturn
+misal :
+liRef.closest('body');
+akan mereturn semua code yang descendant dari body

@@ -1,0 +1,21 @@
+- querySelector dan querySelectorAll adalah salah satu cara untuk menquery objek dalam dom
+- kedua method ini bersifat static/snapshot/tidak live
+  artinya jika elemen asli yang diquery menggunakan method ini diganti ketika query ini telah dijalankan ke objek tsb, hasil dari method ini tidak akan berubah.
+- querySelectorAll mereturn NodeList
+
+misal :
+menquery ke sebuah objek a dengan value 2,
+kemudian sebelum direfresh isi dari a diganti menjadi 10,
+isi dari querySelector yang menquery a di awal tidak berubah dan tetap valuenya 2.
+
+argumen yang diambil dapat berupa:
+- id pada element node
+    document.querySelector('#ini-id-header');
+- class pada element node
+    document.querySelector('.list-item');
+- jenis element node
+    document.querySelector('div');
+
+perbedaan dari querySelector dan querySelectorAll adalah:
+- querySelector akan mentarget 1 objek saja, bila ada lebih dari 1 objek yang memenuhi kriteria argumen maka yang ditarget adalah target pertama yang memenuhi kriteria
+- querySelectorAll akan mentarget SEMUA objek yang memenuhi kriteria

@@ -1,0 +1,23 @@
+sql stands for structured query language
+
+sql use tables
+
+a table can contain some fields/columns and each of these fields have their own rule to be filled
+example:
+the price field is the field that should be filled with a number/integer data type and should be used to store data for prices
+
+the data on each row is called records
+
+a table can be related to another table in sql
+example:
+an order table is basically a relation between the customers table and the products table
+
+theres a few different type of relations in sql:
+1. one to one
+2. one to many / many to one
+3. many to many
+
+#SUMMARY:
+sql is a table based database, it uses strong schema for each table to be the rule for each fields/columns
+the schema controls what type of data goes where in the table. 
+the tables in sql also can be related to one another.

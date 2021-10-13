@@ -1,0 +1,24 @@
+reduce() value digunakan untuk me-reduce jumlah value element menjadi 1
+
+ada 2 argumen yang diambil, yaitu :
+argumen 1 adalah function, function memiliki 2-4 argumen
+    argumen 1 adalah prevValue/initial value akan menampung nilai awal atau nilai sebelumnya
+    argumen 2 adalah currentValue/ value yang sedang ditunjuk oleh operasi loop
+    argumen 3 adalah nomor index
+    argumen 4 adalah keseluruhan array
+argumen 2 adalah nilai awal yang akan diletakkan di prevValue pada function
+
+misal:
+let testArray = [1,2,3,4,5]
+ingin menjumlah semua elemen array menjadi 1
+
+cara biasa :
+let sum = 0 
+testArray.forEach(function(elemen){
+    sum += elemen
+});
+
+menggunakan reduce() :
+const jumlah = testArray.reduce(function(prevValue, currentValue, indexElemen, totalArray){
+    return prevValue + currentValue;
+},0);

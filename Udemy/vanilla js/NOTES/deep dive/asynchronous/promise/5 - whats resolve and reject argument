@@ -1,0 +1,34 @@
+those 2 argument is a function that will mark the promise
+according to the circumstance/condition, you can pick either resolve() or reject() to be executed
+
+if resolve is executed that means the Promise object will be marked as 'resolved' by js
+this means later the code inside then() method will be executed
+
+if reject is executed that means the Promise object will be marked as 'rejected' by js
+this means later the code inside catch() method will be executed
+
+example :
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+      // success condition here is that the user is giving their location permission into our webpage
+      // if that happens this posPromise will be marked as 'resolved'
+    },
+    error=>{
+      reject(error);
+      // fail condition here is that the user is blocking the location permission
+      // if that happens this posPromise will be marked as 'rejected'
+    }, opts);
+    // argument inside resolve/reject function will be passed into the then/catch method 
+  });
+  return posPromise;
+}
+
+
+getPos()
+  .then(posData => {
+      // this block will be executed if the Promise object marked as 'resolve'
+  }).catch(error=>{
+      // this block will be executed if the Promise object marked as 'rejected'
+  });

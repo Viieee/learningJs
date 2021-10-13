@@ -1,0 +1,34 @@
+you can import more than one thing from different file and from the same file
+if you want to import more than 1 thing from 1 class you can do it like this example:
+
+import {function,class} from './someFile.js';
+
+or you can import the whole file in a bundle with a special syntax '* as bundleName'
+example:
+
+you have a file with class and function in file a and you want to import all of them to file b 
+file a:
+class a{
+    aFunction(){
+
+    }
+}
+
+function bFunc(){
+
+}
+
+function cFunc(){
+
+}
+
+file b:
+import * as bundle from './fileA.js'
+
+// accessing the things
+// aFunction
+const aFunc = bundle.a.aFunction()
+//bFunc 
+const bFunc = bundle.bFunc()
+//cFunc 
+const cFunc = bundle.cFunc()

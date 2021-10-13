@@ -1,0 +1,42 @@
+class adalah blueprint dari object
+class dapat digunakan untuk membuat object secara dinamis
+
+class Product { //class harus kapital, class adalah blueprint dari object
+    // fields adalah property dalam class
+    // nama field harus sama kayak object yang lain
+    name = 'Default value';
+    imageUrl;
+    price;
+    description;
+
+    // berarti object yang based on this class akan memiliki propertie seperti field diatas
+
+    // method inside class
+    // productClassMethod(){}
+
+    // constructor method
+    // mengambil argumen dari luar ketika class dipanggil
+    constructor(name,image,price,desc){
+        //this akan mengarah ke class ini
+        //name, imageUrl, price, description pada constructor adalah property
+        this.name = name;
+        this.imageUrl = image;
+        this.price = price;
+        this.description = desc;
+    }
+}
+
+new Product(
+'Golf le fleur x Converse Chuck taylor 70s High White',
+'https://stockx-360.imgix.net/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Images/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Lv2/img01.jpg?auto=format,compress&q=90&updated_at=1607672662&w=1000',
+200,
+'Converse collab with golf le fleur') //memanggil class
+
+ sama seperti
+ 
+{
+ name: 'Golf le fleur x Converse Chuck taylor 70s High White',
+ imageUrl: 'https://stockx-360.imgix.net/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Images/Converse-Chuck-Taylor-All-Star-70s-Hi-Golf-Le-Fleur-Parchment/Lv2/img01.jpg?auto=format,compress&q=90&updated_at=1607672662&w=1000',
+ price: 200,
+ description: 'Converse collab with golf le fleur'
+}

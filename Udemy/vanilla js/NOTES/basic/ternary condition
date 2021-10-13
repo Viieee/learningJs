@@ -1,0 +1,3 @@
+condition ? true : false
+
+NaN, empty string, 0 (zero), undefined, null termasuk false

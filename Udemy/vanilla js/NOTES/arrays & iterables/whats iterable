@@ -1,0 +1,4 @@
+iterable adalah objek yang bisa di for-of loopkan
+
+contoh iterable:
+arrays, strings, maps, set, nodelist

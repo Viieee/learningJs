@@ -1,0 +1,20 @@
+instead of having relations and strong schemas, NoSQL has other focuses
+
+in NoSQL we call tables 'collections'
+
+inside of collections we can find the data, but we don't call it records 
+    we call it documents and it resembles javascript object
+
+in NoSQL we can have documents that dont follow any sort of scehmas/rules
+example:
+
+    inside 1 collections called users we can have 2 different documents that
+    have different data inside of it,
+    1st data can contain the name and the age of the uses,
+    2nd data cac contain only the name of the user  
+
+so you can store multiple document with different structures in the same collections
+    you can definitely store documents which are generally equal but where some fields 
+    might differ.
+
+in NoSQL we dont have relations, instead we go for data duplication

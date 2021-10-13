@@ -1,0 +1,7 @@
+var array = [1,2,3]
+
+using pop() and shift()
+    pop() removing the last element on an array
+        array.pop() -> isi array : [1,2]
+    shift() removing the first element on an array
+        array.shift() -> isi array : [2]

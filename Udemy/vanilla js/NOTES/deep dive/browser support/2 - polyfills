@@ -1,0 +1,10 @@
+a polyfills is a third party package that adds a functionality which otherwise might be
+missing in a browser, it will 'teach' a browser about features in your app that 
+don't necessarily supported yet
+
+in other words, polyfills is a work around to replicate a not supported feature with 
+existing feature that is supported
+
+not all features will be able to use this method to work on older/non-supporting browsers,
+you can look the specific features you want whether it has polyfills support or not 
+by searching it on google

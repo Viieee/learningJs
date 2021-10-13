@@ -1,0 +1,8 @@
+break is used to break out of loop
+example:
+for(let i=0;i<=10;i++){
+    if(i === 3){
+        break; saat i mencapai 3, semua code yang ditulis setelah condition ini
+                tidak akan dieksekusi
+    }
+}

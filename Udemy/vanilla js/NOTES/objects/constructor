@@ -1,0 +1,19 @@
+construtor adalah method spesial yang digunakan untuk membuat dan menginisialisasi sebuah class
+constructor memungkinkan programmer untuk melakukan custom initialization 
+
+contoh:
+class Person {
+
+  constructor(name) {
+    this.name = name;
+  }
+
+  introduce() {
+    console.log(`Hello, my name is ${this.name}`);
+  }
+
+}
+
+const otto = new Person('Otto'); -> custom initialization
+
+otto.introduce();

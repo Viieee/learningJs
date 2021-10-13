@@ -1,0 +1,34 @@
+Typically, data is transferred as "JSON" data between your client-side code and your backend 
+("the server").
+
+JSON stands for JavaScript Object Notation and it looks like this:
+
+{
+    "name": "Max",
+    "age": 30,
+    "hobbies": [
+        { "id": "h1", "title": "Sports" },
+        { "id": "h2", "title": "Cooking" }
+    ],
+    "isInstructor": true
+}
+JSON data supports objects ({}), arrays ([]), strings (MUST use double-quotes!), 
+numbers (NO quotes) and booleans (also NO quotes).
+
+All object keys (e.g. "name") HAVE to be wrapped by double quotes. 
+No quotes or single quotes are NOT ALLOWED!
+
+Actually, the whole JSON "object" is wrapped in quotes itself because JSON data in the 
+end is just a string that contains data in the format shown above.
+
+
+Also nice to know: You're NOT LIMITED to objects when converting data to JSON. 
+You can also convert numbers, arrays, booleans or just strings - all data types JSON supports:
+
+const jsonNumber = JSON.stringify(2); // "2"
+const jsonText = JSON.stringify('Hi there! I use single quotes in raw JS'); // ""Hi there! ...""
+const jsonArray = JSON.stringify([1, 2, 3]); // "[1,2,3]"
+const jsonBoolean = JSON.stringify(true); // "true"
+
+object/string/boolean/arrays/number to JSON ==> JSON.stringify(object/string/boolean/arrays/number)
+JSON to object/string/boolean/arrays/number (normal js data) ==> JSON.parse(JSONdata)

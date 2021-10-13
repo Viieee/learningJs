@@ -1,0 +1,1 @@
+by adding async on the function, the function itself automatically returning a Promise

@@ -1,0 +1,27 @@
+old way of adding events into an element is using onclick
+its an attribute on an element in html tags
+its also a property, if you want to add an event with it through a js file (recommended way to use it)
+if you want to use it as a property, the value added to it has to be a function (anonymous/named)
+
+example:
+<button onclick="alert('hi!')">Click me</button>
+
+or
+
+const button = document.querySelector('button')
+
+button.onclick = function(){
+    ...
+}
+
+or
+
+function buttonFunc(){
+    ...
+}
+
+button.onclick = buttonFunc;
+
+the difference between this method and the other one is that you cant assigned more than 1 function into an element
+so if you want assigned another function that will be executed other than the buttonFunc function,
+the second function will be executed instead (overide it)

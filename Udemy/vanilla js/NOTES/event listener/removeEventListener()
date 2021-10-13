@@ -1,0 +1,4 @@
+you can remove the listener if you use addEventListener()
+it's also take 2 argument like addEventListener()
+
+you cant remove this if the function is binded/is an anonymous function

@@ -1,0 +1,49 @@
+forEach() adalah method yang digunakan untuk meloop sebuah array 
+dengan kelebihan dapat mengakses index dari tiap elemen
+
+argumen yang diambil adalah fungsi
+fungsi memiliki 1-3 argumen (sama seperti method find() dan findIndex())
+argumen 1 menunjuk elemen dari array
+argumen 2 menunjuk index dari elemen
+argumen 3 menunjuk full array
+
+misal : 
+let testArray = [1,2,3,4,5];
+let arrayBaru = [];
+
+
+ingin membuat loop dengan menggunakan for of dan for forEach(), 
+dan akan mengubah elemen dari tiap elemen ditambah 1 valuenya dan dipindah ke arrayBaru
+
+for of:
+for(const elemen of testArray){
+    arrayBaru.push(elemen + 1);
+}
+
+arrayBaru -> [2, 3, 4, 5, 6]
+
+dengan forEach()
+
+testArray.forEach(function(elemen, indexElemen, fullArray){
+    // misal akan membuat objek yang berisi index dan value yang ditambah 1
+    const objekArrayElement = {index: indexElemen, element: elemen+1}
+    arrayBaru.push(objekArrayElement);
+}); ->  [{index: 0, element: 2},
+         {index: 1, element: 3},
+         {index: 2, element: 4},
+         {index: 3, element: 5},
+         {index: 4, element: 6}]
+
+method map() digunakan apabila ingin membuat sebuah array hasil transformasi dari array yang sudah ada 
+yang nantinya akan disimpan di sebuah variabel
+
+misal ingin melakukan operasi yang sama dengan forEach() diatas
+
+let arrayBaruLagi = testArray.map(function(elemen, indexElemen, fullArray){
+    // misal akan membuat objek yang berisi index dan value yang ditambah 1
+    const objekArrayElement = {index: indexElemen, element: elemen+1}
+    return objekArrayElement;
+});
+
+NOTE:
+map() menghasilkan array baru

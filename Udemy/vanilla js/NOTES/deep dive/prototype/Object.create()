@@ -1,0 +1,5 @@
+we can create new object and setting the prototype of it with Object.create() 
+and the method inside {} as the first  argument
+
+to set properties, you can use Object.defineProperty()
+with the object as the first argument and the properties inside {} as the second argument

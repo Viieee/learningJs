@@ -1,0 +1,36 @@
+const test = {
+    prop: 42,
+    func: function() {
+      return this.prop;
+    },
+  };
+  
+  console.log(test.func()); // 42
+
+// In web browsers, the window object is also the global object:
+console.log(this === window); // true
+
+a = 37;
+console.log(window.a); // 37
+
+this.b = "MDN";
+console.log(window.b)  // "MDN"
+console.log(b)         // "MDN"
+
+// inside a function, the value of this depends on how the function is called.
+
+// Since the following code is not in strict mode, 
+// and because the value of this is not set by the call, 
+// this will default to the global object, which is window in a browser.
+
+function f1() {
+    return this;
+}
+  
+// In a browser:
+console.log(f1() === window); // true
+
+// In Node:
+console.log(f1() === globalThis); // true
+
+// if you use strict mode, the result would be undefined

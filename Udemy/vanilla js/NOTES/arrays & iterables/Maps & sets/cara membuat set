@@ -1,0 +1,2 @@
+const ids = new Set(); -> empty set
+argumen yang ada bisa diisi dengan iterable untuk mengisi Set secara default

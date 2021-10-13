@@ -1,0 +1,10 @@
+make a new webpack config file and name it differently. example:webpack.config.prod.js
+
+copy the config file content and store it in the new webpack config file
+change the mode property into production
+and change the devtool into production ready devtool (read it on documentation)
+
+
+make new script on package.json and refer to the new config file
+example:
+"build:prod": "webpack --config webpack.config.prod.js"

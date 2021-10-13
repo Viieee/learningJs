@@ -1,0 +1,6 @@
+template tag in html is basically a tag that you write inside of the html that won't be rendered right away
+but this tag is part of the DOM
+
+so you can work with it inside of the js code without the need to render it
+
+it's basically cleaner way to dynamically adding new node into the DOM (compared to innerHTML

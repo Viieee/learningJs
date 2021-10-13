@@ -1,0 +1,12 @@
+ideally we want to have two different workflows which we can start
+- development workflow, which should start whenever we save changes to our code
+    we want to have linting set up (ESLint)
+    we want to bundle our code (webpack)
+    we want to have a development server that automatically reloads whenever changes made
+- production workflow, which you want to start with a certain command (you want to run it when the code is ready)
+    we want to have linting set up (ESLint)
+    we want to bundle our code (webpack)
+    we want to compile our code, to translate it from modern js into js that can run in older
+        browser as well (babel)
+    we want to optimize the code
+    we want to have production ready code

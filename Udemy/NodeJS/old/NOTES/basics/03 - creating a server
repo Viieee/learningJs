@@ -1,0 +1,22 @@
+you can create a server in node js using the createServer method from http object
+it will return a Server object so you need to store it in a variable
+so you can use something with it
+
+the method will take a function and this function will be executed for every
+incoming request
+
+and the function will take 2 arguments, 
+1st argument represent the incoming request
+2nd argument represent the response that can be returned
+
+example:
+const http = require('http');
+
+function rqListener(req, res){
+    console.log(req);
+}
+
+const server = http.createServer(rqListener);
+
+on the createServer method, you don't use () in the argument function because you don't want
+the function to be executed once when the script is loaded (like function event handler)

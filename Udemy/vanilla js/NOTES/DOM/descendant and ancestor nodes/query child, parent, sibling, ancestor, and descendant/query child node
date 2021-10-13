@@ -1,0 +1,7 @@
+cara menquery child node :
+- dengan property children dan childNodes (BUKAN METHOD, TAPI PROPERTY)
+    perbedaan dari kedua cara ini adalah : 
+    - children akan menunjuk ke SEMUA CHILD ELEMENT NODE dari variable reference
+    - childNodes akan menunjuk ke semua child nodes, tidak hanya element nodes. (text node juga termasuk)
+
+- dengan property lastElementChild // firstElementChild // lastChild // firstChild

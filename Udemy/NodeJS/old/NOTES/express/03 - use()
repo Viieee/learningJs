@@ -1,0 +1,23 @@
+use() allows us to add a new middleware function
+you can pass a function into it as the argument 
+and the function argument will be executed for
+every incoming request
+
+the function argument will take 3 argument,
+1st argument is request 
+2nd argument is response
+3rd argument is next, is another function that will be passed onto this function argument
+                      this argument is important if you don't want to send a response in
+                      this argument function for the use() method
+
+example:
+
+app.use((req, res, next) => {
+    console.log('In the middleware!');
+    next(); // Allows the request to continue to the next middleware in line
+});
+
+app.use((req, res, next) => {
+    console.log('In another middleware!');
+    res.send('<h1>Hello from Express!</h1>');
+});

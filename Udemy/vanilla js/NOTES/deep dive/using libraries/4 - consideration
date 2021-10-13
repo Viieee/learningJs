@@ -1,0 +1,6 @@
+you might need to consider the amount of data needed to use a library
+because you will download the full library regardless of you using only one or more than one 
+functionalities in the library
+
+theres more advance method tho on only using some specific part of the library
+and not using the rest that is not needed in your app 

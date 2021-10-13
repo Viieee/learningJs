@@ -1,0 +1,55 @@
+The await expression causes async function execution to pause until a Promise is settled 
+(that is, fulfilled or rejected), and to resume execution of the async function after 
+fulfillment. When resumed, the value of the await expression is that of the fulfilled 
+Promise.
+
+If the Promise is rejected, the await expression throws the rejected value.
+
+If the value of the expression following the await operator is not a Promise, 
+it's converted to a resolved Promise.
+
+
+example :
+
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+    },
+    error=>{
+      reject(error);
+    }, opts);
+  });
+  return posPromise;
+}
+
+
+function setTimer(duration){
+  const promise = new Promise((resolve, reject)=>{ // resolve and reject is a function
+    setTimeout(()=>{
+      resolve('Done!'); // executed by browser
+    },duration);
+  });
+  return promise;
+}
+
+you can simplify this 
+
+function trackUserHandler() {
+  let positionData;
+  getPos()
+  .then(posData => {
+    positionData = posData;
+    return setTimer(2000);
+  }).then(data=>{
+    console.log(data, positionData);
+  });
+}
+
+to this 
+
+async function trackUserHandler() {
+    const posData = await getPos(); // this line will be paused until the getPos() promise function is finsihed
+    const timerData = await setTimer(2000);
+    console.log(timerData, posData);
+}

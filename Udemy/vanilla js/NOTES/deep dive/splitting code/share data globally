@@ -1,0 +1,9 @@
+you can use a 'hack' to share data across files with the window
+
+you can add a new property on window and access it later on another file
+
+or store it to the globalThis, it's a replacement of window object
+in modular file
+
+because in modular js if you simply refer to the window object as 'window'
+it will return undefined because it's on strict mode

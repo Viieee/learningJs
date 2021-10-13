@@ -1,0 +1,14 @@
+filter() digunakan untuk memfilter value element pada array
+argumen yang diambil oleh filter adalah function sama seperti method find()
+
+fungsi tersebut mereturn boolean
+bila true akan men-keep value yang didapat
+bila false akan men-drop value yang tidak masuk kriteria
+
+misal : 
+let testArray = [1,2,3,4,5,6,7,8]
+ingin memfilter value array diatas 5 saja
+
+let tampungFilter = testArray.filter(function(element, indexElement, fullArray){
+ return element > 5; // semua value yang lebih besar dari 5 dianggap true
+}) -> [6,7,8]

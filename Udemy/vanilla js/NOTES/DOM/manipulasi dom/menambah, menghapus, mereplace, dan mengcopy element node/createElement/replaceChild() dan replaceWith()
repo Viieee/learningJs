@@ -1,0 +1,5 @@
+- bisa mereplace element dengan replaceChild(newChild, oldChild) dan replaceWith(object/html code)
+    - reference(target/pengguna) dari method replaceWith(object/html code) adalah element yang ingin diganti
+        ulRef.firstElementChild.replaceWith(newLi);
+    - reference(target/pengguna) dari method replaceChild(newChild[object], oldChild[object]) adalah parent dari element yang ingin diganti
+        ulRef.replaceChild(newLi2,newLi)

@@ -1,0 +1,16 @@
+Middleware functions are functions that have access to the request object (req), 
+the response object (res), and the next middleware function in the application’s request-response cycle. 
+The next middleware function is commonly denoted by a variable named next.
+
+As name suggests it comes in middle of something and that is request and response cycle
+
+example:
+
+app.use((req, res, next)=>{
+    console.log('In the middleware');
+    next(); -> required to execute the other middleware after it
+});
+
+app.use((req, res, next)=>{
+    console.log('another middleware');
+});

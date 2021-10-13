@@ -1,0 +1,7 @@
+the code will run when the module gets imported for the first time
+
+so no matter how many file importing the same file, it will only run once
+and that's when the first module imported it
+
+on dynamicly imported file, the code only run once when the module is imported for the first time
+

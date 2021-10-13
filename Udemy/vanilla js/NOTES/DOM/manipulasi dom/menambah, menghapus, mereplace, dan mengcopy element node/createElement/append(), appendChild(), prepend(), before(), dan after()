@@ -1,0 +1,16 @@
+- append(object, string) dan appendChild(object) akan menggabungkan objek/string dan dijadikan child terakhir
+- perbedaan :
+    - append() dapat meng-append objek dan string dan dapat meng-append lebih dari 1 objek/string
+    - appendChild() hanya dapat meng-append 1 objek
+- prepend(object, string) akan menggabungkan objek/string dan dijadikan child pertama
+- before(object/html code) akan meng-append/meletakan objek yang menjadi argumen sebelum reference/pengguna method
+- after(object/html code) akan meng-append/meletakan objek yang menjadi argumen setelah reference
+
+NOTE: penggunaan method prepend, append, before, dan after tidak bisa digunakan secara bersamaan ke 1 objek argumen
+line code terakhir adalah line yang akan diemplementasikan bila argumennya sama
+jadi misal ada code :
+ulRef.append(newLi); 
+ulRef.prepend(newLi);
+ulRef.lastElementChild.before(newLi);
+ulRef.firstElementChild.after(newLi); 
+maka yang akan diemplementasikan adalah method after 

@@ -1,0 +1,1 @@
+you can trigger a click event from another element that's not related in anyway by using click() method

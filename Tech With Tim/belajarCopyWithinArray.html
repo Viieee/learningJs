@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>
+      Click the button to copy the first two array elements to the third and
+      fourth position.
+    </p>
+
+    <button onclick="myFunction()">Try it</button>
+
+    <p id="demo"></p>
+
+    <p>
+      <strong>Note:</strong> The copyWithin() method is not supported in IE 11
+      (and earlier versions).
+    </p>
+
+    <script>
+      var fruits = ["Banana", "Orange", "Apple", "Mango", "Kiwi", "Papaya"];
+      document.getElementById("demo").innerHTML = fruits;
+
+      function myFunction() {
+        document.getElementById("demo").innerHTML = fruits.copyWithin(4, 0, 2);
+      }
+    </script>
+  </body>
+</html>
+Banana,Orange,Apple,Mango,Kiwi,Papaya

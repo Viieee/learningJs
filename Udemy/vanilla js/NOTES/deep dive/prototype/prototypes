@@ -1,0 +1,71 @@
+every object have a prototype
+prototype is an object or a fallback objects
+meaning that prototype is an object that js will be look at if it searches a certain property or 
+    method it can't find on the object it's currently looking at
+example :
+
+// theres an object called 'contoh' with 'property1' and 'method1' as the property and method inside it
+person = {
+   property1: '',
+   method1: function(){
+
+   }
+}
+
+// you try to call method that doesn't exist in the object, in this example 'method2'
+person.method2();
+// obviously the method we try to call doesn't exist
+// this is where prototype role comes in
+// it serve as a fallback object
+// so js will look at the prototype for the 'method2' method
+// this prototype also have a prototype
+// and js will look at the prototype of the prototype
+// it will keep going until it reaches the end, if it doesn't find any then undefined returned
+
+// theres 2 type of prototypes:
+// the prototype exist in every object is '__proto__'
+// the main use of it is to provide global default methods to  objects 
+// if an object is created based on a class/constructor function 
+// the __proto__ will be based on the class/constructor function 'prototype'
+
+// another type of prototype exist in function constructor called 'prototype'
+// only available on the class/function constructor
+// this 'prototype' will be assigned to every object based on this function to the __proto__
+// and can be assigned as fallback value
+// and if a class is extending other class, the prototype of the parent class will be assigned to the __proto__ inside prototype and prototype inside __proto__  
+
+const userA = new User();
+userA.__proto__ === User.prototype; // true
+userA.__proto__ === User.__proto__ // false
+userA's __proto__ contain User class prototype
+User class prototype is all method and properties inside of the class/constructor function
+User class __proto__ is global default methods
+
+// you can set the prototype of an object
+// example :
+
+class Person{
+
+}
+
+equivalent to
+
+function Person(){ // this function is called constructor function
+
+}
+
+build a new object based on the blueprint 
+
+const person = new Person();
+
+we want to set fallback method called method2 for this Person object
+
+Person.prototype.method2 = function(){
+
+}
+
+if any object based on the Person class/constructor function calling method1 which doesn't exist in the class/constructor function
+the method1 we set in prototype will be executed
+
+
+

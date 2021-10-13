@@ -1,0 +1,8 @@
+you need to use buffer to organize the chunks on the streams
+
+the streams acts like a bus
+and the buffer acts like the bus stops
+you can track where your bus is based on the bus stops
+
+a buffer is construct which allows you to hold multiple chunks and work with them 
+before they are released

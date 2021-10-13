@@ -1,0 +1,11 @@
+some features might not be able to be worked around with fallback code or with polyfills
+example: let, const, async/await, arrow functions
+
+usually the ones that can't be worked around is core language feature
+
+for these features to make it work in older browsers and all the browsers that don't support it
+is to use transpilation
+
+the idea behind code transpilation is that you transpile/transform your modern code into 
+older code and it's done automatically with the help of a tool
+the tool i will be using is babel

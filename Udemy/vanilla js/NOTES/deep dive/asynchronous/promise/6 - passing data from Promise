@@ -1,0 +1,15 @@
+you can pass data from Promise and access it again later in then() and catch() method
+
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+    },
+    error=>{
+      reject(error);
+    }, opts);
+  });
+  return posPromise;
+}
+
+// argument inside resolve/reject function will be passed into the then/catch method 

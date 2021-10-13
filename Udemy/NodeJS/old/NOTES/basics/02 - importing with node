@@ -1,0 +1,9 @@
+if you want to import in nodeJs you will need to use a method called 'require'
+
+example:
+1. importing a module
+    require('http') -> importing a module called http
+2. importing a file
+    require('./http') -> importing a js file called http
+
+you need the './' if you want to import a file because it will ask for a path to the file

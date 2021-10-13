@@ -1,0 +1,7 @@
+bubbling and capturing is the order of event listener execution on surrounding element
+
+bubbling will execute the children's listener first
+capturing will execute the parent's listener first
+
+normally addEventListener will implement the bubbling phase
+but it can be turned into capturing phase by adding 3rd argunment, and set it to true

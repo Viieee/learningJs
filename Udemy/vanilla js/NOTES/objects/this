@@ -1,0 +1,111 @@
+this is referencing into object that containing it
+
+misal: 
+const newMovie ={
+        info : {
+            title, // if the key name and value name is the same, you can just write it once
+            [extraName]: extraValue
+        }, 
+        id: Math.random(),
+        getFormattedTitle: function(){
+            return this.info.title.toUpperCase(); this pada line ini merefer ke object newMovie
+        }
+    }
+newMovie.getFormattedTitle()
+or 
+let {getFormattedTitle} = newMovie
+    
+
+call() and apply() akan membantu mengarahkan this pada fungsi
+dan memungkinkan sebuah fungsi di objek a untuk diimplementasikan di objek b
+
+misal 
+var person = {
+  fullName: function() {
+    return this.firstName + " " + this.lastName;
+  }
+}
+var person1 = {
+  firstName:"John",
+  lastName: "Doe"
+}
+var person2 = {
+  firstName:"Mary",
+  lastName: "Doe"
+}
+
+person.fullName.call(person1); -> John Doe
+person.fullName.apply(person2); -> Mary Doe
+
+
+this pada function di button maka this akan merefer ke event listener / lebih spesifik ke element yang memiliki event listener tsb
+
+this pada arrow function akan merefer ke global window, tidak ke dalam function.
+karena arrow function tidak mengenal this
+
+1) this in Global Context (i.e. outside of any function)
+
+function something() { ... }
+console.log(this); // logs global object (window in browser) - ALWAYS (also in strict mode)!
+
+
+2) this in a Function (non-Arrow) - Called in the global context
+
+function something() { 
+    console.log(this);
+}
+something(); // logs global object (window in browser) in non-strict mode, undefined in strict mode
+
+
+3) this in an Arrow-Function - Called in the global context
+
+const something = () => { 
+    console.log(this);
+}
+something(); // logs global object (window in browser) - ALWAYS (also in strict mode)!
+
+
+4) this in a Method (non-Arrow) - Called on an object
+
+const person = { 
+    name: 'Max',
+    greet: function() { // or use method shorthand: greet() { ... }
+        console.log(this.name);
+    }
+};
+person.greet(); // logs 'Max', "this" refers to the person object
+
+
+5) this in a Method (Arrow Function) - Called on an object
+
+const person = { 
+    name: 'Max',
+    greet: () => {
+        console.log(this.name);
+    }
+};
+person.greet(); // logs nothing (or some global name on window object), "this"
+
+
+
+
+this can refer to unexpected things if you call it on some other object, e.g.:
+
+const person = { 
+    name: 'Max',
+    greet() {
+        console.log(this.name);
+    }
+};
+ 
+const anotherPerson = { name: 'Manuel' }; // does NOT have a built-in greet method!
+ 
+anotherPerson.sayHi = person.greet; // greet is NOT called here, it's just assigned to a new property/ method on the "anotherPerson" object
+ 
+anotherPerson.sayHi(); // logs 'Manuel' because method is called on "anotherPerson" object
+
+
+NOTE :
+the purpose of this inside of an object method (in non-arrow functions) is to provide you access to whatever called the method
+
+

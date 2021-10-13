@@ -1,0 +1,3 @@
+sessionStorage will only store data on a session of app usage, if you reload the page the data will be gone
+
+localStorage will store data longer and the data will only be gone if the browser or the user decided to delete it

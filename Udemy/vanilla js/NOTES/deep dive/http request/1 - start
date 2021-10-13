@@ -1,0 +1,13 @@
+if we want to send http request using javascript, we need to use the XMLHttpRequest object
+it's a default object available on js 
+
+example :
+const xhr = new XMLHttpRequest();
+
+then we configure the request using the open() method
+the method itself require 2 arguments 
+1st argument is the type of request we want to send 
+2nd argument is the url we targeted to
+
+example:
+xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');

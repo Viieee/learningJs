@@ -1,0 +1,12 @@
+- getElementById akan menquery element dengan nama id sebagai argumen
+    document.getElementById('ini-header');
+
+- getElementsByClassName akan menquery semua element node yang memiliki nama class yang sama dengan argumen
+- sifatnya live (kalau dokumen berubah maka isi akan berubah)
+- mereturn HTMLCollection
+    document.getElementsByClassName('list-item');
+                                              
+- getElementsByTagName akan menquery semua element node yang memiliki tag name yang sesuai dengan argumen
+- sifatnya live (kalau dokumen berubah maka isi akan berubah)
+- mereturn HTMLCollection
+    document.getElementsByTagName('li'); 

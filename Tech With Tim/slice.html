@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<p>Click the button to extract the third and fourth elements, using negative numbers.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+function myFunction() {
+  var fruits = ["Banana", "Orange", "Lemon", "Apple", "Mango"];
+  var myBest = fruits.slice(2, -2);
+  document.getElementById("demo").innerHTML = myBest;
+}
+</script>
+
+</body>
+</html>

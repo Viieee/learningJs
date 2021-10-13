@@ -1,0 +1,11 @@
+you can find a lot of interesting libraries on google
+
+how to add:
+
+usually theres multiple ways to add and use a library
+in the case of lodash there are 2 ways
+
+you can either download the file
+or refrencing the cdn link 
+
+you need to import it on the html file BEFORE any file that needs these libraries

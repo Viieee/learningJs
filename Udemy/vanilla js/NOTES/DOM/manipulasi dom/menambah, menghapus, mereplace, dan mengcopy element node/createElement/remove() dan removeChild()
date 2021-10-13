@@ -1,0 +1,2 @@
+remove() akan menghapus langsung element node yang jadi reference method
+removeChild(child[object]) mengambil argumen target element node yang akan dihapus dengan reference parent dari node tsb

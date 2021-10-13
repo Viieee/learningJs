@@ -1,0 +1,24 @@
+no sql basically means that this database doesn't follow the sql rules
+
+no sql doesn't have strong schemas around it 
+
+so in the same collections(tables), documents(records) we can have different structures
+example:
+document #1 => {"name": "Vieri", "age": 21}
+document #2 => {"name": "Adhit"}
+
+like in sql we can also relate two tables, but in different way of course!
+we relate 2 tables with copying the data of the related data into another collections and merged it!
+example:
+
+user table:
+document #1 => {"id": 1, "name": "Vieri", "age": 21}
+document #2 => {"id": 2, "name": "Adhit", "age": 19}
+
+products table:
+document #1 => {"id": 1, "name": "table", "price": 100}
+document #2 => {"id": 2, "name": "chair", "price": 70}
+
+orders table:
+document #1 => {"id": "L90Mj", "user": {"id": 1, "name": "Vieri"}, "product": {"id": 2, "price": 70}}
+document #2 => {"id": "K099u", "user": {"id": 2, "name": "Adhit"}, "product": {"id": 1, "price": 100}}

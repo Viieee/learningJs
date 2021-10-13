@@ -1,0 +1,29 @@
+what expiring cookie means, it means the cookie will be deleted at a certain time
+
+default expiry of a cookie is when the session is over (when you close browser) or when 
+the browser decided when to delete it
+
+user can also delete the cookies no matter if theres expiration time or not
+
+theres 2 ways you can set an expiry of a cookie:
+1. with max-age, takes time in seconds
+2. with expires, takes a date with certain format
+
+how?
+you set it when you add new cookie
+document.cookie = `uid=${userId}; max-age=2` => that means the cookie with the key of uid
+                                                will get deleted in 2 seconds
+
+#NOTE
+if you have more than one key value in your cookie, if you use the split method
+to return it and store it as an array, the key value with expiry date will be deleted after certain time
+and if that happens the next value is going up on the order of the index
+
+example:
+if you have 2 key value in the cookie with only one key value that has a expiry time
+and just happens to be the 1st one on the index/[0], the data in [1] will move to index [0]
+and the key value with expiry time will be deleted. if you decided to store it again, it will be store in the back of 
+the array/[1]    
+
+
+this is the reason why retrieving data form a cookie using index array is not the best idea

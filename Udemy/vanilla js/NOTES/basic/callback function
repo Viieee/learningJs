@@ -1,0 +1,7 @@
+callback function is a function that is called by something else
+and you can't really control when the function will be called
+
+example :
+attackBtn.addEventListener('click', attackHandler);
+attackHandler is a callback function
+you don't need () to use a callback function;

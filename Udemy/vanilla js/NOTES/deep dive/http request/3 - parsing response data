@@ -1,0 +1,10 @@
+we can parse the data we get from the server using the .response property on the XMLHttpRequest object
+
+example:
+const xhr = new XMLHttpRequest();
+xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+
+xhr.response -> this line will parse the response from the request
+
+note that the data type of the response is JSON type and 
+therefore need to be converted first before able to be processed

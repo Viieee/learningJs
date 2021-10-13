@@ -1,0 +1,6 @@
+cookie is a file send by websites to recognize user that connected to their servers
+
+http is a stateless protocol, 
+which means they will only send a response back to a request the user made and thats it
+cookie is a way for the web to remember the user even after we send different request
+and the data we use to remember the user in their currently used browser doesn't affect the other users

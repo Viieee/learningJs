@@ -1,0 +1,39 @@
+pure functions is a function which for some given input (argument) always produces the same output
+it also doesn't trigger any side effects which means it doesn't change anything outside of the function
+
+example :
+function add(num1, num2){
+ return num1 + num2;
+}
+
+console.log(add(22,11)); // output 33
+
+the output of the function will always be the same if the 2 argument passed into the function is 22 and 11
+the add function is a pure function.
+
+
+example of impure function :
+function addRandom(num1){
+    return num1 + Math.random();
+}
+
+console.log(addRandom(11));
+
+the addRandom function is impure because the result isn't always the same everytime
+
+
+side effects means changing anything outside of the function, like a value on a variable/array outside of a function or data inside a database
+example :
+let hasilnya = 0;
+
+function addMore(num1, num2){
+    const hasil = num1 + num2;
+    hasilnya = hasil;
+    return hasil;
+}
+
+console.log(addMore(1,2));
+console.log(hasilnya);
+
+the default value of the hasilnya function will be altered after we execute the addMore function
+

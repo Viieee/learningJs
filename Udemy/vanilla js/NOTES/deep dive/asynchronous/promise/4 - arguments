@@ -1,0 +1,11 @@
+promise take function as argument, and the argument function is taking 2 argument (in form of dfault function)
+
+example :
+const posPromise = new Promise((resolve,reject)=>{
+
+});
+
+in above example posPromise is a promise that takes an anonymous function as the argument
+
+and the anonymous function in the Promise's argument is taking 2 argument itself
+those 2 are a default function argument made for Promise objects

@@ -1,0 +1,31 @@
+<html>
+    <body>
+        <h1 id="header">Hello</h1>
+        <input type="text" id="inp"/>
+        <button onclick="pressed()">Click</button>
+        <script>
+        
+            function pressed(){
+                var text_input = document.getElementById("inp").value;
+                var input_umur = parseInt(document.getElementById("inp_umur").value);
+                // value dari input umur akan dikonversi ke integer menggunakan function parseInt()
+                //menggunakan switch
+                //switch sama dengan if else tetapi hanya mengecek value dari 1 variabel
+                switch(text_input){ //text_input akan menjadi variabel yang digunakan
+                    //case adalah hal hal yang dapat terjadi/rute yang dapat ditempuh
+                    case "red": //berarti jika value dari text_input adalah "red"
+                                //case akan mengeksekusi code yang ditulis sebelum break jika kondisi terpenuhi
+                        document.getElementById("header").style.color = text_input;
+                        break;
+                    case "blue":
+                        document.getElementById("header").style.color = text_input;
+                        break;
+                    default: //default bekerja seperti else pada conditions if else
+                             //jika case yang tersedia tidak tereksekusi maka default akan dieksekusi
+                        document.getElementById("header").style.color = "black";
+                        break;
+                }
+            }
+        </script>
+    </body>
+</html>

@@ -1,0 +1,3 @@
+event delegation is a simple technique by which you add a single event 
+handler to a parent element in order to avoid having to add multiple event handlers 
+into multiple child elements

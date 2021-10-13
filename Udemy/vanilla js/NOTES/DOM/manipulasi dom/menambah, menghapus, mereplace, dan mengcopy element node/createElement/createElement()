@@ -1,0 +1,6 @@
+- createElement() akan membuat sebuah element kosong berupa object, argumen yang diambil adalah nama tag html yang diinginkan
+- kelebihan dari penggunaan method createElement adalah kemudahan dalam mereference element yang baru saja ditambahkan
+
+misal : 
+const newLi = document.createElement('li'); -> elemen bisa disimpan dalam variabel dan nantinya mudah untuk direference
+

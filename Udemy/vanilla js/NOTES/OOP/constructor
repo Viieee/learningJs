@@ -1,0 +1,25 @@
+constructor adalah method special yang digunakan untuk menginisialisasi object dari sebuah class
+jadi memungkinkan untuk membuat object secara dynamic dengan class sebagai blueprint
+class Product { 
+    // fields adalah property dalam class
+    // nama field harus sama kayak object yang lain
+    name = 'Default value';
+    imageUrl;
+    price;
+    description;
+
+    constructor(name,image,price,desc){
+        //this akan mengarah ke class ini
+        //name, imageUrl, price, description pada constructor adalah property
+        this.name = name;
+        this.imageUrl = image;
+        this.price = price;
+        this.description = desc;
+    }
+}
+
+new Product(
+'GOLF Le Fleur Lacoste Teddy Jacket Green',
+'https://images.stockx.com/products/streetwear/GOLF-Le-Fleur-Lacoste-Teddy-Jacket-Green.png?fit=fill&bg=FFFFFF&w=700&h=500&auto=format,compress&q=90&trim=color&updated_at=1603481985&w=1000',
+800,
+'Golf le fleur collab with lacoste')

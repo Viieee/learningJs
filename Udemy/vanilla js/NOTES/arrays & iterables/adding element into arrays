@@ -1,0 +1,7 @@
+var array = [1,2,3]
+
+use push() and unshift() method
+    push() will add new elements at the end of an array
+        array.push('newArray'); -> isi array : [1,2,3,'newArray']
+    unshift() will add new elements at the beggining of an array
+        array.unshift('moreArray'); -> isi array : ['moreArray',1,2,3,'newArray']

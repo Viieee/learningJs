@@ -1,0 +1,5 @@
+we can send the request using send() method
+
+const xhr = new XMLHttpRequest();
+
+xhr.send();

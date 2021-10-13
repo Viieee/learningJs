@@ -1,0 +1,2 @@
+1. create new element
+2. copy the properties of the template element using importNode()

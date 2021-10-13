@@ -1,0 +1,32 @@
+tools are as the name suggest, tools that can help us overcome some stuff that will occur
+in regular js development
+
+why? 
+because we might face some potential limitations with basic js project, example:
+1. we might need to micromanage our imports (when we're not using modules) or 
+    lots of Http request (when we're using modules). This will be a huge problem once
+    we start making bigger projects
+   solution:
+    webpack, acts as the 'bundling tool' that will combine multiple files into one
+
+2. the code is unoptimized, meaning that the file is still too big. In a big project where
+    there are a lot more files, this will become a problem. Why? when we have bigger size file
+    on our project, it will take more time for the user to load it.
+   solution:
+    webpack optimizer plugins, this tool will optimize the code for us
+
+3. browser support, generally we always want to use the latest js features on our app. But sometimes
+    not all of these features is gonna be present and supported on all browsers. So we might want
+    to automatically translate our code into older code so it can reach more browsers.
+   solution:
+    babel, acts as 'code compilation/transpilation tool'
+
+4. we constantly need to reload our development page whenever we make some changes to our code
+    and wanted to see it, wouldn't it be amazing if the server is reloading automatically everytime 
+    we make changes?
+   solution:
+    webpack-dev-server or serve, these are called 'development server'
+
+5. checking code quality, 'quality' in this means that the code on our standards
+   solution:
+    with a tool called 'ESLint', this tool acts as the code quality checker

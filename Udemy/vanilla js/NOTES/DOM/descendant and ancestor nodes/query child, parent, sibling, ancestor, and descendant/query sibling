@@ -1,0 +1,4 @@
+menggunakan property previousElementSibling / nextElementSibling || previousSibling / nextSibling
+perbedaan : 
+- previousElementSibling / nextElementSibling akan menunjuk sibling yang berbentuk element node
+

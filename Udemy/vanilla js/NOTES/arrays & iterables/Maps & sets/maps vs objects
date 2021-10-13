@@ -1,0 +1,5 @@
+maps dapat menggunakan value dengan data type apapun sebagai key
+object menggunakan string, number, atau symbol sebagai key
+maps dapat memberikan performance yang lebih baik untuk jumlah data yang lebih besar
+maps lebih baik dalam hal performa jika sering menambah dan menghapus data
+object lebih cepat dibuat

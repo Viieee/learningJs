@@ -1,0 +1,7 @@
+query / reference adalah cara menunjuk ke objek dalam dom agar nantinya bisa dimanipulasi
+
+misal: 
+document.head;  -> akan menunjuk ke tag head pada html
+document.body;  -> akan menunjuk ke tag body pada html
+
+document adalah objek default dom yang merepresentasikan html page yang sedang di load

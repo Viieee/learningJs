@@ -1,0 +1,14 @@
+making sure that different parts of your code do different things 
+and know which part is responsible for what
+
+models ->   objects / part of your code that represents the data in your code 
+            and allowing you to work with it
+                - saving data
+                - fetching data
+                - deleting data
+
+views ->    responsible for what the user see, responsible for rendering the right 
+            content to the users
+
+controller -> connecting models and views, the in-between logic
+

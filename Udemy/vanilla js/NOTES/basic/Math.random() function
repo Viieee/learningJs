@@ -1,0 +1,6 @@
+used to randomize any number that being multiplied with it
+example
+ 
+variabel = 10
+
+result = Math.Random() * variabel means that result will be randomized between 0 - 10

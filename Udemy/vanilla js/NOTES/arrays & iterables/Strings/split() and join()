@@ -1,0 +1,12 @@
+split() digunakan untuk memisahkan sebuah string
+argumen yang diambil adalah tanda pemisah dari string
+akan mereturn array
+
+const data = 'new york;1999;1011';
+data.split(';') -> ['new york','1999','1011']
+
+join() digunakan untuk menggabungkan array menjadi 1 string
+const nameFragments = ['Vieri','Adhitya'];
+const nama = nameFragments.join(); -> Vieri,Adhitya
+by default, jika argumen dikosongkan maka akan menggunakan ',' sebagai separator
+const nama = nameFragments.join(' '); -> Vieri Adhitya

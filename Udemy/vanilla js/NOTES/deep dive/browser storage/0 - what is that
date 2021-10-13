@@ -1,0 +1,10 @@
+server side :
+- storing data that needs to be far away from regular users (e.g personal data of other users)
+- storing data that you want to display to all users (menu, items in shop)
+
+
+
+browser :
+- temporary data that can improve user experience
+- storing 'personal data' like items in shopping cart, authentication data like session id.
+

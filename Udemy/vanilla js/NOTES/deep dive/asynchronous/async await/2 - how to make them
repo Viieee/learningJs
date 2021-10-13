@@ -1,0 +1,10 @@
+you make an async await function by adding the syntax async before function declaration/after '=' if you use expression
+
+example:
+async function func(){
+
+}
+
+const func = async()=>{
+
+}

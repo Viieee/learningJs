@@ -1,0 +1,12 @@
+fetch.json() is a method available in fetch api
+the main usage of it is to convert the data 
+fetched from the fetch api 
+
+why?
+because the data returned from the fetch api is a streamed data
+and it's not possible to work with it without converting it first
+
+this is the flow
+fetch() => return a streamed data
+streamed data is being converted by fetch.json() => json data
+json data is being converted by fetch.json() => js objects/arrays

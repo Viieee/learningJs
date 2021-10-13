@@ -1,0 +1,47 @@
+// buttons
+const storeBtn = document.getElementById('store-btn');
+const retrBtn = document.getElementById('retrieve-btn');
+
+const userId = 'u123';
+
+// accessing local storage 
+localStorage.setItem('uid', userId) // 1st argument key name, 2nd argument is value
+                                    // both arguments on this method has to be strings
+
+// we can look at the data in the dev tool, application tab.
+// this data can easily be removed and edited thus should not be the single source of truth
+// of your code 
+
+
+// we can also store more complex data, like an object
+const user = {
+    name: 'Vieri',
+    age: 21
+}
+// but if we want to store this object onto the localStorage
+// we need to convert it to json first
+// why?
+// as default the localStorage will convert any data value passed into it into string with toString()
+// and object can't be directly converted into a string that way
+// if you want to turn an object into a string you need to convert it into a json
+// because json is actually just a string
+
+// converting the object into json
+const dataUserJSON = JSON.stringify(user);
+
+
+// event listener for the buttons
+storeBtn.addEventListener('click', ()=>{
+    localStorage.setItem('uid', userId);
+    localStorage.setItem('user',dataUserJSON);
+})
+
+retrBtn.addEventListener('click', ()=>{
+    const extractedId = localStorage.getItem('uid');
+    if(extractedId && user){
+        console.log('the id - ' + extractedId);
+        console.log(user)
+    }else{
+        console.log('id not found')
+    }
+})

@@ -1,0 +1,8 @@
+cookie is a data personalized for every user attached to request header
+
+why would we want this?
+
+because with cookies we can store some data in the user's part that is personal to the user's device only
+while not sharing it to other users
+and when we use cookies we can use the information in the header for every request that we make
+and it won't be gone when we have different request

@@ -1,0 +1,7 @@
+So, first install eslint-cli gloablly:
+npm -g i eslint-cli
+
+then in the project folder: install eslint locally
+npm i eslint --save-dev
+
+eslint --init

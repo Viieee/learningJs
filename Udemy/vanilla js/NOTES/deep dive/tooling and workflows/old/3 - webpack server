@@ -1,0 +1,14 @@
+npm install --save-dev webpack-dev-server
+
+tweak the webpack.config.js a bit by adding dataServer property
+it contains the path to the main html file it connects to
+
+
+edit package.json:
+add after build property
+"build:dev": "webpack serve"
+
+npm run build:run
+
+keep it running, it will watches for any changes made in the project
+and will rebuild it automattically

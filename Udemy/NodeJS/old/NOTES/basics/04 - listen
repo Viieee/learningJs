@@ -1,0 +1,2 @@
+listen is a method that starts a process where nodejs won't immediately exit 
+the script and keep it running to listen for incoming request

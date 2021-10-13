@@ -1,0 +1,21 @@
+theres alot of different browsers out there and they don't have the same team that develops them
+the team behind browser decides which feature is implemented on their browser. most of the time
+the time table of implementation of a feature is different from one browser to the other.
+
+browser feature is different than js syntax
+
+what is browser feature?
+browser feature gets implemented individually
+whether a certain feature will be implemented or not is decided by the browser team
+example: fetch() api, dom api
+
+whats js syntax?
+feature that all browser team agreed on to be implemented
+implemented in chunks or individually
+the implementation is inevitable, maybe one browser takes more time than the other but it WILL be implemented
+example: let, const, async/await, Promises
+
+
+in shorter way of saying it:
+not all feature will be implemented in all browser,
+but all js syntax will be implemented

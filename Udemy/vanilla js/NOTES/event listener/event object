@@ -1,0 +1,23 @@
+event object is usually generated automatically when you use addEventListener()
+but you can dive deeper into it to use some method that is available to it
+
+normally you will use a function with no parameter to handle the eventListener
+
+function handlerButton(){
+    ..
+}
+
+const button = document.getElementById('idButton');
+button.addEventListener('click', handlerButton)
+
+but you can use a parameter to access some extra data about the event or to access some methods to control how 
+the event behaves
+
+function handlerButton(events){
+    ..
+}
+
+const button = document.getElementById('idButton');
+button.addEventListener('click', handlerButton)
+
+that events acted as parameter in handlerButton function is the event object 

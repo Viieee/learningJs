@@ -1,0 +1,4 @@
+require() is a special function that can be used to import files in nodeJS
+it will either takes a path to another file or a core module
+
+importing a file always has to start with './'

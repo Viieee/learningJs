@@ -1,0 +1,18 @@
+session is a place in the backend where we can store some information
+
+it does not mean that we store it in the request, 
+    because the value will be gone if we accessing different request
+it does not mean that we store it in variable either, 
+    because that will be shared across all users
+
+we only want to share the information across all request of the same user
+for that we need to store it on the server
+
+then we will use cookie to store the id of the session
+yes the user can still change it and assume different id but that will not work,
+    because the value you store will not be the id but the hashed id so the server
+    is the only one that can confirm that it has not been fiddled with so that 
+    user don't play around with it
+
+we need a third party package for using session
+npm install --save express-session    

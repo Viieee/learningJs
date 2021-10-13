@@ -1,0 +1,3 @@
+section.innerHTML = '<h2>add element melalui innerHTML</h2>';
+code diatas berarti h2 akan mereplace semua element yang ada didalam section
+isi lama dari section akan dihapus

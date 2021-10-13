@@ -1,0 +1,36 @@
+stands for structured query language 
+query are crucial in this database type
+queries are commands we use to interact with the database
+
+sql database thinks in so called tables 
+example: 
+    users table, 
+    products table, 
+    orders table
+
+in each table you have fields/columns 
+example:
+    in users table you have
+        id, email, name 
+    in product table you have
+        id, title, price, description
+
+we are filling those fields with rows of data, and we call it records
+
+sql database allow you to relate different tables,
+example:
+    an order could simply be described as a connection of a user and a product,
+    because a user could order a couple of different products and 
+        a product could be ordered by a couple of different users
+
+characteristics of sql database:
+- strong data schema, for each table we clearly define how the data in there should look like
+    which fields do we have? which type of data does each fields store?
+    so we have strong and strictly defined schema and all data in the table has to 
+    fit the schema
+- data relations, relating different table with basically three important kinds of relations:
+    one to one, one to many, and many to many. 
+        this simply means that we can have two tables where each records fits one other record, 
+        a record might fit multiple other records or 
+        multiple records in table A can fit multiple records in table B
+    in other words the tables are connected

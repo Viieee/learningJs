@@ -1,0 +1,11 @@
+we want to split our code to keep the code maintanable and to make it easier to work on 
+so if you working on a team it's easier to assign a member of your team to work on 
+specific part of your project rather than the whole team working on 1 huge file
+containing all the logic behind the project. Even if it's possible to do, it's not something 
+that recommended by a lot of vets (to avoid some misunderstanding and accident on writing the code)
+
+another benefit of spliting the code is you can find stuff quicker
+for example if you want to find a logic that calculates things on your project
+on 1 huge file style of managing the code, it can take awhile to find the line of logic you're lookin for
+but if you split the code and name the file with the specific function of the code inside of the file
+you'll find it easier and quicker.

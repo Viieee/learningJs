@@ -1,0 +1,5 @@
+same as the error handling in XMLHttpRequest objects you can use if conditions on the 
+response.status (whether the value of it is above 300 or not)
+
+the difference is, since fetch() returns a promise, you can use catch() method.
+BUT it only triggers when technical issues happen (e.g network issues)

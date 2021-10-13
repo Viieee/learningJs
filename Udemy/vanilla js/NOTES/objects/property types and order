@@ -1,0 +1,19 @@
+selain string, tipe lain yang bisa digunakan sebagai property adalah numbers dan symbol
+
+numbers yang dipakai untuk menjadi property tidak boleh negatif valuenya
+let person = {
+    aProperty: 'value',
+    name: 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    },
+    1.5:'Halo'
+}
+
+cara mengaksesnya
+person[1.5];
+
+order/urutan dalam property adalah urutan tiap property ditambahkan/ditulis dalam code,
+jika SEMUA KEYS yang ada dalam object adalah numbers maka akan di sort dari terkecil ke terbesar

@@ -1,0 +1,13 @@
+streams is basically an ongoing process,
+the request is simply read by node in chunks/multiple parts
+
+why?
+so we theoritically can start working on this individual chunks without 
+having to wait for the full request being read
+
+if a file being uploaded the file will take considerably longer and therefore streaming 
+that data could make sense because it could allow you to start writing on disk where your 
+app runs (the server) whilst the data is coming in. So you don't have to parse the 
+entire file which will take sometime to be fully uploaded
+
+you need to use buffer to organize these chunks

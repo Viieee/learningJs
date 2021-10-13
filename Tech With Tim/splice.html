@@ -1,0 +1,18 @@
+<html>
+    <body>
+        <p>Click the button to remove two elements from the array.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+        <script>
+            var fruits = ["Banana", "Orange", "Apple", "Mango", "Kiwi"];
+document.getElementById("demo").innerHTML = fruits;
+
+function myFunction() {
+  fruits.splice(2, 2);
+  document.getElementById("demo").innerHTML = fruits;
+}
+        </script>
+    </body>
+</html>

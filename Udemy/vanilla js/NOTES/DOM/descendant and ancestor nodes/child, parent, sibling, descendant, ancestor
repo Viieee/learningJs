@@ -1,0 +1,21 @@
+- child adalah node anak langsung dari sebuah elemen html
+- parent adalah  node orang tua langsung dari sebuah elemen html
+- descendant adalah semua node anak dari sebuah elemen html, langsung dan tidak langsung
+- ancestor adalah orang tua dari semua node yang berstatus child
+- sibling adalah node yang sejajar
+
+misal :
+<div>
+    <p>
+        <em></em>
+    </p>
+    <a></a>
+</div>
+
+p adalah child dari div, em bukan.
+    em adalah child dari p.
+p dan em adalah descendant dari div
+    div adalah parent dari p, bukan em.
+p adalah parent dari em.
+    div adalah ancestor dari p dan em.
+p dan a adalah sibling

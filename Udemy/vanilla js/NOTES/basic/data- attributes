@@ -1,0 +1,10 @@
+data-something is special attribute you can attach to any element/dom nodes to attach any kind of data to them
+
+every single data- attribute will be stored in 'dataset' in form of DOMStringMap
+
+
+you can add it dynamically through the dataset, so for example if you want to add an attribute called some info
+
+element.dataset.someInfo = 'data'
+
+it will set new attribute called some info inside that element with 'data' as the value stored in it 

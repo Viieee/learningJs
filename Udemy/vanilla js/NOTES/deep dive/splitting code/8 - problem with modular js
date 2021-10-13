@@ -1,0 +1,4 @@
+one big problem with modular js is that the amount of file that needs to be loaded
+is something to be aware of
+
+if you have hundreds of modular files, it can affect performance.

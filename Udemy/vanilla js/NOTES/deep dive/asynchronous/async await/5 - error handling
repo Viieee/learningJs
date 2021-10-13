@@ -1,0 +1,31 @@
+if in the Promise object we can use catch() method as the error handler 
+we can use try catch in async await 
+
+example :
+from this
+function trackUserHandler() {
+  let positionData;
+  getPos()
+  .then(posData => {
+    positionData = posData;
+    return setTimer(2000);
+  }).catch(error=>{
+    console.log(error);
+  }).then(data=>{
+    console.log(data, positionData);
+  });
+}
+
+async function trackUserHandler() {
+  let posData;
+  let timerData;
+  try{
+    posData = await getPos();
+    timerData = await setTimer(2000);
+  }catch(error){
+    console.log(error);
+  }
+  console.log(timerData, posData);
+}
+
+the console.log(timerData, posData); line will always execute no matter what happens

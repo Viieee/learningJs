@@ -1,0 +1,30 @@
+<html>
+    <body>
+        <script>
+            // objek adalah sebuah variabel yang menampung lebih dari 1 value
+            var variabel = "ini variabel";
+            // variabel mengandung 1 value
+            var cth_objek = {
+             nama:"Vieri Adhitya",
+             nim:"10605",
+             semester:7,
+             contoh_method: function(){
+                return this.nama+" "+this.nim;
+                //khusus pada objek , this merujuk pada properties/method yang ada dalam objek tsb
+                //this merujuk pada pemilik dari fungsi/method ini (objek cth_objek)
+                //this pada this.nama juga merujuk pada objek cth_objek karena properties nama adalah milik objek cth_objek
+             }
+            };
+             //sama dengan variabel, objek didefine menggunakan var
+             //tetapi objek punya lebih dari 1 value
+             //pasangan name:values pada objek disebut properties
+             //cara akses properti dari objek --> namaobjek.namaproperty atau namaobjek["namaproperty"]
+             cth_objek.nama;
+             cth_objek["nama"];
+             //objek juga dapat mengandung method
+             //method adalah aksi yang dapat dilakukan pada objek/biasa dikenal sebagai function
+             //contoh_method pada objek cth_objek adalah contoh dari sebuah method dalam sebuah objek
+             console.log(cth_objek.contoh_method());
+        </script>
+    </body>
+</html>

@@ -1,0 +1,20 @@
+Spread atau (...) digunakan untuk mengeluarkan seluruh elemen pada sebuah array dan disajikan secara standalone
+
+penggunaan yang paling umum adalah saat ingin mengcopy sebuah array
+let array1 = [1,2,3]
+let array2 = [...array1] -> [1,2,3]
+
+akan membuat array baru
+
+contoh lain adalah penggunaan method Math.min(...array1) -> akan mereturn nilai terkecil dari array
+
+jadi spread bisa digunakan dalam method yang membutuhkan list of value
+
+misal ada sebuah function yang membutuhkan 2 argumen
+function fungsi(a,b){
+    return a+b;
+}
+
+sum = fungsi(...array1) -> 3 jadi jika ada kelebihan jumlah argumen yang digunakan adalah yang pertama
+                           karena pada fungsi yang dibutuhkan hanya 2 argumen maka value
+                           yang diambil dari array1 adalah 2 value pertama pada array

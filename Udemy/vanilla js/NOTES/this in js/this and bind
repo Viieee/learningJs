@@ -1,0 +1,17 @@
+// Calling f.bind(someObject) creates a new function with the same body and scope as f,
+// but where this occurs in the original function, in the new function it is 
+// permanently bound to the first argument of bind, regardless of how the function 
+// is being used.
+
+function flip() {
+    return this.a;
+  }
+  
+var grind = flip.bind({a: 'azerty'});
+console.log(grind()); // azerty
+
+var hoe = grind.bind({a: 'yoo'}); // bind only works once!
+console.log(hoe()); // azerty, yoo if you use the bind on flip function
+
+var oats = {a: 69, f: flip, g: grind, h: hoe};
+console.log(oats.a, oats.f(), oats.g(), oats.h()); // 69,69, azerty, azerty

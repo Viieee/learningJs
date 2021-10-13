@@ -1,0 +1,18 @@
+const person1 = {name: 'Vieri'}
+const person2 = {name: 'Adhitya'}
+buat maps 
+const contohMaps = new Map([['key','value'],[person1, 'value person']]) -> Map(2) {"key" => "value", {…} => "value person"}
+argumen yang diambil adalah array dengan value per element dibungkus dalam array juga
+
+bila ingin me-retrieve value dapat menggunakan method get()
+argumen yang diambil adalah key
+contohMaps.get(person1) -> value person
+
+bila ingin menambah element pada maps gunakan method set()
+contohMaps.set(person2, 'value for person2')
+
+cara meretrive key-value pairing :
+menggunakan method entries() yang diloop dengan for of loop
+for(const entry of contohMaps.entries()){
+    entry;
+}

@@ -1,0 +1,36 @@
+on basic projects we might encounter some limitations, some of them are:
+1. we will need to micromanage all the imports or lots of unnecessary Http Request
+    that will become a massive problem the bigger the project gets.
+2. the code is unoptimized/it's not as small as it could be, the smaller the size file 
+    the faster it will load
+3. potentially sub-optimal browser support, some feature in a browser might be a problem 
+    in another browser
+4. need to reload page manually after we make changes to the code
+5. code quality is not checked
+
+
+and you can solve these limitations with the help of tools so your development flow will be 
+faster and better
+
+some tool that can be useful and why to use them:
+1. development server => serve under more realistic circumstances, auto-reload.
+    example : webpack-dev-server or serve(standalone tool)
+2. bundling tool => combine multiple files into bundled code (less files), it analyzes all of
+                    our imports and exports which we have when we use modules then it combines
+                    these different files into a single bundled file so you dont have a bunch
+                    of http Request that needed to be sent if you use regular module method
+                    so it goes like this
+                    [1] you use modular method (splitting code, better experience on development),
+                    then [2] before the code gets uploaded the code that got split on multiple files
+                    will be merged back into a single file so you'll have less http request
+    example : webpack
+3. code optimization tool => optimize code, what that means is the tool will shorten the function names,
+                             removes whitespaces, etc. in order to minimize the size of the file.
+    example : webpack optimizer plugins
+4. code compilation/transpilation tool => write modern code and shop code that also works on older browsers,
+                                          tool which takes your code and transpiles it to code that also
+                                          works on older browser
+    example : babel
+5. code quality checker => check code quality and patterns on your usual/preffered way of writing code
+    example : ESLint
+

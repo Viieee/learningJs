@@ -1,0 +1,5 @@
+mongoose is an odm (object document mapping) library
+very similar to sequelize as an orm
+
+
+npm install --save mongoose

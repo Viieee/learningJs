@@ -1,0 +1,22 @@
+sama seperti array object juga dapat dilakukan destructuring
+
+misal :
+const newMovie ={
+        info : {
+            nama: 'vieri',
+            age: 21
+        }, 
+        id: Math.random()
+    }
+
+ingin mereference ke object info yang ada di object newMovie
+bisa dengan
+const {info} = newMovie; ->{nama: "vieri", age: 21}
+yang dimasukan dalam {} harus sama dengan key yang ada pada object
+
+cara mengganti nama argumen yang dimasukan ke {} 
+const {info: namaBaru} = newMovie;
+
+bisa juga dikombinasikan dengan spread
+const {info, ...otherProperties} otherProperties akan mengarah ke sisa property yang keynya tidak disebutkan, 
+otherProperties berbentuk array

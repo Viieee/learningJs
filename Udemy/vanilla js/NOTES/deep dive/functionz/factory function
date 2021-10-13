@@ -1,0 +1,26 @@
+factory function is a function that produces another function
+
+example:
+
+// function calculateTax(amount, tax){
+//     return amount*tax;
+// }
+
+// const calculateVat = calculateTax(200,0.19);
+// const calculateIncomeTax = calculateTax(200,0.25)
+
+// is the same as 
+
+// this is a factory function
+function taxCalculator(tax){
+    function calculateTax(amount){
+        return amount*tax;
+    }
+    return calculateTax;
+}
+
+const calculateVat = taxCalculator(0.19);
+const calculateIncomeTax = taxCalculator (0.25);
+
+console.log(calculateVat(200))
+console.log(calculateIncomeTax(200));

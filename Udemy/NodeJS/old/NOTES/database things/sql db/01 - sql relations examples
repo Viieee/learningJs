@@ -1,0 +1,62 @@
+we will be using movie rental database as the example to make explaining the concept easier
+
+drivers license table:
+driverId => primary key
+first_name
+last_name
+address
+postcode
+date_of_birth
+expiry_date
+license_class
+driver_image
+
+member table:
+memberId => primary key
+surname
+first_name
+address
+phone_no
+email
+dob
+bank_details
+driverId => foreign key 
+
+rental table:
+rentalId => primary key
+memberId => foreign key
+rental_date
+rental_expiry
+total_price
+
+movie table:
+movieId => primary table
+movie_name
+distributor
+director
+genre
+rating
+year_of_release
+rental_cost
+rental_duration
+
+movie_rental table (junction):
+rentalId => foreign key
+movieId => foreign key
+
+- one to one, relation where one record in table A associate with a record in table B
+    example:
+    relation between drivers license table and member table,
+    every one driver license is used to identify one member 
+        and one member id identified with one driver license id
+- one to many, relation where one record in table A associate with one or more record in table B
+    example:
+    relation between member table and rental table,
+    one member can make many rentals but every rental only relates to one member
+- many to many, relation where records from both table can be many 
+    example:
+    relation between rental and movie,
+    one movie can be in many rental and one rental can contain many movies
+  in order to do this you need a junction table to connect both tables
+
+    

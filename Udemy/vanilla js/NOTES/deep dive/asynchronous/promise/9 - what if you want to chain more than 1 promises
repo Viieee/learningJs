@@ -1,0 +1,36 @@
+you chain promises by returning a Promise object on then() method of a Promise
+
+example:
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+    },
+    error=>{
+      reject(error);
+    }, opts);
+  });
+  return posPromise;
+}
+
+function setTimer(duration){
+  const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+      resolve('Done!');
+    },duration);
+  });
+  return promise;
+}
+
+
+getPos()
+  .then(posData => {
+    positionData = posData;
+    return setTimer(2000);
+  }).then(data=>{
+    console.log(data, positionData);
+  }).catch(error=>{
+    console.log(error);
+  }).then(()=>{
+      //....
+  })

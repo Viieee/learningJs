@@ -1,0 +1,14 @@
+{
+  "scripts": {
+    "build": "webpack",
+    "build:dev": "webpack serve",
+    "build:prod": "webpack --config webpack.config.prod.js"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "*",
+    "eslint": "^7.25.0",
+    "webpack": "^4.46.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

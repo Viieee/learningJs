@@ -1,0 +1,15 @@
+event handler in javascript require you to input 2 parameters
+1. what type of event you want to listen to
+2. the code that you want to execute when the event is happening wrapped in function
+
+you can create the function separately or write the function in the event listener
+
+important note if you want to create a separate function for your event listener YOU DONT NEED TO PUT () AT THE END OF THE FUNCTION CALLING
+example: 
+logBtn.addEventListener('click', logHandler);
+
+it's NOT:
+logBtn.addEventListener('click', logHandler()); because what it will do is, it will immediatle execute the function when the script is being loaded
+                                                and thats not something that you want, is it? you want to execute this function when the event is 
+                                                happening not when the script is being loaded.
+

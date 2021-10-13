@@ -1,0 +1,38 @@
+programmer bisa mengakses property dari sebuah object menggunakan key yang sudah di store dalam sebuah variabel
+
+misal :
+
+let keyAku = 'first name'
+
+let person = {
+    aProperty: 'value',
+    'first name': 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    },
+    1.5:'Halo'
+}
+
+bisa mengakses property 'first name' dengan
+person[keyAku]
+
+let keyContoh = 'ini nama key baru'
+
+bisa juga menset nama dari property secara dynamic
+let person = {
+    aProperty: 'value',
+    'first name': 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    },
+    1.5:'Halo'
+    [keyContoh] = '...'
+}
+
+atau bila ingin insert property 
+person[keyContoh]='...'
+

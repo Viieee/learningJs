@@ -1,0 +1,4 @@
+sequelize is a third party package,
+its an object relational mapping library
+it does all the heavy lifting the sql code behind the scene and maps it into js objects
+    with convenience methods which we can call to execute the behind the scenes sql code

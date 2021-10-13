@@ -1,0 +1,5 @@
+you can install packages with command 
+npm install [name of the package]
+
+you can install more than one packages at once by simply
+write all the packages name one after another 

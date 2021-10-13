@@ -1,0 +1,10 @@
+we want to prevent our code from downloading some malicious file
+you might be asking yourself, 'wdym? why would i add those features into my app'
+well if you use some type of library, those library might be compromised and 
+those library might be the one that tries to download some malicious files
+
+thats why in order to implement this method of using modules 
+you need to served the web on a real server
+
+the quick solution is to use serve.js or 
+install apache server on your device

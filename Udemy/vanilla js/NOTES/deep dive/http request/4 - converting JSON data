@@ -1,0 +1,18 @@
+there are 2 ways we can convert a JSON data :
+1st way is to set responseType property of the XMLHttpRequest object into 'json'
+example:
+
+const xhr = new XMLHttpRequest();
+
+xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+
+xhr.responseType = 'json'
+
+2nd way is to convert it with parse() method on the JSON object 
+example:
+
+const xhr = new XMLHttpRequest();
+
+xhr.open('GET', 'https://jsonplaceholder.typicode.com/posts');
+
+const listOfPosts = JSON.parse(xhr.response);

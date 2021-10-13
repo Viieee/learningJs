@@ -1,0 +1,30 @@
+in handling error, we can use onerror() method on the XMLHttpRequest object
+this method will be executed if the network on the client side fails
+or in other words the request is failed to be sent/time out 
+
+example:
+xhr.onerror = function(){
+    // if we fail to send the request
+    // e.g network failure
+    reject(new Error('Something went wrong!'));
+}
+
+
+other than the network failure, the request technically still being sent successfully
+
+in other case of error that can happen on the process of writing the code
+you need to check on the onload() method if the status property of the http request object 
+is around 200-300 (which indicates successful request) and not above that (e.g 404)
+
+example:
+
+xhr.onload = function(){
+
+    // checking the status of the request
+    if(xhr.status >= 200 && xhr.status < 300){
+        resolve(xhr.response);
+    }else{
+        reject(new Error('Something went wrong!'));
+    }
+}
+

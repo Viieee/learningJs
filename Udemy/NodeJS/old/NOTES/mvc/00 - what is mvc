@@ -1,0 +1,10 @@
+mvc is all about separation of concerns,
+making sure that different part of your code do different things and you clearly understand
+which part of your code is responsible for what
+
+stands for model view controller
+models represent your data in your code, allows you to work with your data 
+    (saving data, fetching data (to or from a file/memory))
+views responsible for what the users see in the end, so they are responsible for
+    rendering the right content in our html documents and sending that back to the user
+controller are the connection point between the models and the views 

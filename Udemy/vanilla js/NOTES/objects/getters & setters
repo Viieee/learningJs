@@ -1,0 +1,45 @@
+getters digunakan untuk membaca value pada property
+setters digunakan untuk menset value property
+
+
+object biasa:
+const newMovie ={
+        info : {
+            title: title, // if the key name and value name is the same, you can just write it once
+            [extraName]: extraValue
+        }, 
+        id: Math.random(),
+        getFormattedTitle: function(){
+            return this.info.title.toUpperCase(); // this pada line ini merefer ke object newMovie
+        }
+    }
+
+object menggunakan getters dan setters:
+const newMovie ={
+        info : {
+            set title(val){
+                if(val.trim()===''){ bisa dilakukan pengecekan pada object langsung
+                    this._title = 'default'; _title adalah property baru, this._title merefer ke value dari title
+                                             title adalah nama yang digunakan untuk mengakses dari luar
+                                             _title untuk internal/bila object di loop menggunakan loop for in
+                    return;
+                }
+                this._title = val;
+            },
+            get title(){
+                return this._title;
+            },
+            [extraName]: extraValue
+        }, 
+        id: Math.random(),
+        getFormattedTitle: function(){
+            return this.info.title.toUpperCase(); // this pada line ini merefer ke object newMovie
+        }
+    }
+
+cara mengakses dan menset value dari title dilakukan seperti biasa,
+tetapi ada keleluasaan untuk mengolah data yang di set dan di get.
+
+set data :
+newMovie.info.title = "haha" -> set title(val) akan berjalan
+newMovie.info.title -> get title() akan berjalan

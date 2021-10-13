@@ -1,0 +1,6 @@
+expressJs is all about middleware
+
+it means that an incoming request is automatically funneled through a bunch of functions
+by expressJs 
+so instead of just having one request handler, you will actually have a possibility of
+hooking in multiple functions which the request will go through until you send a response

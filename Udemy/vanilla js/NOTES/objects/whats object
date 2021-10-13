@@ -1,0 +1,9 @@
+object is a core data structure that help reflecting real world entities
+and applying real-world logic to code
+variable in an object is called properties and function is called methods (acting as keys)
+
+object allows programmer to group related data together and split their code into logical pieces
+
+primtive values is numbers, strings, booleans, null, undefined, symbol
+
+reference values is object, anything that has {}, arrays, DOM nodes.

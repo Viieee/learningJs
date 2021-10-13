@@ -1,0 +1,48 @@
+method shorthand:
+class Person{
+    greet(){
+        console.log('Hello');
+    }
+}
+
+the greet method is assigned to Person's prototype and hence shared across all instances
+(not recreated per-instantiation)
+
+
+Property Function:
+const x = 'halo'
+class Person{
+    x = 'hai cok'
+    greet = function(){
+        console.log(x); // hai
+        console.log(this.x) // halo cok
+    }
+    constructor(){
+        this.greet2 = function(){
+            console.log(x) // hai
+            console.log(this.x) // halo cok
+        }
+    }
+}
+
+the greet2 method will be assigned to individual instances, in other words the method will be
+recreated per object instantiation. 'this' refers to what called the method.
+
+Property arrow function:
+const x = 'halo'
+class Person{
+    x = 'hai cok'
+    greet = () => {
+        console.log(x); // hai
+        console.log(this.x) // halo cok
+    }
+    constructor(){
+        this.greet2 = () =>{
+            console.log(x); // hai
+            console.log(this.x) // halo cok
+        }
+    }
+}
+
+the greet2 method will be assigned to individual instances, in other words the method will get
+recreated per object instantiation. 'this' refers to the instance.

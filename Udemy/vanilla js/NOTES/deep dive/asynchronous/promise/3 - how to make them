@@ -1,0 +1,4 @@
+using default class Promise with new 
+ 
+example :
+const promise = new Promise()

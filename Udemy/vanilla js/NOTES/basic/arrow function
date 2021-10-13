@@ -1,0 +1,13 @@
+arrow function are a way to create an anonymous function
+
+example :
+anonymous function inside a variable
+const example = () =>{
+
+}
+
+or when you try to make a function for event listener
+
+startGameBtn.addEventListener('click', ()=>{
+
+});

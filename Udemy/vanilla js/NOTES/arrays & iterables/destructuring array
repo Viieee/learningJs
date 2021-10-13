@@ -1,0 +1,16 @@
+salah satu cara untuk memisahkan elemen dalam sebuah array dan memindahkan data adalah dengan array destructuring
+
+misal ingin memasukan array nama ke variable firstName dan lastName
+cara biasa :
+const dataNama = ['Vieri Adhitya','Harviando']
+const firstName = dataNama[0];
+const lastName = dataNama[1];
+
+menggunakan array destructuring:
+const [firstName,lastName] = nameData;
+
+bila ada data lain yang ingin disimpan dalam sebuah array maka menggunakan operator rest(...)
+const dataNama = ['Vieri Adhitya','Harviando', 21, 'Male']
+const [firstName,lastName, ...sisaData] = nameData;
+sisaData berbentuk array
+

@@ -1,0 +1,10 @@
+a way to reuse some part of code from one class to another class
+
+example:
+you have a function named render() that you use on multiple classes,
+you can implement inheritance to shorten the code
+
+if the subclass/ the class that extends from another class doesn't have any constructor
+the constructor of the parent class/ the extender is called, use super().
+
+super() method is used to called the parent class constructor through the child class

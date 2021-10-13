@@ -1,0 +1,4 @@
+menggunakan parentElement dan parentNode
+tiap child pasti hanya memiliki 1 parent
+perbedaan :
+- parentElement akan mereturn null jika parent dari objek bukan sebuah element, misal: document

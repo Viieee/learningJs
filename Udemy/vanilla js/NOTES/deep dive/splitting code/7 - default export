@@ -1,0 +1,30 @@
+you can import and export something as a default by adding the syntax 'export default' on the object that you want to export and import
+when you do this you can even omit the object name
+
+there can only be ONE default export object on each file
+
+example:
+from 
+export class classA{
+
+}
+
+to
+export default class {
+
+}
+
+if you importing the dependency like this you can import it like
+import cmp from './someFile.js' // cmp is the name that will represent the default object 
+                                // because you don't wrap it in {}
+                                // you can change the name with anything you want
+
+this syntax only works when the imported file has a default export
+
+the disadvantage is the naming could be a problem if you work on a team
+
+what if theres more than the default export on the same file that you want to import
+then you do this
+
+import cmp,{someClass} from './someFile.js'
+

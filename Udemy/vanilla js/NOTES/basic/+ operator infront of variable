@@ -1,0 +1,1 @@
+the '+' in +variable is used to convert the variable into a number and if it's not a number (i.e 'vieri') then it will return NaN (Not a Number)

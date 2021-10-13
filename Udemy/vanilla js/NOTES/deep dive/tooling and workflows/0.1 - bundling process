@@ -1,0 +1,7 @@
+if you use bundling in your app the processing of the app will go like:
+1. the webpack will analyze all of our import and exports
+2. before the code gets uploaded, the files will be merged into one file
+
+why? so you can avoid the problem with regular modular js
+with sending too many http request because each file will 
+be a different http request

@@ -1,0 +1,6 @@
+Read -> Read user input
+Eval -> evaluate user input
+Print -> print output
+Loop -> returning and waiting for new input
+
+this is what we will use if we execute a script with the node command in the terminal

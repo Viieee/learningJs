@@ -1,0 +1,24 @@
+biasanya penamaan keys pada property akan memiliki rule yang sama seperti variable
+
+pada variable tidak diperbolehkan menggunakan spasi atau '-' dalam penamaannya
+
+penamaan pada key property object memiliki special rule:
+bila ingin menggunakan spasi dalam penamaanya bisa menggunakan ""/''
+
+misal ingin membuat object person dengan property first name:
+
+const person = {
+    'first name': 'Vieri'
+} ini code yang valid
+
+bagaimana cara mengaksesnya?
+menggunakan object['nama key'].
+person['first name'] -> Vieri
+
+
+penggunaannya yang umum ada di akses property style dom
+
+objectDOM.style.backgroundColor = 'red'
+atau
+objectDOM.style['backgroundColor'] = 'red'
+objectDOM.style['background-color'] = 'red'

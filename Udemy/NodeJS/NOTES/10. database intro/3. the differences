@@ -1,0 +1,16 @@
+no sql vs sql
+
+1. no sql can use horizontal scaling and vertical scaling, while sql typically only use vertical scaling
+
+        horizontal scaling -> increasing the amount of servers then merged them into one database
+        vertical scaling -> increasing the power of the existing server (hardware)
+
+2. no sql is schema-less, while sql use strong schema
+
+3. no sql have very little to none relations, while sql have relations 
+
+4. no sql is great in handling huge amount of data reads & writes in small amount of time, while sql isn't 
+
+5. no sql data is nested/merged into one, while sql is distributed in multiple tables (using relations)
+
+

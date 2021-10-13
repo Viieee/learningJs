@@ -1,0 +1,16 @@
+you can set a timer on some code execution with setTimer() method
+
+it will take 2 argument:
+1st argument is a function that will be executed when the timer runs out
+2nd argument is the timer length in milisecond
+
+you can execute some code repeatedly every sometime you desire with setInterval()
+it takes the same argument as the setTimer() method
+with extra 3rd argument being array of argument that can be passed onto the function
+
+because these are methods you can store them in a variable
+
+you can clear/stop timer and interval with
+clearInterval() for interval
+clearTimeout() for timer/interval 
+these methods take the name of the variable containing the setTimer/setInterval methods as the argument.

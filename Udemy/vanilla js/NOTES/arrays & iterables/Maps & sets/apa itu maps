@@ -1,0 +1,10 @@
+mirip seperti object, bedanya ada di tipe data yang diperbolehkan menjadi key
+
+object hanya memperbolehkan string atau number menjadi key
+maps memperbolehkan semua tipe data menjadi key
+
+keuntungan dari object adalah maps dapat memberikan informasi extra pada key
+
+duplicate key tidak diperbolehkan
+memiliki order
+mengakses value dengan key

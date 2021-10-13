@@ -1,0 +1,26 @@
+install (locally) the server with command
+npm install --save-dev webpack-dev-server
+
+tweak the package.json file and under the script property
+add new script, example:
+"scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "build:dev": "webpack serve" // the server
+}
+
+to generate the bundling file on disk, you need to add 
+writeToDisk property on the devServer property
+and set it to true  in your webpack config file
+
+module.exports = {
+    
+    .../
+
+    devServer: {
+        contentBase: './events-01-starting-setup/', // where your root html file can be found
+        writeToDisk: true
+    },
+
+    .../
+};

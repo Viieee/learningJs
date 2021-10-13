@@ -1,0 +1,59 @@
+<html>
+    <body>
+        <script>
+          //perbeedaan let dan var adalah var bersifat global dan lokal
+          //sedangkan let bersifat block, jadi yang bisa mengakses variabel yang dideclare dengan let adalah code yang ada dalam {}
+          //fungsi yang ada dalam {} tetap bisa mengakses variabel yang dideclare dengan let
+          //penjelasan : https://www.freecodecamp.org/news/var-let-and-const-whats-the-difference/#:~:text=var%20declarations%20are%20globally%20scoped%20or%20function%20scoped%20while%20let,be%20updated%20nor%20re%2Ddeclared.
+var funcs = [];
+// let's create 3 functions
+for (var i = 0; i < 3; i++) {
+  // and store them in funcs
+  funcs[i] = function() {
+    // each should log its value.
+    console.log("My value: " + i);
+  };
+}
+for (var j = 0; j < 3; j++) {
+  // and now let's run each one to see
+  funcs[j]();
+}
+
+// let's create 3 functions
+for (let i = 0; i < 3; i++) {
+  // and store them in funcs
+  funcs[i] = function() {
+    // each should log its value.
+    console.log("My value: " + i);
+  };
+}
+for (var j = 0; j < 3; j++) {
+  // and now let's run each one to see
+  funcs[j]();
+}
+
+ function run() {
+  var foo = "Foo";
+  let bar = "Bar"; //kalau sudah declare let dengan nama variabel tidak bisa dideclare lagi nantinya jadi kalau dibawah code ini dideclare lagi (let bar = "Bar2";)  maka akan error
+                  //tapi bisa diredefined/diganti valuenya
+
+  console.log(foo, bar);
+  
+  {
+    let baz = "Bazz";
+    let bar = "BARZ" //dengan let kalau variabel dideclare lagi di block yang berbeda (kurung kurawal '{}') tetap bisa karena dianggap 2 variabel yang berbeda dan variabel yang ada di block code ini khusus untuk block code ini saja
+                    //tapi kalau dideclare lagi  dengan var (var bar ="BARZ" akan error)
+    console.log(baz);
+    console.log(bar);
+  }
+
+  console.log(baz); // ReferenceError
+}
+
+run();
+
+
+
+        </script>
+    </body>
+</html>

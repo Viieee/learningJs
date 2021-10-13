@@ -1,0 +1,7 @@
+you can execute a js file dynamically from another js file
+
+example:
+const scriptNew = document.createElement('script');
+scriptNew.src = 'assets/scripts/new.js'
+scriptNew.defer = true;
+document.head.append(scriptNew);

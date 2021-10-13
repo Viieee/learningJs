@@ -1,0 +1,5 @@
+preventDefault() method used to change default behaviour of an event in a certain situation
+
+for example:
+a button inside a form with the type submit will automatically trying to send data into a server
+you can change this by access the event object and use preventDefault method

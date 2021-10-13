@@ -1,0 +1,2 @@
+with command npm install -g -> install it globally
+with command npm install --save-dev -> install it locally

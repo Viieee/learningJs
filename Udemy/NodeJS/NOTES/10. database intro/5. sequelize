@@ -1,0 +1,3 @@
+npm install --save sequelize
+
+this package needs the mysql2 package

@@ -1,0 +1,9 @@
+const newMovie ={
+        info : {
+            title, // if the key name and value name is the same, you can just write it once
+            [extraName]: extraValue
+        }, 
+        id: Math.random().toString() -> chaining method
+    }
+
+let text = movie.info.title  -> chaining properties

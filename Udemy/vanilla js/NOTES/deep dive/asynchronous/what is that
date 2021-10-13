@@ -1,0 +1,28 @@
+js single threaded language 
+that means it runs sequentially, 
+that means it will run the code and execute every iteration one by one
+example:
+const variable = 11; // line A
+function fungsi { 
+
+}
+fungsi(); // line B
+console.log(variable); // line C
+
+js will execute the variable iteration first then the function will be executed
+you can say that line A will block line B from executing (until line A is finished)
+and line B is blocking line C from executing until every code inside the line B function is finished executing
+
+
+this behaviour is bad if we want to execute a line of code that takes longer than usual (like setTimeout() method)
+because what it will do is, it will block the rest of the code from running if it's not finished yet.
+
+that's why theres asynchronous in js, it's done by asking the browser for help us with executing the code that takes longer so that 
+js can focus on executing the rest of the code
+
+the best example of asynchronous concept is the eventListener, 
+when we have a button and we want to execute some line of code when the button is clicked we'll use eventListener for it.
+if the asynchronous concept is not present, js will always waiting for some click to happen and if there's some other line of code after 
+the iteration of eventListener that means the code after the iteration won't be running because js will only focusing on tracking 
+whether a click is happening or not. Instead js will hand the eventListener job into the browser and focusing on executing the rest of the code.
+ 

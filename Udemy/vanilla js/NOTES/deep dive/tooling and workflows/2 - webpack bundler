@@ -1,0 +1,39 @@
+1. run command npm install --save-dev webpack@4 --save-exact
+2. run command npm install --save-dev webpack webpack-cli
+3. to use webpack we create config file, called webpack.config.js, this file 
+    will be the configuration of the webpack you will be using. it will be executed
+    by nodeJs in the backrgound
+4. on the file we make a new object with the name of module.exports;
+    example:
+    module.exports = {
+
+    }
+    the object above is the syntax used by nodeJs to expose the object outside of the file
+    and webpack tool will import that object.
+5. we need to re-structure the files first in our project, we need to have 1 folder for the entry
+    and 1 folder as an output source, the output source will be directly connected to the 
+    html file, in the case of our project in the module 21 folder we will use src folder as the entry folder
+    and the scripts folder inside the assets folder as the output source
+6. basic setup for entry and output webpack :
+
+const path = require('path'); // path package
+
+module.exports = {
+    entry: './src/app.js', // path to the entry point from this file (webpack.config.js)
+    output: { // configuring all about the output of the bundling process
+        filename: 'app.js', // name of the file we will be generating using the bundling process
+        path: path.resolve(__dirname, 'assets', 'scripts') // path of the targeted folder
+
+    }
+};
+
+7. we need to edit some things in the script property in package.json file, you can basically setup
+    custom script that you can run later through the command line
+    example:
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack"
+    }
+
+    now you can run npm run build on your ide terminal and webpack will run
+

@@ -1,0 +1,4 @@
+dom adalah code html yang telah di-parse dan telah di convert menjadi sebuah object
+object tersebut nantinya dapat dimanipulasi menggunakan javascript
+
+element node adalah semua part di website yang memiliki html tag

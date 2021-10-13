@@ -1,0 +1,6 @@
+essentially packages of code (functions) written in js that contains logic inside of them
+so you can just reach to these pre-defined and pre-written functions and functionalities
+and use them in your project
+
+
+simplest example: Math.random(), you technically can make your own number randomizer but you DONT HAVE TO

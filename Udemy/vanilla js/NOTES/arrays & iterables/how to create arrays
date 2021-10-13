@@ -1,0 +1,25 @@
+the usual way
+const number = [1,2,3]; -> (3)[1,2,3]
+
+alternative ways
+using constructor function
+const moreNumbers = new Array('satu','dua'); -> (2)["satu","dua"]
+const moreNumbers = Array('satu','dua');
+    NOTE : 
+    mengisi 1 value bertipe number pada metode ini akan membuat array kosong sejumlah value yang menjadi argumen
+
+using Array.of
+const yetMoreNumbers = Array.of(1,2) -> (2)[1,2]
+
+special way
+using Array.from
+const numbersLagi = Array.from('Hi!') -> (3)['H','i','!']
+    NOTE :
+    Array.from akan mengconvert array-like/iterable menjadi Array
+    alasan kenapa mengconvert ke array karena ada beberapa method yang spesifik hanya bisa digunakan ke array
+
+
+
+
+
+

@@ -1,0 +1,47 @@
+then() method is a method available for Promise object to use
+
+basically when the Promise object is marked as 'resolved'
+and the code inside will be executed
+
+you can chain then() method 
+
+you can return some value inside this method
+if that value is in form of a Promise object
+it will execute the code and wait until it finised before executing next then() method
+
+example :
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+    },
+    error=>{
+      reject(error);
+    }, opts);
+  });
+  return posPromise;
+}
+
+function setTimer(duration){
+  const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+      resolve('Done!');
+    },duration);
+  });
+  return promise;
+}
+
+
+getPos()
+  .then(posData => {
+    positionData = posData;
+    return setTimer(2000);
+  }).then(data=>{
+    console.log(data, positionData);
+  })
+
+in condition above, getPos() Promise will be executed first
+if the user is allowing webpage to access the location first then() method execute
+posData is the data passed inside the resolve() method as argument in the Promise code
+because it return setTimer() Promise, it will execute first before we can continue into the next then() method
+data is the data passed inside the resolve() method as argument in the Promise code

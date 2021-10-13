@@ -1,0 +1,5 @@
+just use defer at the end of loading javascript on your html file
+example:
+<script src="assets/scripts/app.js" defer></script>
+
+the script will be downloaded and being prepared with html file but wont be executed before the html file is being loaded.

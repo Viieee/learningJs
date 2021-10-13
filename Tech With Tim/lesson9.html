@@ -1,0 +1,17 @@
+<html>
+    <body>
+        <h1 id="header">Hello</h1>
+        <input type="text" id="inp"/>
+        <button onclick="pressed()">Click</button>
+        <p id="output"></p>
+        <script>
+            function pressed(){
+                //string methods adalah method yang secara default ada dalam js
+                var text = document.getElementById("inp").value;
+                output.innerHTML = text.trim().toLowerCase().startsWith("@");
+                //trim berfungsi untuk menghilangkan spasi diakhir  dan diawal value
+            }
+
+        </script>
+    </body>
+</html>

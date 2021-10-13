@@ -1,0 +1,26 @@
+// When a function is called as a method of an object, 
+// its this is set to the object the method is called on.
+
+// In the following example, when o.f() is invoked, 
+// inside the function this is bound to the o object.
+
+var o = {
+    prop: 37,
+    f: function() {
+      return this.prop;
+    }
+};
+  
+console.log(o.f()); // 37
+
+
+
+var i = {prop: 37};
+
+function independent() {
+  return this.prop;
+}
+
+i.f = independent;
+
+console.log(i.f()); // 37

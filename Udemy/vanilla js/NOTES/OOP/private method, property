@@ -1,0 +1,10 @@
+private properties and method is properties and method that can only be accessed inside the class/object
+it's the things you work with only inside your class
+
+how to create private property/method:
+adding # infront of the method/property name,
+#property
+
+you have to use # when you want to access it
+
+this.#property

@@ -1,0 +1,35 @@
+<html>
+    <body>
+        <script>
+            //for loop adalah loop yang digunakan ketika kita tahu berapa kali kita mau mengeksekusi code dalam block loop
+            for(var i=0;i<10;i++){ //parameter dalam for loop adalah :
+                                // parameter 1 : value awal dari loop
+                                // parameter 2 : value yang menandakan akhir dari loop/ bisa dibilang kondisi
+                                // parameter 3 : increment/decrement dari value tergantung value awal dan kondisi
+                                // increment/decrement pada parameter 3 tidak harus increment dan decrement 1 
+                                // ketiga parameter dipisahkan dengan simbol ";"
+                console.log(i);
+            }
+            function findIndArray(arr, val){
+                for(var i=0;i<arr.length;i++){
+                    if(arr[i]===val){
+                        return true;
+                    }
+                }
+                return false;
+            }
+            var arr=[1,2,3,4,false,"Vieri"];
+            console.log(findIndArray(arr,true));
+
+            function nsquared (n){
+                for(var i=0;i<n;i++){
+                    for(var j=0;j<n;j++){
+                        console.log(i+ " " + j);
+                    }
+                }
+            }
+
+            nsquared(5);
+        </script>
+    </body>
+</html>

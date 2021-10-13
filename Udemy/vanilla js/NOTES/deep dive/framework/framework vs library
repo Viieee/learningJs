@@ -1,0 +1,7 @@
+a library is a 3rd party package that add functionalities and typically focused on one or 
+a few core tasks
+example: lodash, jquery, axios
+
+a framework is a 3rd party package that add functionalities and rules, they provide a complete 
+structure for building js apps
+example: angular, vue, react

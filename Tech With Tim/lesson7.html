@@ -1,0 +1,22 @@
+<html>
+    <body>
+        <h1 id="header">Hello</h1>
+        <input type="text" id="inp"/>
+        <button onclick="pressed()">Click</button>
+        <script>
+            // conditions adalah sebuah kondisi dimana jika terpenuhi maka code akan dieksekusi
+            function pressed(){
+                var text_input = document.getElementById("inp").value;
+                //akan mengambil value yang diinputkan user di input field dan disimpan di variabel text_input
+                if(text_input!==""){
+                    // condition if memiliki parameter yang menunjukan kondisi dimana code akan dieksekusi
+                    // condition else if juga memiliki parameter sama seperti if
+                    document.getElementById("header").innerHTML = text_input;
+                    document.getElementById("header").style.color = text_input;
+                }else{
+                    // condition else akan mengeksekusi code jika kondisi di if/else if tidak terpenuhi
+                }
+            }
+        </script>
+    </body>
+</html>

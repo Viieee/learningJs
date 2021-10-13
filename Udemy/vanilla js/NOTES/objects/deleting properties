@@ -1,0 +1,17 @@
+let person = {
+    aProperty: 'value',
+    name: 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    }
+}
+
+delete person.age;
+or
+person.age = undefined;
+
+undefined is different from null
+undefined means that the variable has been declared but not defined yet
+null is an assigned value (it just means nothing)

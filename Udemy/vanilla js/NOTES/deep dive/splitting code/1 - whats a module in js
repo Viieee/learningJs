@@ -1,0 +1,11 @@
+module in js is used to simplifying spliting code
+
+how?
+well while it's true you can split your code in js
+but what if a class in file 'a' needs to extend a class in file 'b'
+your answer might be, 'oh just import it sequentially on the html script import'
+while that's true and is definitely doable in smaller projects
+it can be a hell to figure out which file needs which file and therefore
+need to be imported first
+
+that's where the modules come in and make the process easier

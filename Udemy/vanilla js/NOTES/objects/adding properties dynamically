@@ -1,0 +1,17 @@
+const person = {
+    aProperty: 'value',
+    name: 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    }
+}
+
+if you want to add new property to your object, just declare it like this
+person.isAdmin = true;
+isAdmin is the new property in this case
+
+you can also overwrite old value
+person.age = 31
+the code above will overwrite the age property

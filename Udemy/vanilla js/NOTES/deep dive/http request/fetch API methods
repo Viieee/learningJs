@@ -1,0 +1,12 @@
+as default fetch API only ask for 1 argument and that is the url to the endpoint
+and the default method used in the API is the GET method
+
+you can set it with the second argument in the fetch() declaration in the form of an object
+
+example:
+return fetch(url, {
+        method: 'POST', // default is GET
+        body: JSON.stringify(data) // converting the data into json
+    }).then(response=>{
+        return response.json();
+})

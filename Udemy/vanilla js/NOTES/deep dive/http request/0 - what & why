@@ -1,0 +1,7 @@
+http request is a process where your browser (client side) 
+is initiating an action on the server
+
+why?
+the main reason is to provide better experience for the user
+because js can do this task on the background and therefore the page doesn't need to be 
+re-loaded everytime

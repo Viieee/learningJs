@@ -1,0 +1,28 @@
+theres three type of browser storage:
+- localStorage, sessionStorage
+- cookies 
+- indexedDB
+
+localStorage, sessionStorage
+- simple key-value store (simple js object saved in a file)
+- manage user preferences or basic user-data
+- example of use: 
+    - storing session id of a user
+    - analytics key
+- only js code that runs in the browser can communicate with local storage
+- can be cleared by the user via js
+- easy to use, quite versatile, bad for complex data
+
+cookies
+- simple key-value store (with some config options)
+- manage user preferences or basic user-data
+- can be cleared by the user via js
+- bit clunky to use, quite versatile, sent to server, bad for complex data
+- sent to the server with outgoing httpRequests (can also read by the server)
+
+indexedDB
+- sophisticated, client-side database
+- you can use it with query language
+- manage complex data your web app needs
+- can access it and clear with js
+- bit clunky to use, great for complex (non-critical) data, good performance

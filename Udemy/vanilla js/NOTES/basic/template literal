@@ -1,0 +1,7 @@
+cara output string ada 3
+"", '' , ``
+`` disebut template literal
+bisa refer variabel dengan ${nama variabel}
+example:
+let umur=21;
+`umurku ${umur}`;

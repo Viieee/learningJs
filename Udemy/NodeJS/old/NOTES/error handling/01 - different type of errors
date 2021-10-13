@@ -1,0 +1,18 @@
+technical/network errors
+    for example: the server is down
+    the best way to handle this is to show error page to the user to inform them that there's 
+    some problems happening in our end
+
+expected errors
+    for example: file can't be read, database operation fails (not expected but CAN HAPPEN!)
+    inform the user to (possibly) retry the action 
+
+bugs/logical errors 
+    for example: user object used when it doesn't exist
+    fix during development
+
+
+error is thrown 
+    synchronous => try catch
+    asynchronous => then catch
+    

@@ -1,0 +1,5 @@
+we run the node script
+    the script start
+    node parsing, registering variables and functions
+    event loop
+        loop process managed by nodeJs as long as there are event listeners registered

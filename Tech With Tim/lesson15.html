@@ -1,0 +1,32 @@
+<html>
+    <body>
+        <script>
+            //maps adalah campuran dari set dan array
+            //maps mengandung value yang disebut key value pairs
+            var contohMaps=new Map([
+                ["vie",1]
+                ]); // argumen dalam konstruktor maps dapat diisi dengan 
+                    // [key, value] dalam array, dan argumen tsb akan menjadi value default dari maps
+            // [key, value] key akan digunakan untuk mengakses value
+            console.log(contohMaps.get("vie")); //get digunakan untuk mengambil value dari map, argumennya adalah key dari value
+            contohMaps.set(2,"Adhitya"); //set digunakan untuk menambah value dalam maps
+                                        // argumen yang digunakan adalah key,value
+            console.log(contohMaps.get(2));
+            //seperti set, maps memiliki method has yang digunakan untuk mencari value dalam maps
+            //yang akan mereturn boolean
+            //map dapat digunakan untuk menghitung jumlah huruf dalam sebuah kalimat 
+            var mp = new Map();
+            str = "Hallo nama saya Vieri Adhitya Harviando"; //string sama aja kaya array yang valuenya adalah huruf
+            for (let letter of str){ //akan ngeiterate string str, per-huruf
+                if(mp.has(letter)){ //ngecek kalau mp punya huruf yg diiterate
+                    mp.set(letter, mp.get(letter)+1); //setiap huruf muncul maka value dari key akan dioverride dan ditambah 1
+                }
+                else{
+                    mp.set(letter,1);//awalnya yg akan dieksekusi yang ini
+                    // huruf akan jadi key dan value adalah jumlah hurud muncul
+                }
+            }
+            console.log(mp);
+        </script>
+    </body>
+</html>

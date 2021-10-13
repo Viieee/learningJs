@@ -1,0 +1,10 @@
+menggunakan className dan classList
+- className adalah method yang digunakan untuk mengganti classname dari sebuah element
+    - bila ingin menambah class menggunakan className harus di-rewrite seluruhnya
+- classlist adalah property yang memiliki beberapa method, digunakan untuk mempermudah memanipulasi class pada element
+    - add(class), untuk menambah property
+    - contains(class), mengecek ketersediaan sebuah class dalam element
+    - item(index), mereturn nama dari class yang ada pada index
+    - remove(class), menghapus index dengan nama yang sesuai dengan argumen
+    - toggle(class, true|false|*empty*), true akan mengadd, false akan menghapus, empty akan men-switch antara aktif dan tidak aktif 
+

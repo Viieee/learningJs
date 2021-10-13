@@ -1,0 +1,47 @@
+catch method is the method that will be executed when Promise is marked as 'rejected'
+it basically skipped every single then() method written prior to it
+
+example :
+function getPos(opts){
+  const posPromise = new Promise((resolve,reject)=>{
+    navigator.geolocation.getCurrentPosition(success=>{
+      resolve(success); 
+    },
+    error=>{
+      reject(error);
+    }, opts);
+  });
+  return posPromise;
+}
+
+function setTimer(duration){
+  const promise = new Promise((resolve, reject)=>{
+    setTimeout(()=>{
+      resolve('Done!');
+    },duration);
+  });
+  return promise;
+}
+
+
+getPos()
+  .then(posData => {
+    positionData = posData;
+    return setTimer(2000);
+  }).then(data=>{
+    console.log(data, positionData);
+  }).catch(error=>{
+    console.log(error);
+  }).then(()=>{
+      //....
+  })
+
+if getPos() Promise marked as 'rejected' or in this case the user is blocking access into the location
+then every single then method written after getPos() and before catch is skipped
+then the code inside catch() method is executed
+then() method after catch() will be executed per usual
+
+
+
+// if you returning something inside catch method
+// the then after this catch method will be executed based on the returned object

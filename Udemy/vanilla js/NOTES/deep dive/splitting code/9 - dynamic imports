@@ -1,0 +1,30 @@
+dynamic import is a way to handle the basic problem in modular js which is the amount of modular files can 
+affect performance in a way or another
+
+because some files won't be needed 100% of the time
+
+how?
+you can request the file with import() function
+it's a default function built into the browser and it returns a promise 
+so you can use the then method here or use async await
+the function will require you to pass to path to the file you want to import
+and the cool thing about it is in the then() method you can add the code that require the imported
+file to run
+
+example
+from this 
+import {classA} from './someFile.js'
+
+class classB{
+    const a = new ClassA()
+}
+
+to this 
+
+class classB{
+    import('./someFile.js').then(module => {
+        const a = new module.classA();
+    });
+}
+
+now the classA will only be loaded when the app really need it

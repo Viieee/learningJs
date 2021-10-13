@@ -1,0 +1,23 @@
+npm install --save csurf
+
+csrf stands for cross site request forgery
+it's a special kind of attack pattern where people can abuse your session and trick users of your application to execute malicious code
+
+user will be directed to fake site that lookin like your website
+on the fake site there could be a link leading to your page executing some request
+so the request the user want might be to send some money to b and instead it will sent to c 
+
+it can be protected by making sure that people can only use session in your site when they are working with views rendered by your page
+you need csrf token for this
+
+csurf is the package to help us generate these tokens,
+basically a token (string value) we can embed into our pages for every request that does somenthing on the backend that changes the user's state
+so anything sensitive which we want to protect we can do it this way.
+we can include the token in our views, and on the server this package will check if the incoming request does have that valid token.
+how this protect us?
+the fake sites might send request to your backend and theoretically use your session but the request will be missing the token and they can't guess the token 
+because it's a random hashed value and the package in the server will determined whether the token is valid or not so the attacker can't guess it and they
+also can't steal it because a new token is generated for every page you render 
+
+note:
+the name in the hidden input tag -HAS TO BE- _csrf 

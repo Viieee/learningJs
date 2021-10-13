@@ -1,0 +1,16 @@
+npm install --save-dev webpack@4 --save-exact
+
+npm install --save-dev webpack webpack-cli       
+
+then make a config file with the name webpack.config.js in the same folder as eslintrc.json
+this file will be executed by nodeJs in the background
+
+webpack needs to know the starting point of your app/it needs to know where in your source files
+the entry point of your project is (in our previous project it will be the app.js file)
+then it will analyse the file and analyse the import/dependencies of this file (app.js file)
+and resolving all the dependencies of that file and the files related to that file
+
+webpack will look into the app.js file because it's the 'entry point' of the project
+then it will look into what files do the app.js needs in order to fully function (the imports/dependencies)
+and it will see that the app.js file is importing the ProjectList.js file
+then webpack will do the same thing to the ProjectList.js file as it did to the app.js file

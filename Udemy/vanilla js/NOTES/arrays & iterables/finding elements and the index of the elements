@@ -1,0 +1,36 @@
+method indexOf() digunakan untuk mengetahui urutan index dari argumen dalam sebuah array
+
+bila ada lebih dari 1 element yang valuenya sama dengan argumen maka akan mereturn index dari yang pertama ditemukan
+
+method lastIndexOf() sama seperti indexOf() tetapi mencari index dari belakang
+
+akan mereturn -1 bila tidak menemukan
+
+NOTE 
+method ini tidak bisa digunakan untuk array yang mengandung object
+
+menggunakan method find() dan findIndex(), kedua method ini akan mengecek semua value yang ada dalam array
+find() akan mereturn value yang sama dari argumen
+findIndex() akan mereturn nomor urut index dari value yang menjadi argumen
+dengan test menggunakan fungsi
+bila tidak memenuhi kriteria akan mereturn undefined
+
+argumen yang diminta oleh kedua method ini adalah sebuah fungsi
+fungsi ini akan meminta 1 sampai 3 argumen
+argumen pertama adalah value dari elemen 
+argumen kedua adalah nomor index dari elemen
+argumen ketiga adalah full array dari elemen
+
+misal ada sebuah array
+let testArray = [1,2,3,4,5]
+
+kita ingin menemukan apakah ada element dari array yang valuenya 3
+testArray.find(function(element, idx, array){
+    return element === 3;
+});  -> 3 (berarti element yang valuenya 3 ADA)
+
+
+NOTE 
+method find() dan findIndex() tidak mencopy dan membuat array baru
+
+bisa juga menggunakan method includes(), akan mereturn boolean.

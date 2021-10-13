@@ -1,0 +1,93 @@
+1. install babel locally with command, we will use babel iwth babel loader because we want to
+    integrate it with webpack
+    npm install --save-dev babel-loader @babel/core @babel/preset-env webpack
+
+    babel loader is the integration between webpack and babel
+    babel core is the actual babel which will act as the transpilator
+    babel preset is the set of rules that controls which features are translated to which 
+        older code
+
+
+    --save-dev is the same as -D in command
+
+    if you already have webpack in your project then you can omit the webpack in the command
+
+2. add babel into webpack config object, in the list of modules
+    module: { // intructions to webpack how to treat different modules
+    rules: [ 
+      {
+        test: /\.m?js$/,
+        // the rule above is basically saying that only all files with js/mjs extension 
+        // should be handled/treated with this rule
+        exclude: /node_modules/,
+        // excluding all mjs/js files in node_modules folder
+        use: {
+            loader: 'babel-loader',
+            options: {
+            presets: [
+                ['@babel/preset-env', { targets: "defaults" }]
+            ]
+            }
+        }
+        
+      }
+    ]
+  }
+    // the config above could change so please visit the babel loader repo in github to 
+    // check the latest version of it
+    https://github.com/babel/babel-loader
+
+3. we need to tune the babel, to tell them which features we want to transpile and what 
+    browser is the target. To do that we need to edit the package.json file:
+    we add new property there 
+    "browserslist": ""
+    inside of the browserlist is accepting certain values
+    example:
+    "browserslist": "> 2%"
+    that means that we will build code that works in browsers with greater than 2% market share,
+    theres more settings you can do in this property, check the repo of it to see everything!
+    https://github.com/browserslist/browserslist
+  
+4. for some features like promises you need to add polyfills, because babel can't compile it.
+    you can use polyfills together with babel and integrate it so when babel detects that 
+    your app needs to have some features that the browser doesn't support and the babel
+    can't compile, it will automatically use polyfills.
+    this integration relies on a package called 'corejs', 
+    https://github.com/zloirock/core-js
+    corejs is like a collection of polyfills.
+    install it through command 
+    'npm install --save core-js'
+    add it/import it in your main js file/entry file
+    import 'core-js';
+
+    but this will result in huge js file,
+    why? 
+    because you loading all polyfills features
+    including the ones that your app doesn't need
+
+    in this example i only want to use promise feature 
+    so i will only import the promise feature from the core-js
+    import 'core-js/features/promise';
+
+5. after you install the core-js, you can let babel manage it for you, and for that you need 
+    to tweak the webpack config file
+    in the presets property you add useBuiltIns and corejs:
+    use: {
+        loader: 'babel-loader',
+        options: {
+          presets: [
+              ['@babel/preset-env', 
+              { useBuiltIns:'usage', 
+              corejs: {version: 3.12},
+              targets: "defaults" }]
+          ]
+        }
+    }
+
+    theres a lot of different values you can store on the useBuiltIns, 
+    look it up on the documentation
+
+    why do we want to integrate babel with the core-js package?
+    because babel will help us use this polyfills features only when we need it 
+    so if we run our project on the browsers that support the features we want
+    we wont be using the polyfills 

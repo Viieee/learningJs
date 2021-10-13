@@ -1,0 +1,19 @@
+1. install eslint extension, then restart your ide.
+2. make the project manageable by npm, by navigating to the project folder
+    with the terminal and enter command 'npm init' to create package.json
+    this file will store project specific packages that needed on the project
+3. install the eslint with npm globally on our machine or locally on the project
+    with command npm install -g eslint -> install it globally
+    with command npm install --save-dev eslint-> install it locally
+4. after installing it, you will see 2 new files on your project
+    1. file named 'package-lock.json', which hold detailed info about
+        your dependencies and dependency of the dependencies
+    2. a folder called node_module, this folder holds dependencies
+        of your project and the dependencies of those dependencies
+        (YOU SHOULD NEVER CHANGE ANY CODE INSIDE THIS FOLDER)
+        you can recreate this folder with command 
+        'npm install'
+5. initialize eslint by typing command 'eslint --init'
+6. after you answer some question in the terminal you will get a new file 
+    called .eslintrc which contain all the rule of code writing on your \
+    project

@@ -1,0 +1,108 @@
+prototype
+
+class Person{
+  
+    name='Vieri';
+    constructor(){
+        this.age=21;
+     }
+     greet(){
+         console.log('Hi, my name is '+ this.name + ', i\'m '+this.age);
+     }
+ }
+// is similar to :
+// constructor function
+// function Person(){
+//     this.age = 30;
+//     this.name = 'Vieri';
+//     this.greet = ()=>{
+//         console.log('Hi, my name is '+ this.name + ', i\'m '+this.age);
+//     }
+// }
+const prsn = new Person(); 
+console.log(new prsn.__proto__.constructor()); // you can make new object like this based on existing object and not a class / constructor function
+// instantiating the function with the 'new' keyword will make an object called 'this'
+// then every properties and method inside the function will be moved into the 'this' object
+// after that  the function will return the 'this' object
+// the code representation of it :
+// function Person(){
+//     this = {age: 30,
+//         name: 'Vieri',
+//         greet: ()=>{
+//             console.log('Hi, my name is '+ this.name + ', i\'m '+this.age);
+//     }}
+//     return this;
+// }
+
+prsn.greet();
+console.log(prsn)
+console.dir(Person);
+// Hi, my name is Vieri, i'm 21
+// app.js:34 
+// Person {name: "Vieri", age: 21}
+// age: 21
+// name: "Vieri"
+// __proto__: Object
+
+Person {name: "Vieri", age: 21}
+    age: 21
+    name: "Vieri"
+    __proto__:
+        constructor: class Person
+        greet: ƒ greet()
+        __proto__:
+            constructor: ƒ Object()
+            hasOwnProperty: ƒ hasOwnProperty()
+            isPrototypeOf: ƒ isPrototypeOf()
+            propertyIsEnumerable: ƒ propertyIsEnumerable()
+            toLocaleString: ƒ toLocaleString()
+            toString: ƒ toString()
+            valueOf: ƒ valueOf()
+            __defineGetter__: ƒ __defineGetter__()
+            __defineSetter__: ƒ __defineSetter__()
+            __lookupGetter__: ƒ __lookupGetter__()
+            __lookupSetter__: ƒ __lookupSetter__()
+            get __proto__: ƒ __proto__()
+            set __proto__: ƒ __proto__()
+
+
+class Person
+    arguments: (...)
+    caller: (...)
+    length: 0
+    name: "Person"
+    prototype: {constructor: ƒ, greet: ƒ}
+        constructor: class Person
+        greet: ƒ greet()
+        __proto__: Object
+            constructor: ƒ Object()
+            hasOwnProperty: ƒ hasOwnProperty()
+            isPrototypeOf: ƒ isPrototypeOf()
+            propertyIsEnumerable: ƒ propertyIsEnumerable()
+            toLocaleString: ƒ toLocaleString()
+            toString: ƒ toString()
+            valueOf: ƒ valueOf()
+            __defineGetter__: ƒ __defineGetter__()
+            __defineSetter__: ƒ __defineSetter__()
+            __lookupGetter__: ƒ __lookupGetter__()
+            __lookupSetter__: ƒ __lookupSetter__()
+            get __proto__: ƒ __proto__()
+            set __proto__: ƒ __proto__()
+    __proto__: ƒ ()
+        apply: ƒ apply()
+        arguments: (...)
+        bind: ƒ bind()
+        call: ƒ call()
+        caller: (...)
+        constructor: ƒ Function()
+        length: 0
+        name: ""
+        toString: ƒ toString()
+        Symbol(Symbol.hasInstance): ƒ [Symbol.hasInstance]()
+        get arguments: ƒ ()
+        set arguments: ƒ ()
+        get caller: ƒ ()
+        set caller: ƒ ()
+        __proto__: Object
+    [[FunctionLocation]]: app.js:9
+    [[Scopes]]: Scopes[2]

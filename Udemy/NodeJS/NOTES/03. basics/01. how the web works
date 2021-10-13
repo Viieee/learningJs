@@ -1,0 +1,17 @@
+a client visiting a page 
+    client entering url
+        server is just an ip address
+        url is the human-readable version of the server address
+    the browser reaches out to some domain name servers to look the domain up
+        browser send request to the server with the ip address
+        node will handle the incoming request from users
+            user input validation
+            communicating with database
+            sending back response to the user
+                in the form of some html code, xml/json file
+                response and request have headers
+                    headers is meta information attached to request/response
+    request/response transmission is done through some protocol (http/https)
+        these protocols have rules to handle a request and send back a response the browser can work with
+        https is http with ssl encryption turned on, so the data that's transmitted is encrypted
+        

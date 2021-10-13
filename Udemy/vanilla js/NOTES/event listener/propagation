@@ -1,0 +1,11 @@
+when you have multiple event happening on the same time 
+because you have listener on an element and on it's ancestors its called propagation
+
+for example you have a button wrapped inside a div
+and both the div and the button have eventListener()
+so when you clicked the button, the eventListener in the div will be executed as well
+because it's wrapped on it (or it's the ancestor of the button)
+that is called propagation
+
+there's instances where you don't want that to happen,
+to stop the propagation from happening you can use stopPropagation() method on the event object

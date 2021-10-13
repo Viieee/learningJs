@@ -1,0 +1,6 @@
+webpack needs to know where the entry point in our code is, and by that 
+i mean the js code we will be importing directly from the html file
+
+after that it will analyze the entry point file resolve the dependencies (file imports)
+inside of the file and it will then go into our dependency files and resolve the
+dependency of our dependencies and so on.

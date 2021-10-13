@@ -1,0 +1,22 @@
+spread pada object digunakan untuk mencopy sebuah object 
+karena bila dicopy dengan cara mereference dari object a ke object bila
+saat property dan value pada object a berubah maka property dan value pada object b akan 
+berubah juga (NOTE: KECUALI VALUE ARRAY)
+
+let person = {
+    aProperty: 'value',
+    'first name': 'Vieri',
+    age: 20,
+    hobbies: ['gaming', 'coding'],
+    greet: function(){
+        alert('hi! this alert is called from a method');
+    },
+    1.5:'Halo'
+}
+
+let person2 = { ...person }
+
+misal ingin agar array ikut tercopy keseluruhan
+
+let person3 = {...person, hobbies: [...person.hobbies]} ->[...person.hobbies] adalah array baru yang tidak terhubung dengan array pada object person
+
