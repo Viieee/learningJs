@@ -1,20 +1,21 @@
-const User = require("../models/user");
-const bcrypt = require("bcryptjs");
-const nodemailer = require("nodemailer");
-const crypto = require("crypto");
-const product = require("../models/product");
+const User = require('../models/user');
+const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+const product = require('../models/product');
+const expressValidator = require('express-validator');
 
 const transporter = nodemailer.createTransport({
-  service: "hotmail",
+  service: 'hotmail',
   auth: {
-    user: "viiieee@outlook.com",
-    pass: "Kenway99.",
+    user: 'viiieee@outlook.com',
+    pass: 'Kenway99.',
   },
 });
 
 exports.getLogin = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash("error"); // ! this returns an array
+  let message = req.flash('error'); // ! this returns an array
 
   /* 
     ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -30,9 +31,9 @@ exports.getLogin = (req, res, next) => {
     message = null;
   }
 
-  res.render("auth/login", {
-    path: "/login",
-    pageTitle: "Login",
+  res.render('auth/login', {
+    path: '/login',
+    pageTitle: 'Login',
     errorMessage: message,
   });
 };
@@ -47,8 +48,8 @@ exports.postLogin = (req, res, next) => {
       if (!user) {
         // if the user with the email inserted in the form doesn't exist
 
-        req.flash("error", "Invalid email or password."); // ! flashing a message using connect-flash (key, message)
-        return res.redirect("/login");
+        req.flash('error', 'Invalid email or password.'); // ! flashing a message using connect-flash (key, message)
+        return res.redirect('/login');
       }
 
       // ! if the code reach here that means we have user with same email as the inserted one in the database
@@ -72,17 +73,17 @@ exports.postLogin = (req, res, next) => {
               // making sure that we save the session before redirecting
               // this method will be called when the session has been saved
               console.log(err);
-              res.redirect("/");
+              res.redirect('/');
             });
           }
 
           // ! if the password is invalid // doMatch = false
-          req.flash("error", "Invalid email or password."); // ! flashing a message using connect-flash (key, message)
-          res.redirect("/login");
+          req.flash('error', 'Invalid email or password.'); // ! flashing a message using connect-flash (key, message)
+          res.redirect('/login');
         })
         .catch((err) => {
           console.log(err);
-          res.redirect("/login");
+          res.redirect('/login');
         });
     })
     .catch((err) => {
@@ -96,7 +97,7 @@ exports.postLogin = (req, res, next) => {
 
 exports.getSignup = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash("error"); // ! this returns an array
+  let message = req.flash('error'); // ! this returns an array
 
   /* 
     ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -112,9 +113,9 @@ exports.getSignup = (req, res, next) => {
     message = null;
   }
 
-  res.render("auth/signup", {
-    path: "/signup",
-    pageTitle: "Signup",
+  res.render('auth/signup', {
+    path: '/signup',
+    pageTitle: 'Signup',
     errorMessage: message,
   });
 };
@@ -125,68 +126,62 @@ exports.postSignup = (req, res, next) => {
   const password = req.body.password;
   const confirmPassword = req.body.confirmPassword;
 
-  // ! we'll add input validation later, that means the email the user insert
-  // ! dont have to be a valid email and the password dont have to be confirmed
+  // extracting the error from validation
+  const errors = expressValidator.validationResult(req); // it will store something if the validation in the routes returns error
 
-  User.findOne({ email: email }) // finding if the user with the email inserted already exist
-    .then((userData) => {
-      if (userData) {
-        // if the user with the same email inserted already exist
-        req.flash("error", "Email already registered!"); // ! flashing a message using connect-flash (key, message)
-        return res.redirect("/signup");
-      }
+  if (!errors.isEmpty()) {
+    // if theres an error
 
-      // ! if the code reach here that means the user inserted doesn't exist in our database yet
+    return res.status(422).render('auth/signup', {
+      path: '/signup',
+      pageTitle: 'Signup',
+      errorMessage: errors.array()[0].msg,
+    });
+    // ? 422 is validation error status
+  }
 
-      // hashing the password
-      return (
-        bcrypt
-          .hash(password, 12)
-          /* 
+  return bcrypt
+    .hash(password, 12)
+    /* 
             ! second argument of hash() is the amount of hashing bcrypt will do,
             ! the longer the safer but it will take more time to execute 
           */
-          .then((hashedPassword) => {
-            /* 
+    .then((hashedPassword) => {
+      /* 
               will return a hashed version of the password the user inserted in the form
               ! bcrypt is the only one that can decrypt this hashed password 
             */
-            // creating new user
-            const user = new User({
-              // based on the User model
-              email: email,
-              password: hashedPassword,
-              cart: {
-                items: [],
-              },
-            });
-            // saving the user
-            return user.save();
-          })
-          .then((result) => {
-            const nodeEmail = {
-              from: "viiieee@outlook.com",
-              to: email,
-              subject: "Signup succeeded!",
-              html: "<h1>You successfully signed up!</h1>",
-            };
+      // creating new user
+      const user = new User({
+        // based on the User model
+        email: email,
+        password: hashedPassword,
+        cart: {
+          items: [],
+        },
+      });
+      // saving the user
+      return user.save();
+    })
+    .then((result) => {
+      const nodeEmail = {
+        from: 'viiieee@outlook.com',
+        to: email,
+        subject: 'Signup succeeded!',
+        html: '<h1>You successfully signed up!</h1>',
+      };
 
-            return transporter.sendMail(nodeEmail, function (err, info) {
-              if (err) {
-                console.log(err);
-                return;
-              }
-              console.log("sent: " + info.response);
-            });
-          })
-          .then((result) => {
-            // redirecting
-            res.redirect("/login");
-          })
-          .catch((err) => {
-            console.log(err);
-          })
-      );
+      return transporter.sendMail(nodeEmail, function (err, info) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+        console.log('sent: ' + info.response);
+      });
+    })
+    .then((result) => {
+      // redirecting
+      res.redirect('/login');
     })
     .catch((err) => {
       console.log(err);
@@ -196,13 +191,13 @@ exports.postSignup = (req, res, next) => {
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
     console.log(err);
-    res.redirect("/");
+    res.redirect('/');
   });
 };
 
 exports.getReset = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash("error"); // ! this returns an array
+  let message = req.flash('error'); // ! this returns an array
 
   /* 
     ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -218,9 +213,9 @@ exports.getReset = (req, res, next) => {
     message = null;
   }
 
-  res.render("auth/reset", {
-    path: "/reset",
-    pageTitle: "Reset Password",
+  res.render('auth/reset', {
+    path: '/reset',
+    pageTitle: 'Reset Password',
     errorMessage: message,
   });
 };
@@ -234,16 +229,16 @@ exports.postReset = (req, res, next) => {
         the bytes can be fetched through the // ! buffer
     */
     if (err) {
-      return res.redirect("/reset");
+      return res.redirect('/reset');
     }
 
-    const token = buffer.toString("hex");
+    const token = buffer.toString('hex');
     User.findOne({ email: email })
       .then((user) => {
         if (!user) {
           // if the user doesn't exist
-          req.flash("error", "No account with that email found!");
-          return res.redirect("/reset");
+          req.flash('error', 'No account with that email found!');
+          return res.redirect('/reset');
         }
 
         // ! if the code manages to reach here, that means the user with the inserted email does exist
@@ -257,9 +252,9 @@ exports.postReset = (req, res, next) => {
       .then((result) => {
         // sending the email
         const nodeEmail = {
-          from: "viiieee@outlook.com",
+          from: 'viiieee@outlook.com',
           to: email,
-          subject: "Password Reset",
+          subject: 'Password Reset',
           html: `
             <p> You requested a password reset </p>
             <p> Click this <a href="http://localhost:3000/new-password/${token}">link</a> to set a new password </p>
@@ -271,11 +266,11 @@ exports.postReset = (req, res, next) => {
             console.log(err);
             return;
           }
-          console.log("sent: " + info.response);
+          console.log('sent: ' + info.response);
         });
       })
       .then((result) => {
-        res.redirect("/");
+        res.redirect('/');
       })
       .catch((err) => {
         console.log(err);
@@ -285,7 +280,7 @@ exports.postReset = (req, res, next) => {
 
 exports.getNewPassword = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash("error"); // ! this returns an array
+  let message = req.flash('error'); // ! this returns an array
 
   /* 
       ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -311,9 +306,9 @@ exports.getNewPassword = (req, res, next) => {
     $gt: Date.now() means the expiration date of the token is greater than our current time (it wasn't expired yet)
   */
     .then((user) => {
-      res.render("auth/new-password", {
-        path: "/new-password",
-        pageTitle: "Update Password",
+      res.render('auth/new-password', {
+        path: '/new-password',
+        pageTitle: 'Update Password',
         errorMessage: message,
         userId: user._id.toString(),
         passwordToken: token,
@@ -361,10 +356,10 @@ exports.postNewPassword = (req, res, next) => {
         .then((result) => {
           // sending the email
           const nodeEmail = {
-            from: "viiieee@outlook.com",
+            from: 'viiieee@outlook.com',
             to: user.email,
-            subject: "password changed!",
-            html: "<h1>You successfully change your password!</h1>",
+            subject: 'password changed!',
+            html: '<h1>You successfully change your password!</h1>',
           };
 
           return transporter.sendMail(nodeEmail, function (err, info) {
@@ -372,12 +367,12 @@ exports.postNewPassword = (req, res, next) => {
               console.log(err);
               return;
             }
-            console.log("sent: " + info.response);
+            console.log('sent: ' + info.response);
           });
         })
         .then((result) => {
           // redirect
-          res.redirect("/login");
+          res.redirect('/login');
         })
         .catch((err) => {
           console.log(err);

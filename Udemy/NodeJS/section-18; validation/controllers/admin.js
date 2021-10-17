@@ -1,4 +1,4 @@
-const Product = require("../models/product");
+const Product = require('../models/product');
 
 exports.getProducts = (req, res, next) => {
   // ! we want to fetched products created only by the user, so one user can't delete/edit other user's products
@@ -19,9 +19,9 @@ exports.getProducts = (req, res, next) => {
      */
     .then((products) => {
       // ! returns it as an array
-      res.render("admin/products", {
-        pageTitle: "Admin Products",
-        path: "/admin/products",
+      res.render('admin/products', {
+        pageTitle: 'Admin Products',
+        path: '/admin/products',
         prods: products,
       });
     })
@@ -32,9 +32,9 @@ exports.getProducts = (req, res, next) => {
 
 exports.getAddProduct = (req, res, next) => {
   // sending response
-  res.render("admin/edit-product", {
-    pageTitle: "Add Product",
-    path: "/admin/add-product",
+  res.render('admin/edit-product', {
+    pageTitle: 'Add Product',
+    path: '/admin/add-product',
     editing: false,
   });
 };
@@ -57,7 +57,7 @@ exports.postAddProduct = (req, res, next) => {
   product
     .save() // ! provided by mongoose
     .then((result) => {
-      res.redirect("/admin/products");
+      res.redirect('/admin/products');
     })
     .catch((err) => {
       console.log(err);
@@ -68,7 +68,7 @@ exports.getEditProduct = (req, res, next) => {
   // checking query params (extra data in url)
   const editMode = req.query.edit;
   if (!editMode) {
-    res.redirect("/");
+    res.redirect('/');
   }
 
   // extracting the product through the id
@@ -79,12 +79,12 @@ exports.getEditProduct = (req, res, next) => {
     .then((product) => {
       // ! it returns an object
       if (!product) {
-        return res.redirect("/");
+        return res.redirect('/');
       }
       // sending response
-      res.render("admin/edit-product", {
-        pageTitle: "Edit Product",
-        path: "/admin/edit-product",
+      res.render('admin/edit-product', {
+        pageTitle: 'Edit Product',
+        path: '/admin/edit-product',
         editing: editMode,
         product: product,
       });
@@ -108,7 +108,7 @@ exports.postEditProduct = (req, res, next) => {
     .then((product) => {
       if (product.userId.toString() !== req.user._id.toString()) {
         // authorization
-        return res.redirect("/");
+        return res.redirect('/');
       }
       // ! it returns an object
       // updating the value
@@ -119,13 +119,13 @@ exports.postEditProduct = (req, res, next) => {
 
       // saving the changes
       return product.save().then((result) => {
-        console.log("updated!");
-        res.redirect("/admin/products");
+        console.log('updated!');
+        res.redirect('/admin/products');
       });
     })
     .catch((err) => {
       console.log(err);
-      res.redirect("/admin/products");
+      res.redirect('/admin/products');
     });
 };
 
@@ -134,8 +134,8 @@ exports.postDeleteProduct = (req, res, next) => {
   Product.deleteOne({ _id: prodId, userId: req.user._id })
     // ! deleteOne() is a method provided by mongoose, we can filter it for authorization
     .then((result) => {
-      console.log("deletion succeded!");
-      res.redirect("/admin/products");
+      console.log('deletion succeded!');
+      res.redirect('/admin/products');
     })
     .catch((err) => {
       console.log(err);
