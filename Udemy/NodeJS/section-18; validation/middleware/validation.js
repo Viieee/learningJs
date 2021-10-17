@@ -4,6 +4,7 @@ const expressValidator = require('express-validator');
 
 const User = require('../models/user');
 
+// we want to export an array of middlewares by express validator
 module.exports = [
   // validating email
   expressValidator
