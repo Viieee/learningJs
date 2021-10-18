@@ -1,21 +1,21 @@
-const User = require('../models/user');
-const bcrypt = require('bcryptjs');
-const nodemailer = require('nodemailer');
-const crypto = require('crypto');
-const product = require('../models/product');
-const expressValidator = require('express-validator');
+const User = require("../models/user");
+const bcrypt = require("bcryptjs");
+const nodemailer = require("nodemailer");
+const crypto = require("crypto");
+const product = require("../models/product");
+const expressValidator = require("express-validator");
 
 const transporter = nodemailer.createTransport({
-  service: 'hotmail',
+  service: "hotmail",
   auth: {
-    user: 'viiieee@outlook.com',
-    pass: 'Kenway99.',
+    user: "viiieee@outlook.com",
+    pass: "Kenway99.",
   },
 });
 
 exports.getLogin = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash('error'); // ! this returns an array
+  let message = req.flash("error"); // ! this returns an array
 
   /* 
     ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -31,10 +31,14 @@ exports.getLogin = (req, res, next) => {
     message = null;
   }
 
-  res.render('auth/login', {
-    path: '/login',
-    pageTitle: 'Login',
+  res.render("auth/login", {
+    path: "/login",
+    pageTitle: "Login",
     errorMessage: message,
+    oldInput: {
+      email: "",
+      password: "",
+    },
   });
 };
 
@@ -43,13 +47,30 @@ exports.postLogin = (req, res, next) => {
   const email = req.body.email;
   const password = req.body.password;
 
+  // extracting the error from validation
+  const errors = expressValidator.validationResult(req); // it will store something if the validation in the routes returns error
+
+  if (!errors.isEmpty()) {
+    // if theres an error
+    return res.render("auth/login", {
+      path: "/login",
+      pageTitle: "Login",
+      errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password,
+      },
+    });
+    // ! if we reach this if statement that means the code after this line wont be executed because we already send a response
+  }
+
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
         // if the user with the email inserted in the form doesn't exist
 
-        req.flash('error', 'Invalid email or password.'); // ! flashing a message using connect-flash (key, message)
-        return res.redirect('/login');
+        req.flash("error", "Invalid email or password."); // ! flashing a message using connect-flash (key, message)
+        return res.redirect("/login");
       }
 
       // ! if the code reach here that means we have user with same email as the inserted one in the database
@@ -73,17 +94,17 @@ exports.postLogin = (req, res, next) => {
               // making sure that we save the session before redirecting
               // this method will be called when the session has been saved
               console.log(err);
-              res.redirect('/');
+              res.redirect("/");
             });
           }
 
           // ! if the password is invalid // doMatch = false
-          req.flash('error', 'Invalid email or password.'); // ! flashing a message using connect-flash (key, message)
-          res.redirect('/login');
+          req.flash("error", "Invalid email or password."); // ! flashing a message using connect-flash (key, message)
+          res.redirect("/login");
         })
         .catch((err) => {
           console.log(err);
-          res.redirect('/login');
+          res.redirect("/login");
         });
     })
     .catch((err) => {
@@ -97,7 +118,7 @@ exports.postLogin = (req, res, next) => {
 
 exports.getSignup = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash('error'); // ! this returns an array
+  let message = req.flash("error"); // ! this returns an array
 
   /* 
     ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -106,17 +127,25 @@ exports.getSignup = (req, res, next) => {
 
      ! the error message is stored in the session and will be removed once it's being used
   */
-
   if (message.length > 0) {
     message = message[0];
   } else {
     message = null;
   }
 
-  res.render('auth/signup', {
-    path: '/signup',
-    pageTitle: 'Signup',
+  // extracting the error from validation
+  const errors = expressValidator.validationResult(req); // it will store something if the validation in the routes returns error
+
+  res.render("auth/signup", {
+    path: "/signup",
+    pageTitle: "Signup",
     errorMessage: message,
+    oldInput: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    validationError: errors.array(),
   });
 };
 
@@ -129,75 +158,109 @@ exports.postSignup = (req, res, next) => {
   // extracting the error from validation
   const errors = expressValidator.validationResult(req); // it will store something if the validation in the routes returns error
 
+  /* 
+    console.log(errors.array())
+
+    ! output example:
+    [
+      {
+        value: 'dummy',
+        msg: 'Please enter a valid email!',
+        param: 'email',
+        location: 'body'
+      },
+      {
+        value: 'sdf',
+        msg: 'Please enter a password with at least 5 characters',
+        param: 'password',
+        location: 'body'
+      },
+      {
+        value: 'asf',
+        msg: 'Password have to match!',
+        param: 'confirmPassword',
+        location: 'body'
+      }
+    ]
+
+  */
   if (!errors.isEmpty()) {
     // if theres an error
 
-    return res.status(422).render('auth/signup', {
-      path: '/signup',
-      pageTitle: 'Signup',
+    return res.status(422).render("auth/signup", {
+      path: "/signup",
+      pageTitle: "Signup",
       errorMessage: errors.array()[0].msg,
+      oldInput: {
+        email: email,
+        password: password,
+        confirmPassword: confirmPassword,
+      },
+      validationError: errors.array(),
     });
     // ? 422 is validation error status
   }
 
-  return bcrypt
-    .hash(password, 12)
-    /* 
+  return (
+    bcrypt
+      .hash(password, 12)
+      /* 
             ! second argument of hash() is the amount of hashing bcrypt will do,
             ! the longer the safer but it will take more time to execute 
           */
-    .then((hashedPassword) => {
-      /* 
+      .then((hashedPassword) => {
+        /* 
               will return a hashed version of the password the user inserted in the form
               ! bcrypt is the only one that can decrypt this hashed password 
             */
-      // creating new user
-      const user = new User({
-        // based on the User model
-        email: email,
-        password: hashedPassword,
-        cart: {
-          items: [],
-        },
-      });
-      // saving the user
-      return user.save();
-    })
-    .then((result) => {
-      const nodeEmail = {
-        from: 'viiieee@outlook.com',
-        to: email,
-        subject: 'Signup succeeded!',
-        html: '<h1>You successfully signed up!</h1>',
-      };
+        // creating new user
+        const user = new User({
+          // based on the User model
+          email: email,
+          password: hashedPassword,
+          cart: {
+            items: [],
+          },
+        });
+        // saving the user
+        return user.save();
+      })
+      .then((result) => {
+        const nodeEmail = {
+          from: "viiieee@outlook.com",
+          to: email,
+          subject: "Signup succeeded!",
+          html: "<h1>You successfully signed up!</h1>",
+        };
 
-      return transporter.sendMail(nodeEmail, function (err, info) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log('sent: ' + info.response);
-      });
-    })
-    .then((result) => {
-      // redirecting
-      res.redirect('/login');
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+        return transporter.sendMail(nodeEmail, function (err, info) {
+          if (err) {
+            console.log(err);
+            return;
+          }
+          console.log("sent: " + info.response);
+        });
+      })
+      .then((result) => {
+        // redirecting
+        res.redirect("/login");
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+  );
 };
 
 exports.postLogout = (req, res, next) => {
   req.session.destroy((err) => {
     console.log(err);
-    res.redirect('/');
+    res.redirect("/");
   });
 };
 
 exports.getReset = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash('error'); // ! this returns an array
+  let message = req.flash("error"); // ! this returns an array
 
   /* 
     ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -213,9 +276,9 @@ exports.getReset = (req, res, next) => {
     message = null;
   }
 
-  res.render('auth/reset', {
-    path: '/reset',
-    pageTitle: 'Reset Password',
+  res.render("auth/reset", {
+    path: "/reset",
+    pageTitle: "Reset Password",
     errorMessage: message,
   });
 };
@@ -229,16 +292,16 @@ exports.postReset = (req, res, next) => {
         the bytes can be fetched through the // ! buffer
     */
     if (err) {
-      return res.redirect('/reset');
+      return res.redirect("/reset");
     }
 
-    const token = buffer.toString('hex');
+    const token = buffer.toString("hex");
     User.findOne({ email: email })
       .then((user) => {
         if (!user) {
           // if the user doesn't exist
-          req.flash('error', 'No account with that email found!');
-          return res.redirect('/reset');
+          req.flash("error", "No account with that email found!");
+          return res.redirect("/reset");
         }
 
         // ! if the code manages to reach here, that means the user with the inserted email does exist
@@ -252,9 +315,9 @@ exports.postReset = (req, res, next) => {
       .then((result) => {
         // sending the email
         const nodeEmail = {
-          from: 'viiieee@outlook.com',
+          from: "viiieee@outlook.com",
           to: email,
-          subject: 'Password Reset',
+          subject: "Password Reset",
           html: `
             <p> You requested a password reset </p>
             <p> Click this <a href="http://localhost:3000/new-password/${token}">link</a> to set a new password </p>
@@ -266,11 +329,11 @@ exports.postReset = (req, res, next) => {
             console.log(err);
             return;
           }
-          console.log('sent: ' + info.response);
+          console.log("sent: " + info.response);
         });
       })
       .then((result) => {
-        res.redirect('/');
+        res.redirect("/");
       })
       .catch((err) => {
         console.log(err);
@@ -280,7 +343,7 @@ exports.postReset = (req, res, next) => {
 
 exports.getNewPassword = (req, res, next) => {
   // fetching the message stored with flash
-  let message = req.flash('error'); // ! this returns an array
+  let message = req.flash("error"); // ! this returns an array
 
   /* 
       ! the argument of flash() is the key, whatever message stored with that key will be fetched
@@ -306,9 +369,9 @@ exports.getNewPassword = (req, res, next) => {
     $gt: Date.now() means the expiration date of the token is greater than our current time (it wasn't expired yet)
   */
     .then((user) => {
-      res.render('auth/new-password', {
-        path: '/new-password',
-        pageTitle: 'Update Password',
+      res.render("auth/new-password", {
+        path: "/new-password",
+        pageTitle: "Update Password",
         errorMessage: message,
         userId: user._id.toString(),
         passwordToken: token,
@@ -356,10 +419,10 @@ exports.postNewPassword = (req, res, next) => {
         .then((result) => {
           // sending the email
           const nodeEmail = {
-            from: 'viiieee@outlook.com',
+            from: "viiieee@outlook.com",
             to: user.email,
-            subject: 'password changed!',
-            html: '<h1>You successfully change your password!</h1>',
+            subject: "password changed!",
+            html: "<h1>You successfully change your password!</h1>",
           };
 
           return transporter.sendMail(nodeEmail, function (err, info) {
@@ -367,12 +430,12 @@ exports.postNewPassword = (req, res, next) => {
               console.log(err);
               return;
             }
-            console.log('sent: ' + info.response);
+            console.log("sent: " + info.response);
           });
         })
         .then((result) => {
           // redirect
-          res.redirect('/login');
+          res.redirect("/login");
         })
         .catch((err) => {
           console.log(err);
