@@ -96,11 +96,16 @@ app.use((req, res, next) => {
   }
   User.findById(req.session.user._id) // finding user id based on the current session's user id
     .then((user) => {
+      if (!user) {
+        return next();
+      }
       // ! req.user contain full user object with all the methods based on current session
       req.user = user;
       next();
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      next(new Error(err)); // this is to trigger the error handler middleware with async code
+    });
 });
 
 // ! telling express theres some data that we want to include on every rendered view using res.locals
@@ -119,7 +124,15 @@ app.use("/admin", adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
+app.get("/500", errorController.get500);
+
 app.use(errorController.get404);
+
+// error handling middleware
+// ! it will only triggers when next(error) passed onto the app
+app.use((error, req, res, next) => {
+  res.redirect("/500");
+});
 
 // connecting to the database using mongoose
 mongoose
