@@ -2,8 +2,6 @@ const Product = require("../models/product");
 
 const expressValidator = require("express-validator");
 
-const fileHelper = require("../util/file");
-
 exports.getProducts = (req, res, next) => {
   // ! we want to fetched products created only by the user, so one user can't delete/edit other user's products
 
@@ -202,7 +200,6 @@ exports.postEditProduct = (req, res, next) => {
       // product.imageUrl = updatedImageUrl;
       if (updatedImage) {
         // ! the image and imageUrl (path to the image) will only be updated when theres a file picked
-        fileHelper.deleteFile(product.imageUrl); // deleting the old image in the folder
         product.imageUrl = updatedImage.path;
       }
       product.price = updatedPrice;
@@ -225,23 +222,17 @@ exports.postEditProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const prodId = req.body.productId;
-  Product.findById(prodId)
-    .then((product) => {
-      if (!product) {
-        return next(new Error("Product not found."));
-      }
-      fileHelper.deleteFile(product.imageUrl); // deleting the image in the folder related to the deleted product
-
-      // deleting the product from the database
-      return Product.deleteOne({ _id: prodId, userId: req.user._id });
-    })
-    .then(() => {
+  Product.deleteOne({ _id: prodId, userId: req.user._id })
+    // ! deleteOne() is a method provided by mongoose, we can filter it for authorization
+    .then((result) => {
       console.log("deletion succeded!");
-      return res.redirect("/admin/products");
+      res.redirect("/admin/products");
     })
     .catch((err) => {
+      // handling error using error handler middleware
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
+      // ! if we returning next and passing an error as an argument, we are letting express know that an error occured and it will move to the error handling middleware
     });
 };

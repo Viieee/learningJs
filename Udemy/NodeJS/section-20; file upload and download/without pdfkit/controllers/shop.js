@@ -3,8 +3,7 @@ const path = require("path");
 
 const Product = require("../models/product");
 const Order = require("../models/order");
-
-const pdfKit = require("pdfkit");
+const product = require("../models/product");
 
 exports.getIndex = (req, res, next) => {
   Product.find()
@@ -197,10 +196,30 @@ exports.getInvoice = (req, res, next) => {
       const invoiceName = "invoice-" + orderId + ".pdf"; // the name of the file
       const invoicePath = path.join("data", "invoices", invoiceName); // path to the file
 
-      // create new pdf doc on the fly with pdfkit
-      // ? npm install --save pdfkit
-      const pdfDoc = new pdfKit();
+      // ! using readFile
+      // fs.readFile(invoicePath, (err, data) => {
+      /* 
+          ! readFile means node will read the entire file, store it on the memory, then return it with the response
+          ! this is bad for bigger files 
+         */
+      //   // this function will execute once the data being read
+      //   // ! data is a buffer
+      //   if (err) {
+      //     return next(err); // error middleware
+      //   }
+      //   res.setHeader("Content-Type", "application/pdf");
+      //   res.setHeader(
+      //     "Content-Disposition",
+      //     'inline; filename="' + invoiceName + '"'
+          // ? inline will let the browser open the file in new tab
+          // ? attachment instead of inline will let the browser know to straight up download the file
+          // ? filename will change the file name and letting you configure it
+      //   );
+      //   res.send(data);
+      // });
 
+      // ! using streams instead of readFile (in case we dealing with big files)
+      const file = fs.createReadStream(invoicePath);
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
@@ -208,31 +227,10 @@ exports.getInvoice = (req, res, next) => {
         // ? inline will let the browser open the file in new tab
         // ? attachment instead of inline will let the browser know to straight up download the file
         // ? filename will change the file name and letting you configure it
-      );
-
-      pdfDoc.pipe(fs.createWriteStream(invoicePath)); // making sure that the file is stored in the server too and not just served to the client
-      pdfDoc.pipe(res);
-
-      // writing the content of the file
-      pdfDoc.fontSize(26).text("Invoice", { underline: true });
-      pdfDoc.text("---------------------------------------");
-      // looping through the products of the order
-      let totalPrice = 0; // product price
-      order.products.forEach((prod) => {
-        // adding the total price
-        totalPrice += prod.quantity * prod.product.price;
-        // writing lines on pdfKit for every product
-        // pdfDoc.text(prod.product.title + ' - ' + prod.quantity + ' x ');
-        pdfDoc
-          .fontSize(15)
-          .text(
-            `${prod.product.title} - ${prod.quantity} x \$${prod.product.price}`
-          );
-      });
-      // write the total price
-      pdfDoc.text(`Total price: \$${totalPrice}`);
-
-      pdfDoc.end(); // file saved and the response sent
+    );
+      file.pipe(res);
+      // ? res is a writable steam
+      // ? the data will be download the file step by step and dont have to preload it (read the entire file)
     })
     .catch((err) => {
       next(err);
