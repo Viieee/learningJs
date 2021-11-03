@@ -3,11 +3,27 @@ const path = require("path");
 
 const Product = require("../models/product");
 const Order = require("../models/order");
-const product = require("../models/product");
+
+const pdfKit = require("pdfkit");
+
+const ITEMS_PER_PAGE = 2;
 
 exports.getIndex = (req, res, next) => {
+  const page = parseInt(req.query.page) || 1; // page number stored in ? link (query parameter)
+  let totalItems; // will later contain the total number of items in the database
+
+  // counting the number of product i have in the database
   Product.find()
-    // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
+    .countDocuments()
+    .then((numProducts) => {
+      totalItems = numProducts;
+      return (
+        Product.find()
+          // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
+          .skip((page - 1) * ITEMS_PER_PAGE) // skipping the items on previous page
+          .limit(ITEMS_PER_PAGE) // limiting the amount of items on a page
+      );
+    })
     .then((products) => {
       // ! returns it as an array
       res.render("shop/index", {
@@ -15,19 +31,36 @@ exports.getIndex = (req, res, next) => {
         pageTitle: "Shop",
         path: "/",
         // csrfToken: req.csrfToken(), // ! csrfToken() will generate csrf token
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE), // max number of page based on items in the database and max number allowed to be displayed in a page
       });
     })
     .catch((err) => {
-      // handling error using error handler middleware
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      next(err);
       // ! if we returning next and passing an error as an argument, we are letting express know that an error occured and it will move to the error handling middleware
     });
 };
 
 exports.getProducts = (req, res, next) => {
+  const page = parseInt(req.query.page) || 1; // page number stored in ? link (query parameter)
+  let totalItems; // will later contain the total number of items in the database
+ 
+  // counting the number of product i have in the database
   Product.find()
+    .countDocuments()
+    .then((numProducts) => {
+      totalItems = numProducts;
+      return (
+        Product.find()
+          // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
+          .skip((page - 1) * ITEMS_PER_PAGE) // skipping the items on previous page
+          .limit(ITEMS_PER_PAGE) // limiting the amount of items on a page
+      );
+    })
     // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
     .then((products) => {
       // ! returns it as an array
@@ -35,6 +68,12 @@ exports.getProducts = (req, res, next) => {
         pageTitle: "All Products",
         path: "/products",
         prods: products,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE), // max number of page based on items in the database and max number allowed to be displayed in a page
       });
     })
     .catch((err) => {
@@ -196,30 +235,10 @@ exports.getInvoice = (req, res, next) => {
       const invoiceName = "invoice-" + orderId + ".pdf"; // the name of the file
       const invoicePath = path.join("data", "invoices", invoiceName); // path to the file
 
-      // ! using readFile
-      // fs.readFile(invoicePath, (err, data) => {
-      /* 
-          ! readFile means node will read the entire file, store it on the memory, then return it with the response
-          ! this is bad for bigger files 
-         */
-      //   // this function will execute once the data being read
-      //   // ! data is a buffer
-      //   if (err) {
-      //     return next(err); // error middleware
-      //   }
-      //   res.setHeader("Content-Type", "application/pdf");
-      //   res.setHeader(
-      //     "Content-Disposition",
-      //     'inline; filename="' + invoiceName + '"'
-          // ? inline will let the browser open the file in new tab
-          // ? attachment instead of inline will let the browser know to straight up download the file
-          // ? filename will change the file name and letting you configure it
-      //   );
-      //   res.send(data);
-      // });
+      // create new pdf doc on the fly with pdfkit
+      // ? npm install --save pdfkit
+      const pdfDoc = new pdfKit();
 
-      // ! using streams instead of readFile (in case we dealing with big files)
-      const file = fs.createReadStream(invoicePath);
       res.setHeader("Content-Type", "application/pdf");
       res.setHeader(
         "Content-Disposition",
@@ -227,10 +246,31 @@ exports.getInvoice = (req, res, next) => {
         // ? inline will let the browser open the file in new tab
         // ? attachment instead of inline will let the browser know to straight up download the file
         // ? filename will change the file name and letting you configure it
-    );
-      file.pipe(res);
-      // ? res is a writable steam
-      // ? the data will be download the file step by step and dont have to preload it (read the entire file)
+      );
+
+      pdfDoc.pipe(fs.createWriteStream(invoicePath)); // making sure that the file is stored in the server too and not just served to the client
+      pdfDoc.pipe(res);
+
+      // writing the content of the file
+      pdfDoc.fontSize(26).text("Invoice", { underline: true });
+      pdfDoc.text("---------------------------------------");
+      // looping through the products of the order
+      let totalPrice = 0; // product price
+      order.products.forEach((prod) => {
+        // adding the total price
+        totalPrice += prod.quantity * prod.product.price;
+        // writing lines on pdfKit for every product
+        // pdfDoc.text(prod.product.title + ' - ' + prod.quantity + ' x ');
+        pdfDoc
+          .fontSize(15)
+          .text(
+            `${prod.product.title} - ${prod.quantity} x \$${prod.product.price}`
+          );
+      });
+      // write the total price
+      pdfDoc.text(`Total price: \$${totalPrice}`);
+
+      pdfDoc.end(); // file saved and the response sent
     })
     .catch((err) => {
       next(err);
