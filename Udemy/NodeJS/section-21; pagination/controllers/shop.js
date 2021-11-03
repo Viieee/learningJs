@@ -6,9 +6,24 @@ const Order = require("../models/order");
 
 const pdfKit = require("pdfkit");
 
+const ITEMS_PER_PAGE = 2;
+
 exports.getIndex = (req, res, next) => {
+  const page = parseInt(req.query.page) || 1; // page number stored in ? link (query parameter)
+  let totalItems; // will later contain the total number of items in the database
+
+  // counting the number of product i have in the database
   Product.find()
-    // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
+    .countDocuments()
+    .then((numProducts) => {
+      totalItems = numProducts;
+      return (
+        Product.find()
+          // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
+          .skip((page - 1) * ITEMS_PER_PAGE) // skipping the items on previous page
+          .limit(ITEMS_PER_PAGE) // limiting the amount of items on a page
+      );
+    })
     .then((products) => {
       // ! returns it as an array
       res.render("shop/index", {
@@ -16,19 +31,36 @@ exports.getIndex = (req, res, next) => {
         pageTitle: "Shop",
         path: "/",
         // csrfToken: req.csrfToken(), // ! csrfToken() will generate csrf token
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE), // max number of page based on items in the database and max number allowed to be displayed in a page
       });
     })
     .catch((err) => {
-      // handling error using error handler middleware
-      const error = new Error(err);
-      error.httpStatusCode = 500;
-      return next(error);
+      next(err);
       // ! if we returning next and passing an error as an argument, we are letting express know that an error occured and it will move to the error handling middleware
     });
 };
 
 exports.getProducts = (req, res, next) => {
+  const page = parseInt(req.query.page) || 1; // page number stored in ? link (query parameter)
+  let totalItems; // will later contain the total number of items in the database
+ 
+  // counting the number of product i have in the database
   Product.find()
+    .countDocuments()
+    .then((numProducts) => {
+      totalItems = numProducts;
+      return (
+        Product.find()
+          // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
+          .skip((page - 1) * ITEMS_PER_PAGE) // skipping the items on previous page
+          .limit(ITEMS_PER_PAGE) // limiting the amount of items on a page
+      );
+    })
     // ! find() is provided by mongoose, in mongoose it fetches all documents in the table
     .then((products) => {
       // ! returns it as an array
@@ -36,6 +68,12 @@ exports.getProducts = (req, res, next) => {
         pageTitle: "All Products",
         path: "/products",
         prods: products,
+        currentPage: page,
+        hasNextPage: ITEMS_PER_PAGE * page < totalItems,
+        hasPreviousPage: page > 1,
+        nextPage: page + 1,
+        previousPage: page - 1,
+        lastPage: Math.ceil(totalItems / ITEMS_PER_PAGE), // max number of page based on items in the database and max number allowed to be displayed in a page
       });
     })
     .catch((err) => {
