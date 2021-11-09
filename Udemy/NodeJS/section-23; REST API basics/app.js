@@ -27,12 +27,12 @@ app.listen(8080);
 
 // getButton.addEventListener('click', ()=>{
 //   fetch('http://localhost:8080/feed/posts')
-//   .then(res => res.json() // waiting for the body to be completely streamed and convert it to js object )
+//   .then(res => res.json()) // waiting for the body to be completely streamed and convert it to js object )
 //   .then(resData => console.log(resData))
 //   .catch(err=>{
 //     console.log(err)
 //   })
 // })
 
-// <button id='get'>get posts</button>
-// <button id='post'>create post</button>
+/* <button id='get'>get posts</button>
+<button id='post'>create post</button> */
