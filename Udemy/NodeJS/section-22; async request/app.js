@@ -1,29 +1,29 @@
-const path = require("path");
+const path = require('path');
 
-const express = require("express");
-const bodyParser = require("body-parser");
-const multer = require("multer");
+const express = require('express');
+const bodyParser = require('body-parser');
+const multer = require('multer');
 
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
-const authRoutes = require("./routes/auth");
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
+const authRoutes = require('./routes/auth');
 
-const errorController = require("./controllers/error");
+const errorController = require('./controllers/error');
 
 // importing connect-flash
-const flash = require("connect-flash");
+const flash = require('connect-flash');
 /* 
  ! Connect-flash module for Nodejs allows the developers to send a message whenever a 
     ! user is redirecting to a specified web-page
   ! the message in connect flash will be stored in the session and will be removed once its being used
 */
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 // package used to manage session
-const session = require("express-session");
+const session = require('express-session');
 // mongodb session store, to store session into the database
-const MongoDBStore = require("connect-mongodb-session")(session);
+const MongoDBStore = require('connect-mongodb-session')(session);
 // csurf, to generate csrf token
-const csurf = require("csurf");
+const csurf = require('csurf');
 /* 
   ! we want to generate csrf token for every page that can potentially make a change in the user state
     ! and anything that's sensitive, 
@@ -35,18 +35,18 @@ const csurf = require("csurf");
   the validity of the token sent together with the request
 */
 
-const User = require("./models/user");
+const User = require('./models/user');
 
 // database server uri
 const MONGODB_URI =
-  "mongodb+srv://vieri:pass123.@cluster0.6o5cb.mongodb.net/shop?retryWrites=true&w=majority";
+  'mongodb+srv://vieri:pass123.@cluster0.6o5cb.mongodb.net/shop?retryWrites=true&w=majority';
 
 const app = express();
 
 // intialize new store
 const store = new MongoDBStore({
   uri: MONGODB_URI,
-  collection: "sessions", // the collection where the session will be stored
+  collection: 'sessions', // the collection where the session will be stored
 });
 
 // initializing csurf
@@ -58,21 +58,23 @@ const fileStorage = multer.diskStorage({
     // ! configuring the path of the file
     // ? if we dont save it in a destination (folder),
     //    it will be saved in the buffer
-    callback(null, "images");
+    callback(null, 'images');
   },
   filename: function (req, file, callback) {
     // ! configuring the filename
-    callback(null, new Date().toISOString().slice(0, 10) + "-" + file.originalname);
+    callback(
+      null,
+      new Date().toISOString().slice(0, 10) + '-' + file.originalname
+    );
   },
 });
-
 
 // filtering file for multer
 const fileFilter = (req, file, callback) => {
   if (
-    file.mimetype === "image/png" ||
-    file.mimetype === "image/jpg" ||
-    file.mimetype === "image/jpeg"
+    file.mimetype === 'image/png' ||
+    file.mimetype === 'image/jpg' ||
+    file.mimetype === 'image/jpeg'
   ) {
     callback(null, true); // if we want to store it
   } else {
@@ -80,11 +82,13 @@ const fileFilter = (req, file, callback) => {
   }
 };
 
-app.set("view engine", "ejs");
-app.set("views", "views");
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(multer({ storage: fileStorage, fileFilter: fileFilter}).single("image")); // for parsing files
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single('image')
+); // for parsing files
 // app.use(
 //   multer({ dest: 'images'}).single('image')
 // );
@@ -95,10 +99,10 @@ app.use(multer({ storage: fileStorage, fileFilter: fileFilter}).single("image"))
   the argument passed onto single() method is the name of the input file field 
   in the ejs
 */
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
 // serving the images
-app.use('/images', express.static(path.join(__dirname, "images")));
+app.use('/images', express.static(path.join(__dirname, 'images')));
 // ? for each request towards url/images/ we will serve the images statically
 
 // session
@@ -108,7 +112,7 @@ app.use(
   */
   session({
     // session's config
-    secret: "my secret", // ! #1
+    secret: 'my secret', // ! #1
     resave: false, // ! #2
     saveUninitialized: false, // ! #3
     store: store, // ! #4
@@ -165,18 +169,18 @@ app.use((req, res, next) => {
     });
 });
 
-app.use("/admin", adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 app.use(authRoutes);
 
-app.get("/500", errorController.get500);
+app.get('/500', errorController.get500);
 
 app.use(errorController.get404);
 
 // error handling middleware
 // ! it will only triggers when next(error) passed onto the app
 app.use((error, req, res, next) => {
-  res.redirect("/500");
+  res.redirect('/500');
 });
 
 // connecting to the database using mongoose
