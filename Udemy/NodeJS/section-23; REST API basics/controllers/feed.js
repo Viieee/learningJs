@@ -5,31 +5,54 @@ const expressValidator = require("express-validator");
 const PostModel = require("../models/post");
 const UserModel = require("../models/user");
 
-exports.getPosts = (req, res, next) => {
+// exports.getPosts = (req, res, next) => {
+//   const currentPage = parseInt(req.query.page) || 1;
+//   const perPage = 2;
+//   let totalItems;
+//   PostModel.find()
+//     .countDocuments()
+//     .then((count) => {
+//       totalItems = count;
+//       return PostModel.find()
+//         .skip((currentPage - 1) * perPage)
+//         .limit(perPage);
+//     })
+//     .then((posts) => {
+//       res.status(200).json({
+//         message: "post fetched successfully!",
+//         posts: posts,
+//         totalItems: totalItems,
+//       });
+//     })
+//     .catch((err) => {
+//       if (!err.statusCode) {
+//         err.statusCode = 500;
+//       }
+//       next(err); // ! in async code you need to do this to reach the error handling middleware
+//     });
+// };
+
+// using async await
+exports.getPosts = async (req, res, next) => {
   const currentPage = parseInt(req.query.page) || 1;
   const perPage = 2;
-  let totalItems;
-  PostModel.find()
-    .countDocuments()
-    .then((count) => {
-      totalItems = count;
-      return PostModel.find()
-        .skip((currentPage - 1) * perPage)
-        .limit(perPage);
-    })
-    .then((posts) => {
-      res.status(200).json({
-        message: "post fetched successfully!",
-        posts: posts,
-        totalItems: totalItems,
-      });
-    })
-    .catch((err) => {
-      if (!err.statusCode) {
-        err.statusCode = 500;
-      }
-      next(err); // ! in async code you need to do this to reach the error handling middleware
+  try {
+    let totalItems = await PostModel.find().countDocuments();
+    const posts = await PostModel.find().populate('creator')
+      .skip((currentPage - 1) * perPage)
+      .limit(perPage);
+
+    res.status(200).json({
+      message: "post fetched successfully!",
+      posts: posts,
+      totalItems: totalItems,
     });
+  } catch (error) {
+    if (!error.statusCode) {
+      error.statusCode = 500;
+    }
+    next(err);
+  }
 };
 
 exports.postPost = (req, res, next) => {
