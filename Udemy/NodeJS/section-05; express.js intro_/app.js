@@ -4,7 +4,7 @@ const path = require('path');
 
 // 3rd party packages
 const express = require("express");
-const bodyParser = require("body-parser");
+
 
 // importing files
 // ! the router files is a valid middleware function
@@ -21,7 +21,7 @@ const app = express();
 */
 
 // parsing the body
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 /* 
     ! this middleware will run no matter what
     ? extended: true use qs library

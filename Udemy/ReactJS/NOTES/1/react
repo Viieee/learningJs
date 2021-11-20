@@ -1,0 +1,9 @@
+react js is a javascript library that focused on the UI of an application 
+    it is a client side javascript and help to make UI more modern and reactive
+    and feel like a mobile app and make it easier for the developers
+
+with vanila javascript, you definitly can manipulate the DOM but you need to 
+    do small operations like creating the element, setting the content of it, etc
+    per element that you want to see on the screen. 
+    In other words you doing some repetitive things if you develop front end 
+    with just vanilla javascript.
