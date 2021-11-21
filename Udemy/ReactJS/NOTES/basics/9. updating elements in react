@@ -1,0 +1,67 @@
+updating elements in react is not really simple
+
+because react works by executing by calling each components that is nested inside of
+    the main components (usually App component) then after everything is rendered
+    react will stopped
+
+so in order to update the content of component react uses a concept called state
+
+react uses a special function called useState that needs to be imported from react
+(import {useState} from 'react')
+
+the idea of use state is, it will watch for the changes made on a variable stored in it
+
+useState() takes the intial value of the variable we want to look out for changes 
+(it can be in any data types) and it returns 2 things in an array:
+1. the current value
+2. the function to update the value of the variable
+
+this way, we want to use array destructuring to separate these two returned things into its own 
+separate entity
+
+example of array destructuring:
+
+let arr = ["John", "Smith"]
+let [firstName, surname] = arr;
+
+console.log(firstName) => output John
+console.log(surname) => output Smith
+
+example using use state
+
+const [value, setValue] = useState(0);
+
+state is used and executed per instance, that means each instance have their own state
+example:
+function ExpenseItem(props) {
+  const [title, settingTitle] = useState(props.title);
+
+  function clickHandler() {
+    settingTitle('updated')
+  }
+  return (
+    <h2>{title}</h2>
+  );
+}
+
+**** IN parent file (Expenses.js) ****
+
+function Expenses(props){
+    const expenses = props.expenses
+    return(
+    <Card className='expenses'>
+        <ExpenseItem/>
+        <ExpenseItem/>
+        <ExpenseItem/>
+        <ExpenseItem/>
+    </Card>
+    );
+}
+
+in the example above, expense item component is called four times.
+when the expenses component intially loaded, 
+    the expense item will be instantiated 4 times
+        this means the ExpenseItem will be executed 4 times 
+    each of these items will have their own state
+    and the useState will make react re-execute the component function
+    individually on the instance it occurs

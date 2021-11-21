@@ -1,0 +1,12 @@
+you can add event listener in react by adding on-then_the_event_you_want_to_listen_to
+example:
+function ExpenseItem(props) {
+    function clickHandler(){
+        console.log('clicked')
+    }
+    return (
+        <button onClick={clickHandler}>Change title</button>
+    );
+}
+
+YOU DONT NEED TO NEST THE EVENT HANDLER FUNCTION 
