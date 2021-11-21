@@ -1,0 +1,12 @@
+to display some dynamic content with react you can use '{}'
+'{}' will execute js code inside it
+example
+
+function ExpenseItem() {
+  const expenseTitle = 'lulw';
+  return (
+    <h2>{expenseTitle}</h2>
+  );
+}
+
+the h2 now will contain 'lulw' as its content

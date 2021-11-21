@@ -1,0 +1,37 @@
+react can make it easier for developer that want to manipulate dom by using jsx 
+
+jsx is an xml/html like syntax used by react,
+it allows react to transform an imperative approach with vanilla javascript
+example:
+const p = document.createElement('p')
+p.textContent = 'this is a paragraph'
+document.getElementById('root').append(p)
+
+into 
+file 1 (App.js)
+function App(){
+    return(
+        // ! this is called the end state
+        <div>
+            <h2>lets get started!</h2>
+            <p>this is a paragraph</p>
+        </div>
+    )
+}
+
+export default App;
+file 2 (index.js)
+import ReactDOM from 'react-dom';
+
+import './index.css';
+import App from './App';
+
+ReactDOM.render(<App />, document.getElementById('root'));
+// ! the <App /> inside render file is also a jsx syntax
+
+jsx syntax allows react developer to express an end state of the component that they want 
+to make, and allowing developers to write it in a language that is already familiar to them
+which is html.
+later on in the browser react and jsx will transform the html like code (which is normally not allowed by the browser)
+into a language that the browser can understand
+

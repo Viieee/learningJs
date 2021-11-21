@@ -1,0 +1,8 @@
+to add css/styling into react you just need to import the css file
+into the component file you want the styling to be applied to 
+
+this way react will know which file to be included and considered 
+when building the component in the UI
+
+one small difference with jsx than regular html interms of applying 
+styling is jsx use className instead of class 

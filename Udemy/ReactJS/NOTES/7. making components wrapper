@@ -1,0 +1,19 @@
+you can make your custom component as a wrapper for another elements
+example:
+**** we have a component called 'cards' ****
+import Card from './Card';
+function ExpenseItem(props) {
+  return (
+    <Card className="expense-item">
+      <ExpenseDate date={props.date}/>
+    </Card>
+  );
+}
+
+normally you can't do this but you can do it by setting the returned value of the card component
+## in cards component ##
+function Card(props){
+    return <div className='card'>{props.children}</div>
+}
+
+props.childer will let you wrap any element around the custom component

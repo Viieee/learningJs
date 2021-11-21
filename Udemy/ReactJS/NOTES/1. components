@@ -1,0 +1,9 @@
+components made of html, css, and javascript.
+components in react is just a javascript function
+
+why components?
+with components we can split our code into smaller chunks, reuse, 
+and mix & match the components with other components in the future
+
+App.js is the main component of a react app,
+that means it will contain all other components inside the app

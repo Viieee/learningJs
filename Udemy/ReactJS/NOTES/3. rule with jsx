@@ -1,0 +1,36 @@
+you can only have one root element
+
+example:
+return (
+    <div></div>
+    <div></div>
+) => this will fail
+
+return (
+    <div>
+        <div className='ex'> test1 </div>
+        <div> test2 </div>
+    </div>
+) => this is the right way
+
+why? because this is actually a simplified version of returning jsx code
+before you have to do it like this
+
+return React.createElement(
+    'div',
+    {},
+    React.createElement ('div', {className='ex'}, test1),
+    React.createElement ('div', {}, test2),
+)
+
+1st argument is the root 
+2nd is the attribute of the root
+3rd and so on is the child element of the root
+
+thats why you can have more than 1 root element, that would mean you want to return more than
+1 thing, example:
+return React.createElement(React.createElement(
+    'div',
+    {},),  React.createElement ('div', {className='ex'}, test1),
+    
+and you cannot return more than one thing

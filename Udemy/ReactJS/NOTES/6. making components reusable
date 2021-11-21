@@ -1,0 +1,25 @@
+you can normally just use the components you already make 
+but its not that simple for the data 
+you need to use jsx feature called 'props'
+props is an object that will contain all the value of attribute passed onto the components
+it is very similar to parameter-argument in function
+
+example:
+*** WE HAVE A COMPONENT CALLED 'ITEM' ***
+<Item 
+    title={expenses[0].title}
+    amount={expenses[0].amount}
+    date={expenses[0].date}>
+</Item>
+
+props is a key-value pair 
+title, amount, and date is the key to be accessed on props
+later on it can be accesed like props.title, props.amount, props.date on the component itself
+
+you can shorten the code further with:
+<Item 
+    title={expenses[0].title}
+    amount={expenses[0].amount}
+    date={expenses[0].date} />
+
+if theres no content inside of the custom tags
