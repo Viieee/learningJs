@@ -1,0 +1,21 @@
+you can render multiple element by looping through an array and returning a single element using map
+example:
+const contoh = ['satu', 'dua', 'tiga']
+
+return (
+    <>
+        {contoh.map(item=>(
+            <li key={item}>{item}</li>
+        ))}
+    </>
+)
+
+note that you wrapped the loop in () and not {},
+if you wrapped it in {} you need to return it again and its actually okay
+
+key is something you need to set on your mapped out elements, because in this operation
+we try to render a collection inside a components.
+
+key is something react use to identify each individual component, so later on when state is used
+react doesn't need to re render the whole component, but only the one updated and needed to be 
+re-rendered

@@ -1,0 +1,21 @@
+because of the jsx rule (look number #3), you need to wrapped the returned elements, 
+you dont need to wrapped it around div you can just wrapped it around whats called react fragment. 
+why?
+because react components used to be wrapped only with div, this will create whats called 'div soup'
+where the nested div is so long.
+example on react fragment vs div:
+*** using div ***
+return (
+    <div>
+        <h2></h2>
+        <p></p>
+    </div>
+)
+
+*** using react fragment ***
+return(
+    <>
+        <h2></h2>
+        <p></p>
+    </>
+)
