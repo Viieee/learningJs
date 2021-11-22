@@ -1,0 +1,39 @@
+we can communicate and passing data from children to parent with the help of props too!
+we do it by passing function into child element, this function from parent can be triggered
+    in the children element. And this function execution is the way to pass data from 
+    children element to parent element.
+    By adding parameter to the function passed from parent, parent can recieve data
+    through initalization of the function called with the help of props!
+
+example:
+**** NewExpense.js (parent component) ****
+const NewExpense = (props) => {
+  const saveExpenseDataHandler = (enteredExpenseData) => {
+    console.log(enteredExpenseData)
+  };
+
+  return (
+    <div className='new-expense'>
+      <ExpenseForm onSaveExpenseData={saveExpenseDataHandler} />
+    </div>
+  );
+};
+
+**** ExpenseForm.js (child component) ****
+const ExpenseForm = (props) => {
+    const expenseData = {
+      title: 'title test',
+      amount: 1,
+      date: new Date(2020,2,3),
+    };
+  const submitHandler = (event) => {
+    props.onSaveExpenseData(expenseData);
+  };
+
+  return (
+    <form onSubmit={submitHandler}/>
+  );
+};
+
+the data logged in saveExpenseDataHanlder function in NewExpense component is the expenseData
+in ExpenseForm

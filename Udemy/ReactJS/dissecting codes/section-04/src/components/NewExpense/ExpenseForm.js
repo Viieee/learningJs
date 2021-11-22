@@ -6,6 +6,7 @@ const ExpenseForm = (props) => {
   const [enteredTitle, setEnteredTitle] = useState('');
   const [enteredAmount, setEnteredAmount] = useState('');
   const [enteredDate, setEnteredDate] = useState('');
+  // ! using one state
   // const [userInput, setUserInput] = useState({
   //   enteredTitle: '',
   //   enteredAmount: '',
@@ -13,18 +14,21 @@ const ExpenseForm = (props) => {
   // });
 
   const titleChangeHandler = (event) => {
-    setEnteredTitle(event.target.value);
+    setEnteredTitle(event.target.value); // storing the value
+    // ! using one state
     // setUserInput({
     //   ...userInput,
     //   enteredTitle: event.target.value,
     // });
+    // ! one state that depends on previous state, it will guarantee the latest previous state snapshot
     // setUserInput((prevState) => {
     //   return { ...prevState, enteredTitle: event.target.value };
     // });
   };
 
   const amountChangeHandler = (event) => {
-    setEnteredAmount(event.target.value);
+    setEnteredAmount(event.target.value); // storing the value
+    // ! using one state
     // setUserInput({
     //   ...userInput,
     //   enteredAmount: event.target.value,
@@ -32,7 +36,8 @@ const ExpenseForm = (props) => {
   };
 
   const dateChangeHandler = (event) => {
-    setEnteredDate(event.target.value);
+    setEnteredDate(event.target.value); // storing the value
+    // ! using one state
     // setUserInput({
     //   ...userInput,
     //   enteredDate: event.target.value,
@@ -40,7 +45,7 @@ const ExpenseForm = (props) => {
   };
 
   const submitHandler = (event) => {
-    event.preventDefault();
+    event.preventDefault(); // ! preventing the browser from reloading when clicking submit button
 
     const expenseData = {
       title: enteredTitle,
@@ -49,6 +54,9 @@ const ExpenseForm = (props) => {
     };
 
     props.onSaveExpenseData(expenseData);
+    // ! clearing the value after submitting
+    // ! this is called two way binding, by inserting value in the input 
+      // to the variable watched by state
     setEnteredTitle('');
     setEnteredAmount('');
     setEnteredDate('');
