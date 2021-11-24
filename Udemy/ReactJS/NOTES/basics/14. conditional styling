@@ -1,0 +1,38 @@
+in react you can use what is called css module to help you with conditional styling and scoping
+why? 
+to avoid two or more classes in css with the same name colliding 
+
+step:
+1. change the name of your css file to .module.css
+2. import css a little bit differently
+    => import styles from './CourseInput.module.css';
+3. use the style module, you will have access to all class defined in the file
+
+example 
+*** the module.css file ***
+.form-control {
+  margin: 0.5rem 0;
+}
+
+.form-control.invalid input {
+  border-color: red;
+  background: #ffd7d7;
+}
+
+.form-control.invalid label {
+  color: red;
+}
+
+*** the component file ***
+
+const CourseInput = props => {
+
+  return (
+    <div
+    className={`${styles['form-control']} ${!isValid && styles.invalid}`}
+    >
+        <label>Course Goal</label>
+        <input type="text" />
+    </div>
+  );
+};
