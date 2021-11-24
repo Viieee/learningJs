@@ -2,3 +2,18 @@ theres a few different way you can make conditional return statement in jsx
 
 example:
 1. returning variable 
+let test = <p>this empty</p>
+
+if(something.length > 0){
+    test = <h2>some content here</h2>
+}
+
+return test
+
+2. returning on condition 
+
+if(something.length === 0){
+    return <p>this empty</p>
+}
+
+return <h2>some content here</h2>
