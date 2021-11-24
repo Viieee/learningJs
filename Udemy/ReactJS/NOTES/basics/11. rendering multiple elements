@@ -1,4 +1,5 @@
 you can render multiple element by looping through an array and returning a single element using map
+becuase if you try to render array of elements, react will render it side by side (as siblings node)
 example:
 const contoh = ['satu', 'dua', 'tiga']
 
