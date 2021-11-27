@@ -1,0 +1,7 @@
+useEffect function is a function that will only be executed after every evaluation if 
+the dependency (the second argument of this function) changed
+the dependency is an optional argument
+
+useEffect(()=>{...}, [dependencies])
+
+if the dependency is empty then the function will only run once and thats when the app start

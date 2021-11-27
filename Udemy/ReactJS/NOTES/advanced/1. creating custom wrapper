@@ -1,0 +1,33 @@
+jsx has some limitations, we already discussed it in the basics section
+one big limitation that jsx has is it has to return one root element on each component
+one common workaround for this limitation is to put the content of the component on div
+
+it can create some problem in readability side of the code
+where it can create a bunch of divs and make a 'div soup'
+
+theres a few way to solve this, 
+1. create custom wrapper component
+
+const Wrapper = props => {
+  return props.children;
+};
+
+export default Wrapper;
+
+the wrapper will contain the children nested inside of it and later on won't be shown in 
+    the code view
+
+2. using fragment 
+<React.Fragment>
+      <ChildA />
+      <ChildB />
+      <ChildC />
+    </React.Fragment>
+
+or 
+
+<>
+    <ChildA />
+    <ChildB />
+    <ChildC />
+</>

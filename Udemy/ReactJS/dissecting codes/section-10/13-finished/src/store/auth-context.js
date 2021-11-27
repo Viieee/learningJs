@@ -15,8 +15,6 @@ export const AuthContextProvider = (props) => {
     if (storedUserLoggedInInformation === '1') {
       setIsLoggedIn(true);
     }
-
-    console.log('test use effect without dependency')
   }, []);
 
   const logoutHandler = () => {

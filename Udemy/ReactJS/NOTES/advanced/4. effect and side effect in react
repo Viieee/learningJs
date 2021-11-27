@@ -1,0 +1,19 @@
+react main task is to render UI and react to user input
+
+so the effect of react is to:
+1. evaluate and render jsx
+2. manage state and props
+3. react to user input and events
+4. re-evaluate component upon state and props changes
+
+whats called side-effect in react is everything but the effect itself
+so storing data to browser storage, sending http request to backend server, set & manage timers
+is not really react's main job so you need different way to handle it
+
+you have to remember that a component is basically a function
+and it will be re-executed everytime theres any changes in the state 
+
+if you have a http request on your component that also using state in it 
+the http request will be executed everytime the state changes and this is not a good practice
+
+we use something called useEffect() to handle these side effects

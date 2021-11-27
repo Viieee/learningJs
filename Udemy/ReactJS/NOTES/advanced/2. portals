@@ -1,0 +1,4 @@
+portals is a way to render children component into a dom node that exist outside 
+the dom hierarchy so the parent css styling doesnt get inherited to the portaled children
+
+this is very useful for modals and popups on the page
