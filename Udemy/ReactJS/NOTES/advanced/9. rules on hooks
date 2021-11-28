@@ -1,0 +1,4 @@
+1. you can only call hooks (useState, useEffect, useReducer) on component functions 
+    and custom hooks
+2. you can only call hooks in top level of the component function, this means it cannot be
+    called in nested function inside of the component function
