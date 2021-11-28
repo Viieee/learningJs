@@ -1,0 +1,70 @@
+context api is used to minimalize using props as a way to transfer data through components
+    that doesn't actually need it 
+
+context will use component wide state storage to trigger the action and passing it to 
+    the component that actually need it without having to go through other components 
+    that don't need it
+
+you can pass data and function through context
+
+how?
+1. you need to make the context
+2. you need to provide the context and consume the context
+
+make the context in separate file
+
+import React from 'react';
+
+const AuthContext = React.createContext({
+  isLoggedIn: false
+});
+
+export default AuthContext;
+
+
+providing:
+    <AuthContext.Provider
+        value={{
+            isLoggedIn: isLoggedIn,
+        }}
+    >
+        <MainHeader onLogout={logoutHandler} />
+        <main>
+            {!isLoggedIn && <Login onLogin={loginHandler} />}
+            {isLoggedIn && <Home onLogout={logoutHandler} />}
+        </main>
+    </AuthContext.Provider>
+
+now every child element/component of the context will have the access to the value passed onto 
+    the context provider
+
+now to consume
+import React, { useContext } from 'react';
+
+const Navigation = (props) => {
+  const ctx = useContext(AuthContext);
+
+  return (
+    <nav className={classes.nav}>
+      <ul>
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Users</a>
+          </li>
+        )}
+        {ctx.isLoggedIn && (
+          <li>
+            <a href="/">Admin</a>
+          </li>
+        )}
+        {ctx.isLoggedIn && (
+          <li>
+            <button onClick={props.onLogout}>Logout</button>
+          </li>
+        )}
+      </ul>
+    </nav>
+  );
+};
+
+export default Navigation;
