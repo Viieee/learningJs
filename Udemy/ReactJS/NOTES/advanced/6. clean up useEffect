@@ -1,0 +1,22 @@
+clean up is a function that normally use to clean up whatever useEffect do 
+to avoid memory leak 
+
+useEffect(()=>{
+    const identifier = setTimeout(()=>{
+      console.log('checking the form validity after the user done typing')
+      setFormIsValid(
+        enteredPassword.trim().length > 6 && enteredEmail.includes('@')
+      )
+    }, 500)
+
+    // cleaning up
+    return ()=>{
+      // this function will be executed before the useEffect runs and when the component unmount
+      console.log('cleaning up')
+      clearTimeout(identifier)
+      // ? if the user still typing, we want to clear the existing timer
+        // so in the end theres only one timer left on the very last keystroke
+    }
+  }, [enteredEmail, enteredPassword])
+
+clean up function will be executed before the useEffect as a whole execute

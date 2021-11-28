@@ -1,0 +1,20 @@
+useReducer is an alternative to useState, the use case of useReducer is:
+1. when managing some complex states
+2. managing multiple state
+when you updating state depending on another state
+
+const [state, dispatchFunction] = useReducer(reducerFunction, initialState, initFunction)
+
+reducer function example
+function emailReducer(state, action){
+
+  // initial state
+  return {value: '', isValid: false}
+}
+
+
+the reducer function will get the latest snapshot of the state and the action that triggered
+    the reducer function execution
+    and it should return new updated state
+
+value passed as argument in dispatchFunction will be stored in action parameter on reducerFunction

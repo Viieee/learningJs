@@ -4,4 +4,5 @@ the dependency is an optional argument
 
 useEffect(()=>{...}, [dependencies])
 
-if the dependency is empty then the function will only run once and thats when the app start
+if the dependency is an empty array then the function will only run once and thats when the app start
+if theres no dependency then the function will be triggered everytime the component runs
