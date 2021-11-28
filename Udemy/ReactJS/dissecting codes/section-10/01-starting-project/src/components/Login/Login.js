@@ -10,6 +10,7 @@ function emailReducer(state, action){
     case "USER_INPUT":
       return {value: action.val, isValid: action.val.includes('@')}
     case "INPUT_VALIDATION":
+      console.log(state)
       return {value: state.value, isValid: state.value.includes('@')}
     default:
       return  {value: '', isValid: false}
