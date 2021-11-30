@@ -1,0 +1,18 @@
+react memo is a way to tell react not to re-render child custom component
+    to be re-rendered everytime the parent component is being re-evaluated
+    and re-rendered
+
+the component passed onto the React.memo() will only be re-evaluated and re-rendered
+    when the props of the component changes
+
+how this works is react will save the component using react memo to the memory and 
+    on every parent evaluation react will compare the previous snapshot of the 
+    component's props and the evaluated props, if it's the same props then 
+    the component will not be reevaluated 
+
+theres one note on the 'changes' of the props, you can only track the previous snapshot
+    of props in primitive type. so objects cannot be compared to one another because 
+    it will always be different from one another because objects will be recreated
+    on new component evaluation 
+    example of an object is a function 
+    this can be solved with useCallback hook

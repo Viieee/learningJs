@@ -1,0 +1,16 @@
+react main job is to manage state and manage components 
+
+the one part of react that actually managing the dom (the interface user sees) is react dom
+
+react will manage the state, if the state changes on a certain components 
+    react will re-evaluate the component and comparing the previous snapshot of the
+    component and the new one after state changed, 
+    if theres any changes in the component react will tell react dom 
+    the changes made in the specific component so later on 
+    react can make the changes on the dom
+
+react will 're-evaluate'/re-executing the component function 
+    everytime the props, context, and the state changes 
+    this doesn't mean react will re-render the component though
+    react will only tell react dom to re-render the component
+    if its necesarry

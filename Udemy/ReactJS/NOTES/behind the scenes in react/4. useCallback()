@@ -1,0 +1,5 @@
+useCallback hook is what being used to prevent unecessary function re-creation on re-evaluation
+useCallback will tell react to save the function somewhere in memory 
+it takes 2 argument 
+1. the function 
+2. the dependency for the function to be re-created on component re-evaluation
