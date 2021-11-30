@@ -1,0 +1,49 @@
+theres only 2 place where you can use react hooks, 
+1. in a component
+2. in custom hooks
+
+custom hooks is a function that is used to outsource logic that can be re-used
+on multiple different component and these custom hooks will contain 
+the hooks react provides (useState, useEffect, useReducer, etc)
+
+example:
+*** Custom hook ***
+import { useState, useEffect } from 'react';
+
+const useCounter = (forwards = true) => {
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (forwards) {
+        setCounter((prevCounter) => prevCounter + 1);
+      } else {
+        setCounter((prevCounter) => prevCounter - 1);
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [forwards]);
+
+  return counter;
+};
+
+export default useCounter;
+
+*** backward counter *** 
+const BackwardCounter = () => {
+  const counter = useCounter(false);
+
+  return <Card>{counter}</Card>;
+};
+
+export default BackwardCounter;
+
+*** forward counter ***
+const ForwardCounter = () => {
+  const counter = useCounter();
+
+  return <Card>{counter}</Card>;
+};
+
+export default ForwardCounter;
