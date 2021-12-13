@@ -11,7 +11,10 @@ const ticketSchema = new Schema({
     type: String,
     required: true,
   },
-  assignedMember: 'Vie',
+  assignedMember: {
+    type: String,
+    required: true
+  },
 });
 
 // exporting the schema

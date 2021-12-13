@@ -51,26 +51,26 @@ const Login = (props) => {
     passValid: null,
   });
 
-  const {emailValid: emailValidity} = formState
-  const {passValid: passwordValidity} = formState
+  const { emailValid: emailValidity } = formState;
+  const { passValid: passwordValidity } = formState;
 
-  useEffect(()=>{
-    const identifier = setTimeout(()=>{
-      console.log('checking validity')
-      setFormIsValid(emailValidity && passwordValidity)
-    }, 500)
-    return ()=>{
-      console.log('cleaning up')
-      clearTimeout(identifier)
-    }
-  }, [emailValidity, passwordValidity])
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('checking validity');
+      setFormIsValid(emailValidity && passwordValidity);
+    }, 500);
+    return () => {
+      console.log('cleaning up');
+      clearTimeout(identifier);
+    };
+  }, [emailValidity, passwordValidity]);
 
   const emailChangeHandler = (event) => {
     formDispatch({ type: 'INPUT_EMAIL', val: event.target.value });
   };
 
   const passwordChangeHandler = (event) => {
-    formDispatch({type: 'INPUT_PASSWORD', val: event.target.value})
+    formDispatch({ type: 'INPUT_PASSWORD', val: event.target.value });
   };
 
   const validateEmailHandler = () => {
@@ -78,7 +78,7 @@ const Login = (props) => {
   };
 
   const validatePasswordHandler = () => {
-    formDispatch({type: 'PASS_VALIDITY'})
+    formDispatch({ type: 'PASS_VALIDITY' });
   };
 
   const submitHandler = (event) => {

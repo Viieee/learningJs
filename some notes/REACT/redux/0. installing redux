@@ -1,0 +1,5 @@
+on non react 
+npm install redux
+
+on react app
+npm install react-redux

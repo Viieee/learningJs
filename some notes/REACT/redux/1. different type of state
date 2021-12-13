@@ -1,0 +1,16 @@
+1. local state,
+    state that belongs to one component
+    example: listening to an input field
+    should be managed in component internal using useState/useReducer
+2. cross component state,
+    state that affects multiple components
+    example: open/close state of a modal overlay
+    handled using prop chains/prop drilling
+3. app wide state
+    state that affects the entire app
+    example: authentication status
+    handled using context / redux / prop drilling / prop chains
+
+we want to use redux over context when:
+1. the app is more complex, when using context can lead to nested jsx code with the providers
+2. the state being watched is changing on high frequency

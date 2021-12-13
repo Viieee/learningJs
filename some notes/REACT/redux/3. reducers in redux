@@ -1,0 +1,7 @@
+reducers in redux musts be pure, this means that there should not be any side effect handling
+    and it should be synchronous
+
+the reducer function should just take an input, storing old state and action, then put out 
+    new state
+
+the side effects should be handled inside the components or inside the action creators

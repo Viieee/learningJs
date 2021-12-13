@@ -1,0 +1,38 @@
+two way binding is done to make element reflect the current state snapshot
+example:
+
+const SimpleInput = (props) => {
+  const [enteredName, setEnteredName] = useState('');
+
+  const nameInputChangeHandler = (event) => {
+    setEnteredName(event.target.value);
+  };
+
+  const formSubmissionHandler = (event) => {
+    event.preventDefault();
+    setEnteredName('');
+  };
+
+  return (
+    <form onSubmit={formSubmissionHandler}>
+      <div className='form-control'>
+        <label htmlFor='name'>Your Name</label>
+        <input
+          type='text'
+          id='name'
+          onChange={nameInputChangeHandler}
+          value={enteredName}S
+        />
+      </div>
+      <div className='form-actions'>
+        <button>Submit</button>
+      </div>
+    </form>
+  );
+};
+
+in formSubmissionHandler function, the state will be set to empty again after the user 
+    submitted the form.
+if we want this to be reflected in the component we need to do two way binding 
+    by setting the value of the element into the variable watched by useState
+    in this case, its enteredName.

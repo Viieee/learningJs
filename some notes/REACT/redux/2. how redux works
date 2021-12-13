@@ -1,0 +1,15 @@
+redux is about having one central data state store that can be shared across the app
+in this store you can store a lot of different data state
+example: authentication status, theming, user input state
+
+few components of redux:
+1. the data state store
+2. component that uses the state stored in the redux store using subscription 
+3. reducer function, function that will process/transform the data state stored in the redux store
+4. action that triggered by the component using dispatch
+
+component subscribed to the redux store 
+component trigger action using dispatch
+this action then forwarded to the reducer function
+reducer function then changes the data stored in the redux store
+this changes reflected in the components that subscribed to the redux store

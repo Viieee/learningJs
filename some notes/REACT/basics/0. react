@@ -7,3 +7,7 @@ with vanila javascript, you definitly can manipulate the DOM but you need to
     per element that you want to see on the screen. 
     In other words you doing some repetitive things if you develop front end 
     with just vanilla javascript.
+
+create react app using npx 
+in terminal:
+npx create-react-app [folder name]

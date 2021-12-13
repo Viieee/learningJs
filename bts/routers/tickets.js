@@ -1,10 +1,13 @@
 const express = require('express');
 
-const Router = express.Router()
+const Router = express.Router();
 
-const ticketController = require('../controllers/tickets')
+const ticketController = require('../controllers/tickets');
 
-// get /project/ticket/
-Router.get('/ticket', ticketController.getTickets)
+// get /project/ticket
+Router.get('/ticket', ticketController.getTickets);
 
-module.exports =  Router
+// post /project/ticket
+Router.post('/ticket', ticketController.postTicket);
+
+module.exports = Router;
