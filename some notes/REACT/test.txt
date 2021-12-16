@@ -1,0 +1,19 @@
+<Route>
+
+</Route>
+<Route path='/' exact
+    render={({location})=>(
+        <Tabs value={value} indicatorColor="primary" textColor="primary" aria-label="disabled tabs example">
+            <Tab label="Sign In" value=0 component={Link} to="/signin" />
+            <Tab label="Sign Up" value=1 component={Link} to="/signup" />
+        </Tabs>
+        <Switch>
+            <Route path='/signin'>
+                <Signin handleChange={handleChange}/>
+            </Route>
+            <Router path='/signup'>
+                <Signup/>
+            </Router>
+        </Switch>
+    )}
+/>
