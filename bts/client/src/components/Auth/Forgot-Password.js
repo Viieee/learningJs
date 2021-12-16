@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     left: '50%',
     top: '40%',
     transform: 'translate(-50%, -50%)',
-    padding: '5px 0 0 5px',
+    padding: '5px 5px',
     [theme.breakpoints.between(0, 400)]: {
       top: '45%',
     },
@@ -44,9 +44,12 @@ const useStyles = makeStyles((theme) => ({
   },
   buttonStyle: {
     width: 100,
-    margin: '25px 43px 0 auto',
+    margin: '25px 39px 0 auto',
     display: 'block',
   },
+  closeButton: {
+    padding: '5px 5px'
+  }
 }));
 
 function ForgotPassword() {
@@ -60,7 +63,7 @@ function ForgotPassword() {
         </h2>
       </div>
       <Paper elevation={20} className={classes.paperStyle}>
-        <Grid align="left">
+        <Grid align="left" className={classes.closeButton}>
           <Link component={RouterLink} to="/signin">
             <CloseIcon />
           </Link>
