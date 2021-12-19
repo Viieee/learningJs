@@ -1,35 +1,14 @@
-import { Paper, Grid, Tabs, Tab, makeStyles } from '@material-ui/core/';
+import { Paper, Grid, Tabs, Tab} from '@material-ui/core/';
 import TabPanel from '../layout/TabPanel';
 import Signin from '../auth/Signin';
 import Signup from '../auth/Signup';
 import { Link } from 'react-router-dom';
 import BugReport from '@material-ui/icons/BugReport';
-
-// styling
-const useStyles = makeStyles((theme) => ({
-  paperStyle: {
-    width: 340,
-    position: 'absolute',
-    left: '50%',
-    top: '40%',
-    transform: 'translate(-50%, -50%)',
-    [theme.breakpoints.between(0, 400)]: {
-      top: '45%',
-    },
-  },
-  logoStyle: {
-    textAlign: 'center',
-    marginTop: '115px',
-    [theme.breakpoints.between(0, 400)]: {
-      marginTop: '50px',
-    },
-  },
-}));
+import { useStyles } from '../hooks/useStyles';
 
 const Auth = (props) => {
   const classes = useStyles();
   let value = props.value;
-
   return (
     <Grid>
       <div className={classes.logoStyle}>

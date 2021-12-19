@@ -5,55 +5,36 @@ import {
   TextField,
   Button,
   Link,
-  makeStyles,
-  // createTheme,
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link as RouterLink } from 'react-router-dom';
 import BugReport from '@material-ui/icons/BugReport';
+import { useStyles } from '../hooks/useStyles';
+import useInput from '../hooks/useInput';
 
-// the styling
-const useStyles = makeStyles((theme) => ({
-  paperStyle: {
-    width: 340,
-    height: 436.5,
-    position: 'absolute',
-    left: '50%',
-    top: '40%',
-    transform: 'translate(-50%, -50%)',
-    padding: '5px 5px',
-    [theme.breakpoints.between(0, 400)]: {
-      top: '45%',
-    },
-  },
-  fieldStyle: {
-    width: 260,
-    margin: '0 30px',
-    padding: '2px 0',
-  },
-  headerStyle: {
-    textAlign: 'center',
-    margin: '10px 0',
-  },
-  logoStyle: {
-    textAlign: 'center',
-    marginTop: '115px',
-    [theme.breakpoints.between(0, 400)]: {
-      marginTop: '50px',
-    },
-  },
-  buttonStyle: {
-    width: 100,
-    margin: '25px 39px 0 auto',
-    display: 'block',
-  },
-  closeButton: {
-    padding: '5px 5px'
-  }
-}));
+// validation
+const isEmail = (value) => /$^|.+@.+..+/.test(value);
 
 function ForgotPassword() {
   const classes = useStyles();
+  const {
+    value: emailValue,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    onChangeHandler: emailChangeHandler,
+    onBlurHandler: emailBlurHandler,
+    reset: resetEmail,
+    errorMessage: emailErrorMessage,
+    // setErrorMessage: setEmailErrorMessage,
+  } = useInput(isEmail, 'email is invalid');
+
+  function submitHandler(e) {
+    e.preventDefault();
+    if (!emailIsValid) {
+      return;
+    }
+    resetEmail();
+  }
 
   return (
     <Grid>
@@ -68,18 +49,27 @@ function ForgotPassword() {
             <CloseIcon />
           </Link>
         </Grid>
-        <div className={classes.headerStyle}>
-          <h2>Password Reset</h2>
-          <Typography variant="caption" gutterBottom>
-            Please fill this form so we can send you the password reset link to
-            your e-mail !
-          </Typography>
-        </div>
-        <form>
+        <Grid align="center">
+          <div className={classes.headerStyle}>
+            <h2>Password Reset</h2>
+            <Typography variant="caption" gutterBottom>
+              Please fill this form so we can send you the password reset link
+              to your e-mail !
+            </Typography>
+          </div>
+        </Grid>
+        <form onSubmit={submitHandler}>
           <TextField
-            label="Email"
-            placeholder="Enter your email"
-            className={classes.fieldStyle}
+            label="E-mail"
+            name="email"
+            placeholder="Enter e-mail"
+            value={emailValue}
+            onChange={emailChangeHandler}
+            onBlur={emailBlurHandler}
+            error={emailHasError}
+            helperText={emailHasError && emailErrorMessage}
+            fullWidth
+            required
           />
           <Button
             type="submit"
