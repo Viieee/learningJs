@@ -1,24 +1,32 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   Grid,
   Paper,
-  Avatar,
   TextField,
   Button,
   Typography,
   Link,
+  IconButton,
+  InputAdornment,
 } from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { Link as RouterLink } from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useStyles } from '../hooks/useStyles';
 
 // validation
-const isEmail = (value) => /$^|.+@.+..+/.test(value);
-const isEmpty = (value) => value.length >= 7;
+const isEmail = (value) =>
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
+    value
+  );
+const isEmpty = (value) => value.trim().length >= 7;
 
 function Signin() {
   const classes = useStyles();
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+
   const {
     value: emailValue,
     isValid: emailIsValid,
@@ -39,13 +47,14 @@ function Signin() {
     reset: resetPassword,
     errorMessage: passwordErrorMessage,
     // setErrorMessage: setPasswordErrorMessage,
-  } = useInput(isEmpty, 'password length should be more than 7 characters');
+  } = useInput(isEmpty, 'password should be longer than 7 characters');
 
   function submitHandler(e) {
     e.preventDefault();
     if (!emailIsValid && !passwordValid) {
       return;
     }
+    console.log(emailValue, passwordValue);
     resetEmail();
     resetPassword();
   }
@@ -53,15 +62,10 @@ function Signin() {
   return (
     <Grid>
       <Paper className={classes.innerPaperStyle}>
-        <Grid align="center">
-          <Avatar className={classes.avatarStyle}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <h2>Sign In</h2>
-        </Grid>
         <form onSubmit={submitHandler}>
           <TextField
             label="E-mail"
+            variant="outlined"
             name="email"
             placeholder="Enter e-mail"
             value={emailValue}
@@ -73,22 +77,37 @@ function Signin() {
             required
           />
           <TextField
+            required
+            style={{ marginTop: 10 }}
             label="Password"
-            name="password"
+            variant="outlined"
             placeholder="Enter password"
-            type="password"
-            value={passwordValue}
+            type={showPassword ? 'text' : 'password'} // <-- This is where the magic happens
             onChange={passwordChangeHandler}
+            value={passwordValue}
             onBlur={passwordBlurHandler}
             error={passwordHasError}
             helperText={passwordHasError && passwordErrorMessage}
-            fullWidth
-            required
+            InputProps={{
+              // <-- This is where the toggle button is added.
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
           />
           <Button
             type="submit"
             color="primary"
             className={classes.btnstyle}
+            // style={{ marginTop: 50 }}
             variant="contained"
             fullWidth
           >

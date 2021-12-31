@@ -29,7 +29,7 @@ function useInput(functionValidator, inputErrorMessage) {
   const [errorMessage, setErrorMessage] = useState(null);
 
   const valueIsValid = functionValidator(fieldState.value);
-  const hasError = !valueIsValid && fieldState.isTouched;
+  let hasError = !valueIsValid && fieldState.isTouched;
 
   useEffect(() => {
     if (hasError) {

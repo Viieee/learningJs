@@ -8,7 +8,6 @@ import {
 } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 import { Link as RouterLink } from 'react-router-dom';
-import BugReport from '@material-ui/icons/BugReport';
 import { useStyles } from '../hooks/useStyles';
 import useInput from '../hooks/useInput';
 
@@ -38,11 +37,6 @@ function ForgotPassword() {
 
   return (
     <Grid>
-      <div className={classes.logoStyle}>
-        <h2>
-          <BugReport /> Bug Tracking System
-        </h2>
-      </div>
       <Paper elevation={20} className={classes.paperStyle}>
         <Grid align="left" className={classes.closeButton}>
           <Link component={RouterLink} to="/signin">
@@ -60,6 +54,7 @@ function ForgotPassword() {
         </Grid>
         <form onSubmit={submitHandler}>
           <TextField
+            variant="outlined"
             label="E-mail"
             name="email"
             placeholder="Enter e-mail"
@@ -68,7 +63,7 @@ function ForgotPassword() {
             onBlur={emailBlurHandler}
             error={emailHasError}
             helperText={emailHasError && emailErrorMessage}
-            fullWidth
+            className={classes.fieldStyle}
             required
           />
           <Button

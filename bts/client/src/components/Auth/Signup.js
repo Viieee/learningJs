@@ -1,23 +1,37 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   Grid,
   Paper,
-  Avatar,
   Typography,
   TextField,
   Button,
+  Link,
+  IconButton,
+  InputAdornment,
 } from '@material-ui/core';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
 import { useStyles } from '../hooks/useStyles';
 import useInput from '../hooks/useInput';
+import { Link as RouterLink } from 'react-router-dom';
 
 // validation
-const isEmail = (value) => /$^|.+@.+..+/.test(value);
-const isEmptyName = (value) => value.length >= 3;
-const isEmptyPassword = (value) => value.length >= 7;
+const isEmail = (value) =>
+  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
+    value
+  );
+const isEmptyName = (value) => value.trim().length >= 3;
+const isEmptyPassword = (value) => value.trim().length >= 7;
 
 const Signup = () => {
   const classes = useStyles();
+  const [showPassword, setShowPassword] = useState(false);
+  const handleClickShowPassword = () => setShowPassword(!showPassword);
+  const handleMouseDownPassword = () => setShowPassword(!showPassword);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
+  const handleMouseDownConfirmPassword = () =>
+    setShowConfirmPassword(!showConfirmPassword);
 
   const {
     value: nameValue,
@@ -92,20 +106,11 @@ const Signup = () => {
   return (
     <Grid>
       <Paper className={classes.innerPaperStyle}>
-        <Grid align="center">
-          <Avatar className={classes.avatarStyle}>
-            <AddCircleOutlineOutlinedIcon />
-          </Avatar>
-          <h2 className={classes.headerStyle}>Sign Up</h2>
-          <Typography variant="caption" gutterBottom>
-            Please fill this form to create an account !
-          </Typography>
-        </Grid>
         <form onSubmit={submitHandler}>
           <TextField
-            label="Name"
-            name="username"
-            placeholder="Enter your name"
+            label="Full Name"
+            name="fullName"
+            placeholder="Enter your full name"
             value={nameValue}
             onChange={nameChangeHandler}
             onBlur={nameBlurHandler}
@@ -130,28 +135,57 @@ const Signup = () => {
             label="Password"
             name="password"
             placeholder="Enter password"
-            type="password"
-            value={passwordValue}
+            type={showPassword ? 'text' : 'password'}
             onChange={passwordChangeHandler}
+            value={passwordValue}
             onBlur={passwordBlurHandler}
             error={passwordHasError}
             helperText={passwordHasError && passwordErrorMessage}
+            InputProps={{
+              // <-- This is where the toggle button is added.
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                  >
+                    {showPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             fullWidth
             required
           />
           <TextField
             label="Confirm Password"
             placeholder="Confirm your password"
-            name="confirm-password"
+            name="confirmPassword"
+            type={showConfirmPassword ? 'text' : 'password'}
             value={confirmPasswordValue}
             onChange={confirmPasswordChangeHandler}
             onBlur={confirmPasswordBlurHandler}
             error={confirmPasswordHasError}
             helperText={confirmPasswordHasError && confirmPasswordErrorMessage}
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowConfirmPassword}
+                    onMouseDown={handleMouseDownConfirmPassword}
+                  >
+                    {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
             fullWidth
             required
           />
           <Button
+            style={{ marginTop: 30 }}
             type="submit"
             variant="contained"
             color="primary"
@@ -161,6 +195,12 @@ const Signup = () => {
             Sign up
           </Button>
         </form>
+        <Typography>
+          Already have an account?
+          <Link component={RouterLink} to="/signin">
+            Sign In
+          </Link>
+        </Typography>
       </Paper>
     </Grid>
   );

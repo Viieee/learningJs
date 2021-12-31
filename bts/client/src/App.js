@@ -2,6 +2,7 @@ import './App.css';
 import Auth from './components/pages/Auth';
 import { Switch, Route, Redirect } from 'react-router-dom';
 import ForgotPassword from './components/auth/Forgot-Password';
+import Dashboard from './components/pages/Dashboard';
 
 function App() {
   return (
@@ -17,6 +18,9 @@ function App() {
       </Route>
       <Route path="/forget_password">
         <ForgotPassword />
+      </Route>
+      <Route path="/dashboard">
+        <Dashboard />
       </Route>
       <Route path="*">
         <p>sadge</p>

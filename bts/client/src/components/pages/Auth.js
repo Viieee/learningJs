@@ -1,4 +1,4 @@
-import { Paper, Grid, Tabs, Tab} from '@material-ui/core/';
+import { Paper, Grid, Tabs, Tab } from '@material-ui/core/';
 import TabPanel from '../layout/TabPanel';
 import Signin from '../auth/Signin';
 import Signup from '../auth/Signup';
@@ -11,12 +11,12 @@ const Auth = (props) => {
   let value = props.value;
   return (
     <Grid>
-      <div className={classes.logoStyle}>
-        <h2>
-          <BugReport /> Bug Tracking System
-        </h2>
-      </div>
       <Paper elevation={20} className={classes.paperStyle}>
+        <Grid container justify="center">
+          <h2 style={{ padding: 10 }}>
+            <BugReport /> Bug Tracking System
+          </h2>
+        </Grid>
         <Grid container justify="center">
           <Tabs
             value={value}
