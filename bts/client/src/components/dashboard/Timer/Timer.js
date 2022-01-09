@@ -5,7 +5,7 @@ export default function Timer(props) {
   if (totalSeconds <= 0) {
     totalSeconds = 0;
   }
-  const { seconds, minutes, hours } = useTimer(
+  const { seconds, minutes, hours, days } = useTimer(
     totalSeconds,
     handleTimerFinish
   );
@@ -14,9 +14,16 @@ export default function Timer(props) {
     // alert('times up!');
   }
 
+  let dayText;
+  if(days>0){
+    dayText = `${days} day(s), ` 
+  }else{
+    dayText=''
+  }
+
   return (
     <div>
-      <div>{`${hours} : ${minutes} : ${seconds}`}</div>
+      <div>{`${dayText}${hours} : ${minutes} : ${seconds}`}</div>
     </div>
   );
 }

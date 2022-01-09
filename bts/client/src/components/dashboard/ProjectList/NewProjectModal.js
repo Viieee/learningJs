@@ -9,8 +9,7 @@ import {
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import useInput from '../../hooks/useInput';
-import {useStyles} from '../../hooks/useStyles'
-
+import { useStyles } from '../../hooks/useStyles';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -57,6 +56,17 @@ const NewProjectModal = (props) => {
     if (!titleIsValid) {
       return;
     }
+    // fetch('http://localhost:8080/project/', {
+    //   method: 'POST',
+    //   headers: {
+    //     // Authorization: 'Bearer ' + this.props.token,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     title: titleValue,
+    //     description: descValue,
+    //   }),
+    // });
     setOpenAlert(true);
     props.setOpen(false);
     resetTitle();
@@ -65,7 +75,7 @@ const NewProjectModal = (props) => {
 
   return (
     <>
-      <Modal open={props.open}>
+      <Modal onBackdropClick={() => props.setOpen(false)} open={props.open}>
         <Container className={classes.containerNewProjectModal}>
           <form
             className={classes.formNewProjectModal}

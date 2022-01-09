@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 
 const ticketRouter = require('./routers/tickets');
+const projectRouter = require('./routers/projects');
 const authRouter = require('./routers/auth');
 
 const app = express();
@@ -14,14 +15,14 @@ app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Methods',
-    'GET, POST, PUT, PATCH, DELETE'
+    'GET, POST, PUT, PATCH, DELETE' // the api request allowed
   );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
   next();
 });
 
 app.use('/auth', authRouter);
-app.use('/project', ticketRouter);
+app.use('/project', projectRouter);
 
 // error handling middleware
 app.use((error, req, res, next) => {

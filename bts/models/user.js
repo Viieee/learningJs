@@ -15,19 +15,27 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-//   projects: [
-//     {
-//       projectId: {
-//         type: Schema.Types.ObjectId,
-//         ref: 'Project',
-//         required: true,
-//       },
-//       projectName: {
-//         type: String,
-//         required: true,
-//       },
-//     },
-//   ],
+  projects: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: true,
+    },
+  ],
+  tickets: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Ticket',
+      required: true,
+    },
+  ],
+  notifications: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Notification',
+      required: true,
+    },
+  ],
 });
 
 module.exports = mongoose.model('User', userSchema);

@@ -60,6 +60,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   logoLg: {
     display: 'none',
+    fontSize: '15px',
     [theme.breakpoints.up(1300)]: {
       display: 'block',
     },
@@ -93,7 +94,7 @@ export const useStyles = makeStyles((theme) => ({
   },
   buttonSettingsStyleDashboard: {
     backgroundColor: '#3b3737',
-    marginRight: 105,
+    marginRight: 120,
     marginBottom: 10,
     fontSize: 11,
     padding: 5,
@@ -106,10 +107,10 @@ export const useStyles = makeStyles((theme) => ({
       color: 'grey',
     },
     [theme.breakpoints.down(600)]: {
-      marginRight: 30,
+      marginRight: 35,
     },
     [theme.breakpoints.up(1400)]: {
-      marginRight: 180,
+      marginRight: 200,
     },
   },
   dashboardContentContainer: {
@@ -129,7 +130,7 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   // 2 main tables
-  cardProject:{
+  cardProject: {
     width: '90%',
     height: '100%',
   },
@@ -228,7 +229,7 @@ export const useStyles = makeStyles((theme) => ({
   cardNewMember: {
     width: '28%',
     height: '100%',
-    [theme.breakpoints.between(601, 1400)]:{
+    [theme.breakpoints.between(601, 1400)]: {
       width: '40%',
     },
     [theme.breakpoints.down(600)]: {
@@ -253,10 +254,10 @@ export const useStyles = makeStyles((theme) => ({
       overflow: 'auto',
     },
     '& th': {
-      maxWidth: 190,
-      minWidth: 190,
+      maxWidth: 220,
+      minWidth: 220,
       [theme.breakpoints.down(600)]: {
-        maxWidth: 75,
+        maxWidth: 50,
         minWidth: 50,
       },
       overflow: 'auto',
@@ -318,7 +319,7 @@ export const useStyles = makeStyles((theme) => ({
     height: '50vh',
     padding: 10,
     [theme.breakpoints.up(1400)]: {
-      height: '35vh',
+      height: '40vh',
     },
     [theme.breakpoints.down(600)]: {
       width: 'auto',
@@ -332,7 +333,7 @@ export const useStyles = makeStyles((theme) => ({
       maxWidth: 110,
       minWidth: 110,
       [theme.breakpoints.down(600)]: {
-        maxWidth: 75,
+        maxWidth: 50,
         minWidth: 50,
       },
       overflow: 'auto',
@@ -373,12 +374,68 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   // ticket detail
-  cardTicketDetail: {
-    width: '90%',
-    height: '42vh',
-    marginTop: 20,
+  containerTicketDetailModalBase: {
+    width: '80vw',
+    height: '80vh',
+    overflow: 'auto',
+    backgroundColor: 'white',
+    position: 'absolute',
+    padding: 10,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
     [theme.breakpoints.down(600)]: {
-      marginTop: 20,
+      width: '90vw',
+    },
+  },
+  ticketDetailContent: {
+    display: 'flex',
+    [theme.breakpoints.down(900)]: {
+      display: 'block',
+    },
+  },
+  ticketDetailCard:{
+    width:'50%',
+    height:'100%',
+    [theme.breakpoints.down(900)]: {
+      width:'100%',
+      height: '75vh',
+    },
+  },
+  // settings
+  cardSettingsBase: {
+    width: '60%',
+    height: '80vh',
+    overflow: 'auto',
+    padding: 10,
+    [theme.breakpoints.down(900)]: {
+      width: '90%',
+    },
+    '& input': {
+      maxWidth: 400,
+      minWidth: 400,
+      [theme.breakpoints.down(900)]: {
+        maxWidth: 300,
+        minWidth: 300,
+      },
+    },
+    '& button': {
+      marginRight: 65,
+      marginTop: 15,
+      [theme.breakpoints.up(1400)]: {
+        marginRight: 75,
+      },
+      [theme.breakpoints.down(900)]: {
+        marginRight: 20,
+      },
+    },
+  },
+  accountSettingsForm: {
+    display: 'flex',
+    [theme.breakpoints.down(900)]: {
+      display: 'block',
     },
   },
 }));

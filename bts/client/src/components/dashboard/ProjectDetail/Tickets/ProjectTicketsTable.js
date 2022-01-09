@@ -5,63 +5,41 @@ import {
   TableCell,
   Grid,
   Button,
+  Link,
 } from '@material-ui/core';
+import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 import useTable from '../../../hooks/useTable';
-import {useStyles} from '../../../hooks/useStyles'
-import { MoreVert, Add } from '@material-ui/icons';
+import { useStyles } from '../../../hooks/useStyles';
+import { Add } from '@material-ui/icons';
 import NewTicketModal from './NewTicketsModal';
-
-let id = 0;
-const createData = (title, description, status, author) => {
-  id += 1;
-  return { id, title, description, status, author };
-};
-
-let rows = [
-  createData(
-    'Ticket 1',
-    'this is the description for the ticket test test test',
-    'new',
-    'vieri adhitya'
-  ),
-  createData(
-    'Ticket 2',
-    'this is the description for the ticket test test test',
-    'ongoing',
-    'vieri adhitya'
-  ),
-  createData(
-    'Ticket 3',
-    'this is the description for the ticket test test test',
-    'ongoing',
-    'vieri adhitya1'
-  ),
-  createData(
-    'Ticket 4',
-    'this is the description for the ticket test test test',
-    'new',
-    'vieri adhitya'
-  ),
-  createData(
-    'Ticket 5',
-    'this is the description for the ticket test test test',
-    'new',
-    'vieri adhitya'
-  ),
-  createData(
-    'Ticket 6',
-    'this is the description for the ticket test test test',
-    'new',
-    'vieri adhitya'
-  ),
-];
-
+import { rows } from '../../TicketData';
+import TicketDropdown from '../../dropdowns/TicketDropdown';
 const headCells = [
   { id: 'title', label: 'Ticket Title', disableSorting: true },
   { id: 'description', label: 'Description', disableSorting: true },
   { id: 'status', label: 'Status' },
   { id: 'author', label: 'Ticket Author' },
 ];
+
+function TitleLink(props) {
+  const match = useRouteMatch();
+  return (
+    <TableCell>
+      <Link
+        color="inherit"
+        component={RouterLink}
+        to={{
+          pathname: `${match.url}/ticket/${props.item.id}`,
+          state: {
+            item: props.item,
+          },
+        }}
+      >
+        {props.item.title}
+      </Link>
+    </TableCell>
+  );
+}
 
 export default function ProjectTicketsTable() {
   const [open, setOpen] = React.useState(false);
@@ -97,11 +75,11 @@ export default function ProjectTicketsTable() {
         <TableBody>
           {recordsAfterPagingAndSorting().map((item) => (
             <TableRow key={item.id}>
-              <TableCell>{item.title}</TableCell>
+              <TitleLink item={item} />
               <TableCell>{item.description}</TableCell>
               <TableCell>{item.status}</TableCell>
               <TableCell>{item.author}</TableCell>
-              <MoreVert style={{ marginTop: 15 }} />
+              <TicketDropdown item={item} />
             </TableRow>
           ))}
         </TableBody>

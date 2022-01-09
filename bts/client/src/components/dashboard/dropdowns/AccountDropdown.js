@@ -1,40 +1,75 @@
-import { Menu, MenuItem, ListItemIcon, Link } from '@material-ui/core';
+import { useState } from 'react';
+import {
+  Menu,
+  MenuItem,
+  ListItemIcon,
+  Link,
+  Box,
+  IconButton,
+  Avatar,
+} from '@material-ui/core';
 import { Link as RouterLink } from 'react-router-dom';
 import { Settings, ExitToApp as Logout } from '@material-ui/icons';
 
 export default function AccountDropdown(props) {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <Menu
-      anchorEl={props.anchorEl}
-      id="account-menu"
-      open={props.open}
-      onClose={props.handleClose}
-      onClick={props.handleClose}
-      style={{ marginTop: 45 }}
-      PaperProps={{
-        elevation: 3,
-        style: {
-          width: 'max-content',
-          height: 'max-content',
-        },
-      }}
-      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-    >
-      <MenuItem>
-        <ListItemIcon>
-          <Settings fontSize="small" />
-        </ListItemIcon>
-        Settings
-      </MenuItem>
-      <Link color="inherit" component={RouterLink} to="/logout">
-        <MenuItem>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
-          Logout
-        </MenuItem>
-      </Link>
-    </Menu>
+    <Box>
+      <IconButton
+        onClick={handleClick}
+        size="small"
+        style={{ marginLeft: 2 }}
+        aria-controls={open ? 'account-menu' : undefined}
+        aria-haspopup="true"
+        aria-expanded={open ? 'true' : undefined}
+      >
+        <Avatar
+          style={{ width: 32, height: 32 }}
+          alt="Remy Sharp"
+          src="https://images.pexels.com/photos/8647814/pexels-photo-8647814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
+        />
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        id="account-menu"
+        open={open}
+        onClose={handleClose}
+        onClick={handleClose}
+        style={{ marginTop: 45 }}
+        PaperProps={{
+          elevation: 3,
+          style: {
+            width: 'max-content',
+            height: 'max-content',
+          },
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+      >
+        <Link color="inherit" component={RouterLink} to="/account/settings">
+          <MenuItem>
+            <ListItemIcon>
+              <Settings fontSize="small" />
+            </ListItemIcon>
+            Settings
+          </MenuItem>
+        </Link>
+        <Link color="inherit" component={RouterLink} to="/logout">
+          <MenuItem>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            Logout
+          </MenuItem>
+        </Link>
+      </Menu>
+    </Box>
   );
 }

@@ -36,7 +36,7 @@ export default function useTable(records, headCells, rowsPerPageCustomed) {
           {headCells.map((headCell) => {
             if (headCell.id === 'description') {
               style = {
-                width: '100%',
+                width: '70%',
               };
             } else {
               style = {
@@ -45,7 +45,7 @@ export default function useTable(records, headCells, rowsPerPageCustomed) {
             }
             return (
               <TableCell
-                style={{ ...style, padding: 0, margin: 0 }}
+                style={{ ...style, padding: 0}}
                 key={headCell.id}
                 sortDirection={orderBy === headCell.id ? order : false}
               >

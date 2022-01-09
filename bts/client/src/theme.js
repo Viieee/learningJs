@@ -8,6 +8,12 @@ const theme = createTheme({
     secondary: {
       main: '#1E664C',
     },
+    test:{
+      main: '#f00202'
+    }
+  },
+  typography: {
+    fontFamily: 'Arial, Raleway, Lato',
   },
   overrides: {
     MuiButton: {

@@ -20,10 +20,10 @@ function inputStateReducer(state = initialInputState, action) {
   }
 }
 
-function useInput(functionValidator, inputErrorMessage) {
+function useInput(functionValidator, inputErrorMessage, customInitialState = initialInputState) {
   const [fieldState, dispatchFunction] = useReducer(
     inputStateReducer,
-    initialInputState
+    customInitialState
   );
 
   const [errorMessage, setErrorMessage] = useState(null);

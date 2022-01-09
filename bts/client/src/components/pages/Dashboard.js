@@ -1,11 +1,9 @@
-import { Grid,ThemeProvider  } from '@material-ui/core';
+import { Grid, ThemeProvider } from '@material-ui/core';
 import { Switch, Route } from 'react-router-dom';
 import theme from '../../theme';
 import { useStyles } from '../hooks/useStyles';
 import SideDrawer from '../layout/SideDrawer';
-import ProjectList from '../dashboard/ProjectList/ProjectList';
-import TicketList from '../dashboard/TicketList/TicketList';
-import ProjectDetail from '../dashboard/ProjectDetail/ProjectDetail';
+import Project from './Project';
 
 function Dashboard() {
   const classes = useStyles();
@@ -13,24 +11,16 @@ function Dashboard() {
   return (
     <ThemeProvider theme={theme}>
       <Grid container>
-        <Grid item sm={2} xs={1}>
+        <Grid item sm={1} xs={1}>
           <SideDrawer />
         </Grid>
-        <Grid item sm={10} xs={11}>
+        <Grid item sm={11} xs={11}>
           <div className={classes.dashboardContentContainer}>
             <Switch>
-              <Route path="/dashboard" exact>
+              <Route path="/dashboard">
                 <div className={classes.projectContent}>
-                  <ProjectList />
+                  <Project/>
                 </div>
-              </Route>
-              <Route path="/dashboard/tickets">
-                <div className={classes.projectContent}>
-                  <TicketList />
-                </div>
-              </Route>
-              <Route path="/dashboard/project/:projectId">
-                <ProjectDetail />
               </Route>
             </Switch>
           </div>

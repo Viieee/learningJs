@@ -1,7 +1,15 @@
 const UserModel = require('../models/user');
 const bcrypt = require('bcryptjs');
+const ExpressValidator = require('express-validator');
 
 exports.signup = (req, res, next) => {
+  const errors = ExpressValidator.validationResult(req);
+  if (!errors.isEmpty()) {
+    const error = new Error('Validation failed!');
+    error.statusCode = 422;
+    error.data = errors.array();
+    throw error;
+  }
   const userName = req.body.userName;
   const email = req.body.email;
   const password = req.body.password;
@@ -13,6 +21,9 @@ exports.signup = (req, res, next) => {
         userName: userName,
         email: email,
         password: hashedPassword,
+        projects: [],
+        tickets: [],
+        notifications: [],
       });
       return user.save();
     })
@@ -28,5 +39,11 @@ exports.signup = (req, res, next) => {
         err.statusCode = 500;
       }
       next(err);
-    });
+    })
+};
+
+exports.login = (req, res, next) => {
+  // extracting the data from the login form
+  const email = req.body.email;
+  const password = req.body.password;
 };

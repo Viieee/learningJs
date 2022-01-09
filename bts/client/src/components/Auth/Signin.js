@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import {
   Grid,
   Paper,
@@ -10,9 +10,10 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink} from 'react-router-dom';
 import useInput from '../hooks/useInput';
 import { useStyles } from '../hooks/useStyles';
+import { AuthContext } from '../context/auth-context';
 
 // validation
 const isEmail = (value) =>
@@ -23,6 +24,7 @@ const isEmpty = (value) => value.trim().length >= 7;
 
 function Signin() {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -54,7 +56,7 @@ function Signin() {
     if (!emailIsValid && !passwordValid) {
       return;
     }
-    console.log(emailValue, passwordValue);
+    auth.login();
     resetEmail();
     resetPassword();
   }

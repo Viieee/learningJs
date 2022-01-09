@@ -7,55 +7,69 @@ import {
   Button,
 } from '@material-ui/core';
 import useTable from '../../../hooks/useTable';
-import {useStyles} from '../../../hooks/useStyles'
-import { Add, DeleteOutline } from '@material-ui/icons';
+import { useStyles } from '../../../hooks/useStyles';
+import { Add} from '@material-ui/icons';
 import NewMemberModal from './NewMemberModal';
+import DeleteMemberConfirmationModal from './DeleteMemberConfirmationModal';
 
-let id = 0;
-const createData = (name, email, role) => {
-  id += 1;
-  return { id, name, email, role };
+// let _id = 0;
+const createData = (_id, name, email, role) => {
+  // _id += 1;
+  return { _id, name, email, role };
 };
 
 let rows = [
-  createData('Vieri Adhitya Harviando', 'adhityaharviando@gmail.com', 'admin'),
   createData(
-    'Vieri Adhitya Harviando',
+    1,
+    'Vieri Adhitya Harviando1',
+    'adhityaharviando@gmail.com',
+    'admin'
+  ),
+  createData(
+    2,
+    'Vieri Adhitya Harviando2',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    3,
+    'Vieri Adhitya Harviando3',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    4,
+    'Vieri Adhitya Harviando4',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    5,
+    'Vieri Adhitya Harviando5',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    6,
+    'Vieri Adhitya Harviando6',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    7,
+    'Vieri Adhitya Harviando7',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    8,
+    'Vieri Adhitya Harviando8',
     'adhityaharviando@gmail.com',
     'developer'
   ),
   createData(
-    'Vieri Adhitya Harviando',
+    9,
+    'Vieri Adhitya Harviando9',
     'adhityaharviando@gmail.com',
     'developer'
   ),
@@ -68,6 +82,7 @@ const headCells = [
 
 export default function NewMemberTable() {
   const [open, setOpen] = React.useState(false);
+
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(rows, headCells);
 
@@ -75,7 +90,6 @@ export default function NewMemberTable() {
   function modalHandler() {
     setOpen(true);
   }
-
   return (
     <div>
       <Grid
@@ -102,9 +116,7 @@ export default function NewMemberTable() {
             <TableRow key={item.id}>
               <TableCell>{item.name}</TableCell>
               <TableCell>{item.email}</TableCell>
-              <DeleteOutline
-                style={{ marginTop: 10, color: 'red', }}
-              />
+              <DeleteMemberConfirmationModal item={item} />
             </TableRow>
           ))}
         </TableBody>

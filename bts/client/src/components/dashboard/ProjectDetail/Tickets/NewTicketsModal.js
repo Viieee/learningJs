@@ -13,7 +13,7 @@ import {
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import useInput from '../../../hooks/useInput';
-import {useStyles} from '../../../hooks/useStyles'
+import { useStyles } from '../../../hooks/useStyles';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -33,17 +33,18 @@ const names = [
 ];
 
 const isEmptyTitle = (value) => value.trim().length >= 3;
+let initialPriority = 'Medium';
+let initialStatus = 'New';
+let initialType = 'Bug';
+let initialDevs = [];
 
-export default function NewTicketModal(props) {
-  const classes = useStyles();
-
-  const [openAlert, setOpenAlert] = useState(false);
-  const [priority, setPriority] = useState('Medium');
-  const [status, setStatus] = useState('New');
-  const [type, setType] = useState('Bug');
-  const [personName, setPersonName] = useState([]);
-
-  const {
+export default function NewTicketModal({
+  open,
+  setOpen,
+  edit = false,
+  item = null,
+}) {
+  let {
     value: titleValue,
     isValid: titleIsValid,
     hasError: titleHasError,
@@ -54,7 +55,7 @@ export default function NewTicketModal(props) {
     // setErrorMessage: setNameErrorMessage
   } = useInput(isEmptyTitle, 'title should be longer than 3 characters');
 
-  const {
+  let {
     value: descValue,
     // isValid: descIsValid,
     // hasError: descHasError,
@@ -64,6 +65,21 @@ export default function NewTicketModal(props) {
     // errorMessage: descErrorMessage,
     // setErrorMessage: setNameErrorMessage
   } = useInput(isEmptyTitle, 'name should be longer than 3 characters');
+
+  if (edit) {
+    titleValue = item.title;
+    descValue = item.description;
+    initialPriority = item.priority;
+    initialStatus = item.status;
+    initialType = item.type;
+    initialDevs = item.assignedDevs;
+  }
+  const classes = useStyles();
+  const [openAlert, setOpenAlert] = useState(false);
+  const [priority, setPriority] = useState(initialPriority);
+  const [status, setStatus] = useState(initialStatus);
+  const [type, setType] = useState(initialType);
+  const [personName, setPersonName] = useState(initialDevs);
 
   function handleChangePriority(event) {
     setPriority(event.target.value);
@@ -99,13 +115,13 @@ export default function NewTicketModal(props) {
     }
     console.log(titleValue, descValue, priority, status, type, personName);
     setOpenAlert(true);
-    props.setOpen(false);
+    setOpen(false);
     resetTitle();
     resetDesc();
   }
   return (
     <>
-      <Modal open={props.open}>
+      <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container className={classes.containerNewTicketModal}>
           <form
             className={classes.formNewTicketModal}
@@ -176,7 +192,9 @@ export default function NewTicketModal(props) {
             </div>
             <div className={classes.itemNewTicketModal}>
               <Grid container justify="flex-end">
-                <FormControl sx={{ m: 1, minWidth: 120, maxWidth: 300 }}>
+                <FormControl
+                  style={{ margin: 1, minWidth: 120, maxWidth: 300 }}
+                >
                   <InputLabel shrink htmlFor="select-multiple-native">
                     Assigned Member
                   </InputLabel>
@@ -226,7 +244,7 @@ export default function NewTicketModal(props) {
                 <Button
                   variant="outlined"
                   color="secondary"
-                  onClick={() => props.setOpen(false)}
+                  onClick={() => setOpen(false)}
                 >
                   Cancel
                 </Button>

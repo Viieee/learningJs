@@ -9,7 +9,7 @@ import {
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
 import useInput from '../../../hooks/useInput';
-import {useStyles} from '../../../hooks/useStyles'
+import { useStyles } from '../../../hooks/useStyles';
 
 const isEmail = (value) =>
   /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
@@ -54,7 +54,7 @@ export default function NewMemberModal(props) {
   }
   return (
     <>
-      <Modal open={props.open}>
+      <Modal onBackdropClick={() => props.setOpen(false)} open={props.open}>
         <Container className={classes.containerNewMemberModal}>
           <form
             className={classes.formNewMemberModal}
