@@ -1,36 +1,35 @@
-import React, { useState } from 'react';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useParams, useHistory, Link as RouterLink } from 'react-router-dom';
 import {
   Grid,
   Paper,
-  Typography,
+  // Typography,
   TextField,
   Button,
   Link,
-  IconButton,
   InputAdornment,
+  IconButton,
 } from '@material-ui/core';
+import { Visibility, VisibilityOff } from '@material-ui/icons';
+import CloseIcon from '@material-ui/icons/Close';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
-import { Visibility, VisibilityOff } from '@material-ui/icons';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useStyles } from '../hooks/useStyles';
 import useInput from '../hooks/useInput';
 
 // validation
-const isEmail = (value) =>
-  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
-    value
-  );
-const isEmptyName = (value) => value.trim().length >= 3;
 const isEmptyPassword = (value) => value.trim().length >= 7;
 
-const Signup = () => {
-  const history = useHistory();
+export default function NewPassword() {
   const classes = useStyles();
+  const params = useParams();
+  const history = useHistory();
+  const { token } = params;
+  const [loading, setLoading] = useState(true);
   const [showSuccess, setShowSuccess] = useState(false);
   const [successMessage, setSuccessMessage] = useState('');
-  const [showError, setShowError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [userId, setUserId] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
@@ -39,36 +38,13 @@ const Signup = () => {
     setShowConfirmPassword(!showConfirmPassword);
   const handleMouseDownConfirmPassword = () =>
     setShowConfirmPassword(!showConfirmPassword);
-
-  const {
-    value: nameValue,
-    isValid: nameIsValid,
-    hasError: nameHasError,
-    onChangeHandler: nameChangeHandler,
-    onBlurHandler: nameBlurHandler,
-    reset: resetName,
-    errorMessage: nameErrorMessage,
-    // setErrorMessage: setNameErrorMessage
-  } = useInput(isEmptyName, 'name should be longer than 3 characters');
-
-  const {
-    value: emailValue,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    onChangeHandler: emailChangeHandler,
-    onBlurHandler: emailBlurHandler,
-    reset: resetEmail,
-    errorMessage: emailErrorMessage,
-    // setErrorMessage: setEmailErrorMessage,
-  } = useInput(isEmail, 'email is invalid');
-
   const {
     value: passwordValue,
     isValid: passwordValid,
     hasError: passwordHasError,
     onChangeHandler: passwordChangeHandler,
     onBlurHandler: passwordBlurHandler,
-    reset: resetPassword,
+    // reset: resetPassword,
     errorMessage: passwordErrorMessage,
     // setErrorMessage: setPasswordErrorMessage,
   } = useInput(
@@ -81,11 +57,11 @@ const Signup = () => {
 
   const {
     value: confirmPasswordValue,
-    isValid: confirmPasswordValid,
+    // isValid: confirmPasswordValid,
     hasError: confirmPasswordHasError,
     onChangeHandler: confirmPasswordChangeHandler,
     onBlurHandler: confirmPasswordBlurHandler,
-    reset: resetConfirmPassword,
+    // reset: resetConfirmPassword,
     errorMessage: confirmPasswordErrorMessage,
     // setErrorMessage: setConfirmPasswordErrorMessage
   } = useInput(
@@ -93,71 +69,72 @@ const Signup = () => {
     "confirm password input doesn't match the password input"
   );
 
+  useEffect(() => {
+    fetch(`http://192.168.1.5:8080/auth/new-password/${token}`)
+      .then((res) => {
+        if (res.status !== 200) {
+          history.replace('/signin');
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        setLoading(false);
+        console.log(resData.userId);
+        setUserId(resData.userId);
+      })
+      .catch((err) => {});
+  }, [token, history]);
+
   function submitHandler(e) {
     e.preventDefault();
-
-    if (
-      !emailIsValid &&
-      !passwordValid &&
-      !nameIsValid &&
-      !confirmPasswordValid
-    ) {
+    if (!passwordValid) {
       return;
     }
-
-    fetch('http://192.168.1.5:8080/auth/signup', {
+    fetch(`http://192.168.1.5:8080/auth/new-password/${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        email: emailValue,
-        password: passwordValue,
-        userName: nameValue,
+        userId: userId,
+        newPassword: passwordValue,
       }),
     })
       .then((res) => {
-        if (res.status === 409) {
-          throw new Error('Email is already registered!');
-        }
-        if (res.status === 500) {
-          throw new Error('Creating a user failed!');
+        if (res.status === 404 || res.status === 500) {
+          return history.replace('/signin');
         }
         return res.json();
       })
       .then((resData) => {
-        resetName();
-        resetEmail();
-        resetPassword();
-        resetConfirmPassword();
         setShowSuccess(true);
-        setSuccessMessage(
-          'Sign up successfull! please check your email inbox to verify your account'
-        );
+        setSuccessMessage('Password changed successfully!');
         return setTimeout(function () {
           history.replace('/signin');
         }, 5000);
       })
-      .catch((err) => {
-        setShowError(true);
-        setErrorMessage(err.message);
-      });
+      .catch((err) => {});
   }
+
   return (
-    <React.Fragment>
-      <Grid>
-        <Paper className={classes.innerPaperStyle}>
-          {showError && (
-            <Alert
-              severity="error"
-              onClose={() => {
-                setShowError(false);
-              }}
-            >
-              <AlertTitle>Error</AlertTitle>
-              {errorMessage}
-            </Alert>
-          )}
+    <Grid>
+      {loading && (
+        <Grid
+          container
+          direction="row"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <CircularProgress />
+        </Grid>
+      )}
+      {!loading && (
+        <Paper elevation={20} className={classes.paperStyle}>
+          <Grid align="left" className={classes.closeButton}>
+            <Link component={RouterLink} to="/signin">
+              <CloseIcon />
+            </Link>
+          </Grid>
           {showSuccess && (
             <Alert
               severity="success"
@@ -169,32 +146,14 @@ const Signup = () => {
               {successMessage}
             </Alert>
           )}
+          <Grid align="center">
+            <div className={classes.headerStyle}>
+              <h2>Password Reset</h2>
+            </div>
+          </Grid>
           <form onSubmit={submitHandler}>
             <TextField
-              label="Full Name"
-              name="fullName"
-              placeholder="Enter your full name"
-              value={nameValue}
-              onChange={nameChangeHandler}
-              onBlur={nameBlurHandler}
-              error={nameHasError}
-              helperText={nameHasError && nameErrorMessage}
-              fullWidth
-              required
-            />
-            <TextField
-              label="E-mail"
-              name="email"
-              placeholder="Enter e-mail"
-              value={emailValue}
-              onChange={emailChangeHandler}
-              onBlur={emailBlurHandler}
-              error={emailHasError}
-              helperText={emailHasError && emailErrorMessage}
-              fullWidth
-              required
-            />
-            <TextField
+              variant="outlined"
               label="Password"
               name="password"
               placeholder="Enter password"
@@ -203,6 +162,7 @@ const Signup = () => {
               value={passwordValue}
               onBlur={passwordBlurHandler}
               error={passwordHasError}
+              className={classes.fieldStyle}
               helperText={passwordHasError && passwordErrorMessage}
               InputProps={{
                 // <-- This is where the toggle button is added.
@@ -222,6 +182,7 @@ const Signup = () => {
               required
             />
             <TextField
+              variant="outlined"
               label="Confirm Password"
               placeholder="Confirm your password"
               name="confirmPassword"
@@ -230,6 +191,7 @@ const Signup = () => {
               onChange={confirmPasswordChangeHandler}
               onBlur={confirmPasswordBlurHandler}
               error={confirmPasswordHasError}
+              className={classes.fieldStyle}
               helperText={
                 confirmPasswordHasError && confirmPasswordErrorMessage
               }
@@ -249,27 +211,29 @@ const Signup = () => {
               fullWidth
               required
             />
-            <Button
-              style={{ marginTop: 30 }}
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.btnstyle}
-              fullWidth
+            <Grid
+              container
+              direction="row"
+              justifyContent="center"
+              alignItems="center"
             >
-              Sign up
-            </Button>
+              <Button
+                type="submit"
+                variant="contained"
+                color="primary"
+                style={{
+                  maxWidth: 180,
+                  minWidth: 180,
+                  marginTop: 10,
+                  fontSize: 11,
+                }}
+              >
+                Change Password
+              </Button>
+            </Grid>
           </form>
-          <Typography>
-            Already have an account?
-            <Link component={RouterLink} to="/signin">
-              Sign In
-            </Link>
-          </Typography>
         </Paper>
-      </Grid>
-    </React.Fragment>
+      )}
+    </Grid>
   );
-};
-
-export default Signup;
+}

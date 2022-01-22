@@ -1,3 +1,4 @@
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Link,
   Toolbar,
@@ -12,7 +13,6 @@ import {
   Home,
   BugReport,
 } from '@material-ui/icons';
-import { Link as RouterLink } from 'react-router-dom';
 function SideDrawerContent(props) {
   return (
     <div>

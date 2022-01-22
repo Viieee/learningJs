@@ -1,3 +1,5 @@
+import { useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -10,40 +12,59 @@ import {
   InputLabel,
   FormControl,
 } from '@material-ui/core';
-import { useState } from 'react';
 import Alert from '@mui/material/Alert';
-import useInput from '../../../hooks/useInput';
-import { useStyles } from '../../../hooks/useStyles';
+import { AuthContext } from '../../../../context/auth-context';
+import { useStyles } from '../../../../hooks/useStyles';
+import useInput from '../../../../hooks/useInput';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
-
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
 
 const isEmptyTitle = (value) => value.trim().length >= 3;
 let initialPriority = 'Medium';
 let initialStatus = 'New';
 let initialType = 'Bug';
 let initialDevs = [];
+let initialLength = 1;
+let initialTitleInputState = {
+  value: '',
+  isTouched: false,
+};
+let initialDescriptionInputState = {
+  value: '',
+  isTouched: false,
+};
 
 export default function NewTicketModal({
   open,
   setOpen,
   edit = false,
-  item = null,
+  ticket = null,
+  projectDetail,
 }) {
+  const auth = useContext(AuthContext);
+  const classes = useStyles();
+  const params = useParams();
+  const { projectId } = params;
+  if (edit) {
+    initialTitleInputState = {
+      value: ticket.title,
+      isTouched: false,
+    };
+    initialDescriptionInputState = {
+      value: ticket.description,
+      isTouched: false,
+    };
+    initialPriority = ticket.priority;
+    initialStatus = ticket.status;
+    initialType = ticket.type;
+    for (var dev of ticket.assignedDevs) {
+      initialDevs.push(dev._id);
+    }
+    console.log(initialDevs);
+  }
+
   let {
     value: titleValue,
     isValid: titleIsValid,
@@ -53,7 +74,11 @@ export default function NewTicketModal({
     reset: resetTitle,
     errorMessage: titleErrorMessage,
     // setErrorMessage: setNameErrorMessage
-  } = useInput(isEmptyTitle, 'title should be longer than 3 characters');
+  } = useInput(
+    isEmptyTitle,
+    'title should be longer than 3 characters',
+    initialTitleInputState
+  );
 
   let {
     value: descValue,
@@ -64,22 +89,18 @@ export default function NewTicketModal({
     reset: resetDesc,
     // errorMessage: descErrorMessage,
     // setErrorMessage: setNameErrorMessage
-  } = useInput(isEmptyTitle, 'name should be longer than 3 characters');
+  } = useInput(
+    isEmptyTitle,
+    'name should be longer than 3 characters',
+    initialDescriptionInputState
+  );
 
-  if (edit) {
-    titleValue = item.title;
-    descValue = item.description;
-    initialPriority = item.priority;
-    initialStatus = item.status;
-    initialType = item.type;
-    initialDevs = item.assignedDevs;
-  }
-  const classes = useStyles();
   const [openAlert, setOpenAlert] = useState(false);
   const [priority, setPriority] = useState(initialPriority);
   const [status, setStatus] = useState(initialStatus);
   const [type, setType] = useState(initialType);
   const [personName, setPersonName] = useState(initialDevs);
+  const [ticketLength, setTicketLength] = useState(initialLength);
 
   function handleChangePriority(event) {
     setPriority(event.target.value);
@@ -89,6 +110,9 @@ export default function NewTicketModal({
   }
   function handleChangeType(event) {
     setType(event.target.value);
+  }
+  function handleChangeLength(event) {
+    setTicketLength(event.target.value);
   }
   const handleChangeMultiple = (event) => {
     const { options } = event.target;
@@ -113,11 +137,67 @@ export default function NewTicketModal({
     if (!titleIsValid) {
       return;
     }
-    console.log(titleValue, descValue, priority, status, type, personName);
-    setOpenAlert(true);
-    setOpen(false);
-    resetTitle();
-    resetDesc();
+    if (!edit) {
+      fetch(`http://192.168.1.5:8080/project/${projectId}/ticket`, {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: titleValue,
+          description: descValue,
+          status: status,
+          priority: priority,
+          type: type,
+          assignedDevs: personName,
+          timeEnd: ticketLength,
+        }),
+      })
+        .then((res) => {
+          if (res.status !== 201) {
+            return;
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          setOpenAlert(true);
+          setOpen(false);
+          resetTitle();
+          resetDesc();
+        })
+        .catch((err) => console.log(err));
+    } else {
+      fetch(`http://192.168.1.5:8080/ticket/${ticket._id}`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: titleValue,
+          description: descValue,
+          status: status,
+          priority: priority,
+          type: type,
+          assignedDevs: personName,
+          timeEnd: ticketLength,
+        }),
+      })
+        .then((res) => {
+          if (res.status !== 201) {
+            return;
+          }
+          return res.json();
+        })
+        .then((resData) => {
+          setOpenAlert(true);
+          setOpen(false);
+          resetTitle();
+          resetDesc();
+        })
+        .catch((err) => console.log(err));
+    }
   }
   return (
     <>
@@ -161,6 +241,20 @@ export default function NewTicketModal({
             </div>
             <div className={classes.itemNewTicketModal}>
               <Grid container justify="flex-end">
+                <TextField
+                  id="outlined-number"
+                  label="Time (hour(s))"
+                  type="number"
+                  value={ticketLength}
+                  onChange={handleChangeLength}
+                  inputProps={{
+                    min: 0,
+                  }}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  style={{ maxWidth: 70, minWidth: 70, marginRight: 10 }}
+                />
                 <TextField
                   select
                   required
@@ -210,9 +304,9 @@ export default function NewTicketModal({
                       id: 'select-multiple-native',
                     }}
                   >
-                    {names.map((name) => (
-                      <option key={name} value={name}>
-                        {name}
+                    {projectDetail.members.map((member) => (
+                      <option key={member.member._id} value={member.member._id}>
+                        {member.member.userName}
                       </option>
                     ))}
                   </Select>
@@ -260,7 +354,8 @@ export default function NewTicketModal({
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <MuiAlert onClose={handleClose} severity="success">
-          Ticket Created!
+          {edit && 'Ticket Edited!'}
+          {!edit && 'Ticket Created!'}
         </MuiAlert>
       </Snackbar>
     </>

@@ -1,6 +1,5 @@
-import { Box, CssBaseline, Drawer } from '@material-ui/core';
-
 import { useState } from 'react';
+import { Box, CssBaseline, Drawer } from '@material-ui/core';
 import Navbar from './Navbar';
 import SideDrawerContent from './SideDrawer-Content';
 

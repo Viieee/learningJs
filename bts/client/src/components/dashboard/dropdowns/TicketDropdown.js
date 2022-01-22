@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Menu, Link, Box } from '@material-ui/core';
 import { MoreVert } from '@material-ui/icons';
-import DeleteTicketConfirmationModal from './DeleteTicketConfirmationModal';
+import DeleteTicketConfirmationModal from '../ProjectDetail/Tickets/Delete/DeleteTicketConfirmationModal';
 import EditTicketModalButton from './EditTicketModalButton';
 export default function TicketDropdown(props) {
   const [anchorEl, setAnchorOptions] = useState(null);
@@ -12,6 +12,7 @@ export default function TicketDropdown(props) {
   const handleClose = () => {
     setAnchorOptions(null);
   };
+  console.log(props.ticket)
   return (
     <Box>
       <Link component="button" color="inherit" onClick={handleClick}>
@@ -38,8 +39,8 @@ export default function TicketDropdown(props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <EditTicketModalButton item={props.item}/>
-        <DeleteTicketConfirmationModal item={props.item} /> 
+        <EditTicketModalButton ticket={props.ticket} projectDetail={props.projectDetail}/>
+        <DeleteTicketConfirmationModal ticket={props.ticket} /> 
       </Menu>
     </Box>
   );

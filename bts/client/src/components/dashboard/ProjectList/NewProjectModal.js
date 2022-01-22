@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react';
 import {
   Button,
   Container,
@@ -6,10 +7,10 @@ import {
   TextField,
   Grid,
 } from '@material-ui/core';
-import { useState } from 'react';
 import Alert from '@mui/material/Alert';
-import useInput from '../../hooks/useInput';
+import { AuthContext } from '../../context/auth-context';
 import { useStyles } from '../../hooks/useStyles';
+import useInput from '../../hooks/useInput';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
@@ -18,6 +19,7 @@ function MuiAlert(props) {
 const isEmptyTitle = (value) => value.trim().length >= 3;
 
 const NewProjectModal = (props) => {
+  const auth = useContext(AuthContext);
   const classes = useStyles();
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -56,21 +58,28 @@ const NewProjectModal = (props) => {
     if (!titleIsValid) {
       return;
     }
-    // fetch('http://localhost:8080/project/', {
-    //   method: 'POST',
-    //   headers: {
-    //     // Authorization: 'Bearer ' + this.props.token,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     title: titleValue,
-    //     description: descValue,
-    //   }),
-    // });
-    setOpenAlert(true);
-    props.setOpen(false);
-    resetTitle();
-    resetDesc();
+    fetch('http://192.168.1.5:8080/project/', {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: titleValue,
+        description: descValue,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => {
+        auth.socket.emit('addProject', { project: resData.project });
+        setOpenAlert(true);
+        props.setOpen(false);
+        resetTitle();
+        resetDesc();
+      })
+      .catch((err) => console.log(err));
   }
 
   return (

@@ -1,4 +1,5 @@
 import { Fragment } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
   Toolbar,
@@ -7,7 +8,6 @@ import {
   Grid,
   Link,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
 import { Menu, BugReport } from '@material-ui/icons';
 import { useStyles } from '../hooks/useStyles';
 import AccountDropdown from '../dashboard/dropdowns/AccountDropdown';

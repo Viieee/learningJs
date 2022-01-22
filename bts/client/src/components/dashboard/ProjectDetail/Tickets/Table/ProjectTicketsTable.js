@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 import {
   TableBody,
   TableRow,
@@ -7,13 +8,11 @@ import {
   Button,
   Link,
 } from '@material-ui/core';
-import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
-import useTable from '../../../hooks/useTable';
-import { useStyles } from '../../../hooks/useStyles';
 import { Add } from '@material-ui/icons';
-import NewTicketModal from './NewTicketsModal';
-import { rows } from '../../TicketData';
-import TicketDropdown from '../../dropdowns/TicketDropdown';
+import { useStyles } from '../../../../hooks/useStyles';
+import useTable from '../../../../hooks/useTable';
+import NewTicketModal from '../AddModal/NewTicketsModal';
+import TicketDropdown from '../../../dropdowns/TicketDropdown';
 const headCells = [
   { id: 'title', label: 'Ticket Title', disableSorting: true },
   { id: 'description', label: 'Description', disableSorting: true },
@@ -29,22 +28,23 @@ function TitleLink(props) {
         color="inherit"
         component={RouterLink}
         to={{
-          pathname: `${match.url}/ticket/${props.item.id}`,
+          pathname: `${match.url}/ticket/${props.ticket._id}`,
           state: {
-            item: props.item,
+            ticket: props.ticket,
           },
         }}
       >
-        {props.item.title}
+        {props.ticket.title}
       </Link>
     </TableCell>
   );
 }
 
-export default function ProjectTicketsTable() {
+export default function ProjectTicketsTable(props) {
   const [open, setOpen] = React.useState(false);
+  const { projectDetail } = props;
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(rows, headCells, 5);
+    useTable(projectDetail.tickets, headCells, 5);
 
   const classes = useStyles();
   function modalHandler() {
@@ -68,18 +68,22 @@ export default function ProjectTicketsTable() {
           <Add />
           New
         </Button>
-        <NewTicketModal open={open} setOpen={setOpen} />
+        <NewTicketModal
+          open={open}
+          setOpen={setOpen}
+          projectDetail={projectDetail}
+        />
       </Grid>
       <TblContainer className={classes.containerProjectTickets}>
         <TblHead />
         <TableBody>
-          {recordsAfterPagingAndSorting().map((item) => (
-            <TableRow key={item.id}>
-              <TitleLink item={item} />
-              <TableCell>{item.description}</TableCell>
-              <TableCell>{item.status}</TableCell>
-              <TableCell>{item.author}</TableCell>
-              <TicketDropdown item={item} />
+          {recordsAfterPagingAndSorting().map((ticket) => (
+            <TableRow key={ticket._id}>
+              <TitleLink ticket={ticket} />
+              <TableCell>{ticket.description}</TableCell>
+              <TableCell>{ticket.status}</TableCell>
+              <TableCell>{ticket.creator.userName}</TableCell>
+              <TicketDropdown ticket={ticket} projectDetail={projectDetail}/>
             </TableRow>
           ))}
         </TableBody>

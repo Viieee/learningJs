@@ -1,42 +1,32 @@
 import './App.css';
-import { useState, useCallback } from 'react';
-import Auth from './components/pages/Auth';
-import { Switch, Route, Redirect, BrowserRouter } from 'react-router-dom';
-import ForgotPassword from './components/auth/Forgot-Password';
-import Dashboard from './components/pages/Dashboard';
+import { useRef } from 'react';
+import {
+  Switch,
+  Route,
+  Redirect,
+  BrowserRouter,
+  useHistory,
+} from 'react-router-dom';
+import { io } from 'socket.io-client';
 import { AuthContext } from './components/context/auth-context';
+import { useAuth } from './components/hooks/auth-hook';
+import Auth from './components/pages/Auth';
+import ForgotPassword from './components/auth/Forgot-Password';
+import NewPassword from './components/auth/New-Password';
+import VerifyAccount from './components/auth/Verify-Account';
+import Dashboard from './components/pages/Dashboard';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  const login = useCallback(() => {
-    setIsLoggedIn(true);
-  }, []);
-
-  const logout = useCallback(() => {
-    setIsLoggedIn(false);
-  }, []);
-
+  const { token, login, logout, userId } = useAuth();
+  let socket = useRef();
+  let history = useHistory();
   let routes;
-
-  if (isLoggedIn) {
+  if (!token) {
     routes = (
       <Switch>
-        <Route path="/dashboard">
-          <Dashboard />
+        <Route path="/" exact>
+          <Redirect to="/signin" />
         </Route>
-        <Route path="/account">
-          <Dashboard />
-        </Route>
-        {/* <Route path="*">
-        <p>sadge</p>
-      </Route> */}
-        <Redirect to="/dashboard" />
-      </Switch>
-    );
-  } else {
-    routes = (
-      <Switch>
         <Route path="/signin">
           <Auth value="signin" />
         </Route>
@@ -46,14 +36,54 @@ function App() {
         <Route path="/forget_password">
           <ForgotPassword />
         </Route>
-        <Redirect to="/signin" />
+        <Route path="/new-password/:token">
+          <NewPassword />
+        </Route>
+        <Route path="/verify-account/:token">
+          <VerifyAccount />
+        </Route>
+        {!localStorage.getItem('userData') && (
+          <Route path="*">
+            <Redirect to="/signin" />
+          </Route>
+        )}
+      </Switch>
+    );
+  } else {
+    socket.current = io('http://192.168.1.5:8080', {
+      transports: ['websocket'],
+      upgrade: false,
+    });
+    routes = (
+      <Switch>
+        <Route path="/" exact>
+          <Dashboard />
+        </Route>
+        <Route path="/dashboard">
+          <Dashboard />
+        </Route>
+        <Route path="/account">
+          <Dashboard />
+        </Route>
+        {localStorage.getItem('userData') && (
+          <Route path="*">
+            <Redirect to="/dashboard" />
+          </Route>
+        )}
       </Switch>
     );
   }
 
   return (
     <AuthContext.Provider
-      value={{ isLoggedIn: isLoggedIn, login: login, logout: logout }}
+      value={{
+        isLoggedIn: !!token,
+        token: token,
+        userId: userId,
+        login: login,
+        logout: logout,
+        socket: socket.current,
+      }}
     >
       <BrowserRouter>
         <main>{routes}</main>

@@ -1,3 +1,4 @@
+import { useState, useContext } from 'react';
 import {
   Button,
   Container,
@@ -9,17 +10,17 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
-import { useState } from 'react';
-import { useStyles } from '../../hooks/useStyles';
 import Alert from '@mui/material/Alert';
-import { useHistory } from 'react-router-dom';
+import { AuthContext } from '../../../../context/auth-context';
+import { useStyles } from '../../../../hooks/useStyles';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
 export default function DeleteTicketConfirmationModal(props) {
+  const auth = useContext(AuthContext);
   const classes = useStyles();
-  let history = useHistory();
+  // let history = useHistory();
   const [openAlert, setOpenAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = (event, reason) => {
@@ -32,10 +33,23 @@ export default function DeleteTicketConfirmationModal(props) {
   function deleteModal() {
     setOpen(true);
   }
-  function confirmedDeletion(item) {
-    console.log(item);
-    // <Redirect to="/" />;
-    history.push('/dashboard');
+  function confirmedDeletion(ticket) {
+    fetch(`http://192.168.1.5:8080/ticket/${ticket._id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error('error happened!');
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        setOpen(false);
+      })
+      .catch((err) => {});
   }
   return (
     <>
@@ -61,7 +75,7 @@ export default function DeleteTicketConfirmationModal(props) {
             </Typography>
             <Button
               onClick={() => {
-                confirmedDeletion(props.item);
+                confirmedDeletion(props.ticket);
               }}
               variant="outlined"
               color="primary"
@@ -86,7 +100,7 @@ export default function DeleteTicketConfirmationModal(props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <MuiAlert onClose={handleClose} severity="success">
-          Member Added!
+          Ticket deleted!
         </MuiAlert>
       </Snackbar>
     </>

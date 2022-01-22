@@ -1,6 +1,6 @@
 import { Card, Typography } from '@material-ui/core';
-import TicketListTable from './TicketListTable';
 import { useStyles } from '../../hooks/useStyles';
+import TicketListTable from './TicketListTable';
 
 function TicketList() {
   const classes = useStyles();

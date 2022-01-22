@@ -1,10 +1,10 @@
+import { Link } from 'react-router-dom';
 import { Paper, Grid, Tabs, Tab } from '@material-ui/core/';
+import BugReport from '@material-ui/icons/BugReport';
+import { useStyles } from '../hooks/useStyles';
 import TabPanel from '../layout/TabPanel';
 import Signin from '../auth/Signin';
 import Signup from '../auth/Signup';
-import { Link } from 'react-router-dom';
-import BugReport from '@material-ui/icons/BugReport';
-import { useStyles } from '../hooks/useStyles';
 
 const Auth = (props) => {
   const classes = useStyles();

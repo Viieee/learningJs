@@ -1,4 +1,5 @@
 import { useState, useContext } from 'react';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import {
   Grid,
   Paper,
@@ -10,10 +11,11 @@ import {
   InputAdornment,
 } from '@material-ui/core';
 import { Visibility, VisibilityOff } from '@material-ui/icons';
-import { Link as RouterLink} from 'react-router-dom';
-import useInput from '../hooks/useInput';
-import { useStyles } from '../hooks/useStyles';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
 import { AuthContext } from '../context/auth-context';
+import { useStyles } from '../hooks/useStyles';
+import useInput from '../hooks/useInput';
 
 // validation
 const isEmail = (value) =>
@@ -24,8 +26,11 @@ const isEmpty = (value) => value.trim().length >= 7;
 
 function Signin() {
   const classes = useStyles();
+  const history = useHistory();
   const auth = useContext(AuthContext);
   const [showPassword, setShowPassword] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const handleClickShowPassword = () => setShowPassword(!showPassword);
   const handleMouseDownPassword = () => setShowPassword(!showPassword);
 
@@ -38,6 +43,7 @@ function Signin() {
     reset: resetEmail,
     errorMessage: emailErrorMessage,
     // setErrorMessage: setEmailErrorMessage,
+    // setHasError: setEmailHasError,
   } = useInput(isEmail, 'email is invalid');
 
   const {
@@ -56,14 +62,59 @@ function Signin() {
     if (!emailIsValid && !passwordValid) {
       return;
     }
-    auth.login();
-    resetEmail();
-    resetPassword();
+    fetch('http://192.168.1.5:8080/auth/signin', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: emailValue.toLowerCase(),
+        password: passwordValue,
+      }),
+    })
+      .then((res) => {
+        if (res.status === 401) {
+          throw new Error('Email or password is invalid, please try again.');
+        }
+        if (res.status === 404) {
+          throw new Error('Email is not registered');
+        }
+        if (res.status === 403) {
+          throw new Error(
+            "Account hasn't been verified yet, please check your email to verify before trying again."
+          );
+        }
+        if (res.status === 500) {
+          throw new Error('Something went wrong');
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        auth.login(resData.userId, resData.token);
+        resetEmail();
+        resetPassword();
+        history.replace('/dashboard');
+      })
+      .catch((err) => {
+        setShowError(true);
+        setErrorMessage(err.message);
+      });
   }
 
   return (
     <Grid>
       <Paper className={classes.innerPaperStyle}>
+        {showError && (
+          <Alert
+            severity="error"
+            onClose={() => {
+              setShowError(false);
+            }}
+          >
+            <AlertTitle>Error</AlertTitle>
+            {errorMessage}
+          </Alert>
+        )}
         <form onSubmit={submitHandler}>
           <TextField
             label="E-mail"

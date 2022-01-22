@@ -1,12 +1,13 @@
-import { Card} from '@material-ui/core';
-import ProjectTicketsTable from './ProjectTicketsTable';
-import {useStyles} from '../../../hooks/useStyles'
+import { Card } from '@material-ui/core';
+import { useStyles } from '../../../hooks/useStyles';
+import ProjectTicketsTable from './Table/ProjectTicketsTable';
 
-function ProjectTickets() {
+function ProjectTickets(props) {
   const classes = useStyles();
+  const { projectDetail } = props;
   return (
     <Card className={classes.cardProjectTicket}>
-      <ProjectTicketsTable />
+      <ProjectTicketsTable projectDetail={projectDetail}/>
     </Card>
   );
 }

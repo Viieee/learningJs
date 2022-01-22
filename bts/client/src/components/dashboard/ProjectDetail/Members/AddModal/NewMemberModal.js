@@ -1,3 +1,5 @@
+import { useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -6,10 +8,10 @@ import {
   TextField,
   Grid,
 } from '@material-ui/core';
-import { useState } from 'react';
 import Alert from '@mui/material/Alert';
-import useInput from '../../../hooks/useInput';
-import { useStyles } from '../../../hooks/useStyles';
+import { AuthContext } from '../../../../context/auth-context';
+import { useStyles } from '../../../../hooks/useStyles';
+import useInput from '../../../../hooks/useInput';
 
 const isEmail = (value) =>
   /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
@@ -21,7 +23,10 @@ function MuiAlert(props) {
 }
 
 export default function NewMemberModal(props) {
+  const auth = useContext(AuthContext);
   const classes = useStyles();
+  const params = useParams();
+  const { projectId } = params;
   const [openAlert, setOpenAlert] = useState(false);
   const {
     value: emailValue,
@@ -47,10 +52,25 @@ export default function NewMemberModal(props) {
     if (!emailIsValid) {
       return;
     }
-    console.log(emailValue);
-    setOpenAlert(true);
-    props.setOpen(false);
-    resetEmail();
+    fetch(`http://192.168.1.5:8080/project/${projectId}/member`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: emailValue,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => {
+        setOpenAlert(true);
+        props.setOpen(false);
+        resetEmail();
+      })
+      .catch((err) => console.log(err));
   }
   return (
     <>

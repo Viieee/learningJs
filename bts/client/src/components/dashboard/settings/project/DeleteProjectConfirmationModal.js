@@ -7,15 +7,20 @@ import {
   Typography,
 } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
+
 import { useStyles } from '../../../hooks/useStyles';
 import Alert from '@mui/material/Alert';
+import { AuthContext } from '../../../context/auth-context';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
 export default function DeleteProjectConfirmationModal(props) {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
+  let history = useHistory();
   const [openAlert, setOpenAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = (event, reason) => {
@@ -30,6 +35,19 @@ export default function DeleteProjectConfirmationModal(props) {
   }
   function confirmedDeletion(item) {
     console.log(item);
+    fetch(`http://192.168.1.5:8080/project/${item}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+      },
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => {
+        history.push('/dashboard');
+      })
+      .catch((err) => console.log(err));
   }
   return (
     <>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 import {
   Menu,
   MenuItem,
@@ -7,7 +8,6 @@ import {
   Box,
   Button,
 } from '@material-ui/core';
-import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 import { Settings, MoreHoriz } from '@material-ui/icons';
 import { useStyles } from '../../hooks/useStyles';
 import LeaveProjectConfirmationModal from './LeaveProjectConfirmationModal';
@@ -15,6 +15,7 @@ export default function ProjectDetailSettingsDropdown(props) {
   const match = useRouteMatch();
   const classes = useStyles();
   const [anchorEl, setAnchorOptions] = useState(null);
+  const { projectDetail } = props;
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorOptions(event.currentTarget);
@@ -53,7 +54,7 @@ export default function ProjectDetailSettingsDropdown(props) {
           to={{
             pathname: `${match.url}/settings`,
             state: {
-              item: props.item,
+              projectDetail: projectDetail,
             },
           }}
         >
@@ -64,7 +65,7 @@ export default function ProjectDetailSettingsDropdown(props) {
             Settings
           </MenuItem>
         </Link>
-        <LeaveProjectConfirmationModal />
+        <LeaveProjectConfirmationModal projectDetail={projectDetail} />
       </Menu>
     </Box>
   );

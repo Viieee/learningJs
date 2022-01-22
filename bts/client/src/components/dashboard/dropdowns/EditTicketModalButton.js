@@ -1,7 +1,7 @@
 import React from 'react';
 import { MenuItem, ListItemIcon } from '@material-ui/core';
 import { Edit } from '@material-ui/icons';
-import NewTicketModal from '../ProjectDetail/Tickets/NewTicketsModal';
+import NewTicketModal from '../ProjectDetail/Tickets/AddModal/NewTicketsModal';
 export default function EditTicketModalButton(props) {
   const [open, setOpen] = React.useState(false);
   function modalHandler() {
@@ -15,7 +15,7 @@ export default function EditTicketModalButton(props) {
         </ListItemIcon>
         Edit
       </MenuItem>
-      <NewTicketModal open={open} setOpen={setOpen} edit={true} item={props.item} />
+      <NewTicketModal open={open} setOpen={setOpen} edit={true} ticket={props.ticket} projectDetail={props.projectDetail} />
     </>
   );
 }

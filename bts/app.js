@@ -7,6 +7,14 @@ const ticketRouter = require('./routers/tickets');
 const projectRouter = require('./routers/projects');
 const authRouter = require('./routers/auth');
 
+// socket io utils
+const {
+  userJoin,
+  getCurrentUser,
+  userLeave,
+  getRoomUsers,
+} = require('./utils/users');
+
 const app = express();
 
 app.use(bodyParser.json()); // parsing incoming json data
@@ -23,10 +31,16 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRouter);
 app.use('/project', projectRouter);
+app.use('/ticket', ticketRouter);
+
+app.use((req, res, next) => {
+  const error = new Error('Could not find this route.');
+  error.statusCode = 404;
+  throw error;
+});
 
 // error handling middleware
 app.use((error, req, res, next) => {
-  console.log(error);
   const statusCode = error.statusCode;
   const message = error.message;
   const data = error.data;
@@ -36,7 +50,28 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(process.env.MONGO_SERVER)
   .then((res) => {
-    app.listen(process.env.PORT);
+    const server = app.listen(8080); // ? node server
+    // websocket
+    const io = require('./socket').init(server);
+    io.on('connection', (socket) => {
+      // ? socket parameter is connection between server and client
+      // ? this function will be executed for every new client connected
+      console.log('client connected');
+
+      socket.on('joinRoom', ({ username, room }) => {
+        const user = userJoin(socket.id, username, room);
+        console.log(user);
+        socket.join(user.room);
+      });
+      socket.on('addProject', ({ project }) => {
+        socket.emit('loadProject', {
+          project,
+        });
+      });
+      socket.on('disconnect', () => {
+        console.log('user disconnected');
+      });
+    });
   })
   .catch((err) => {
     console.log(err);

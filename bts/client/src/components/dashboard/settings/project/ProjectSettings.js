@@ -1,3 +1,5 @@
+import { useContext } from 'react';
+import { useParams, useHistory, useLocation } from 'react-router-dom';
 import {
   Card,
   Divider,
@@ -7,36 +9,33 @@ import {
   Button,
   Tooltip,
 } from '@material-ui/core';
-import { useParams, useLocation } from 'react-router-dom';
 import { Restore } from '@material-ui/icons';
 import { useStyles } from '../../../hooks/useStyles';
+import { AuthContext } from '../../../context/auth-context';
 import useInput from '../../../hooks/useInput';
 import DeleteProjectConfirmationModal from './DeleteProjectConfirmationModal';
 
-const isdescription = (value) =>
-  /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
-    value
-  );
-const isEmptyName = (value) => value.trim().length >= 3;
-const isEmptyPassword = (value) => value.trim().length >= 7;
+const isEmptyTitle = (value) => value.trim().length >= 3;
 
 export default function ProjectSettings() {
+  let history = useHistory();
+  const location = useLocation();
+  const { projectDetail } = location.state;
+  const auth = useContext(AuthContext);
   const classes = useStyles();
   const params = useParams();
-  const location = useLocation();
-  const { item } = location.state;
   const { projectId } = params;
   const {
     value: nameValue,
-    // isValid: nameIsValid,
+    isValid: nameIsValid,
     hasError: nameHasError,
     onChangeHandler: nameChangeHandler,
     onBlurHandler: nameBlurHandler,
     // reset: resetName,
     errorMessage: nameErrorMessage,
     // setErrorMessage: setNameErrorMessage
-  } = useInput(isEmptyName, 'name should be longer than 3 characters', {
-    value: item.title,
+  } = useInput(isEmptyTitle, 'name should be longer than 3 characters', {
+    value: projectDetail.title,
     isTouched: false,
   });
 
@@ -49,8 +48,8 @@ export default function ProjectSettings() {
     // reset: resetdescription,
     errorMessage: descriptionErrorMessage,
     // setErrorMessage: setdescriptionErrorMessage,
-  } = useInput(isdescription, 'description is invalid', {
-    value: item.description,
+  } = useInput(isEmptyTitle, 'description is invalid', {
+    value: projectDetail.description,
     isTouched: false,
   });
 
@@ -64,15 +63,41 @@ export default function ProjectSettings() {
     errorMessage: apiKeyErrorMessage,
     // setErrorMessage: setapiKeyErrorMessage,
   } = useInput(
-    isEmptyPassword,
-    'password length should be more than 7 characters'
+    isEmptyTitle,
+    'password length should be more than 7 characters',
+    {
+      value: projectDetail.apiKey,
+      isTouched: false,
+    }
   );
+
+  function submitHandler(e) {
+    e.preventDefault();
+    if (!nameIsValid) {
+      return;
+    }
+    fetch(`http://192.168.1.5:8080/project/${projectDetail._id}`, {
+      method: 'PATCH',
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        title: nameValue,
+        description: descriptionValue,
+      }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => history.push('/dashboard'));
+  }
 
   return (
     <Card className={classes.cardSettingsBase}>
       <Typography variant="h6">Project Settings</Typography>
       <Divider />
-      <form style={{ padding: 20 }}>
+      <form style={{ padding: 20 }} onSubmit={submitHandler}>
         <Grid
           className={classes.accountSettingsForm}
           container
@@ -83,6 +108,9 @@ export default function ProjectSettings() {
           <Typography>Title</Typography>
           <TextField
             name="title"
+            {...(auth.userId === projectDetail.creator._id
+              ? {}
+              : { disabled: 'true' })}
             variant="outlined"
             value={nameValue}
             onChange={nameChangeHandler}
@@ -102,6 +130,9 @@ export default function ProjectSettings() {
         >
           <Typography>Description</Typography>
           <TextField
+            {...(auth.userId === projectDetail.creator._id
+              ? {}
+              : { disabled: 'true' })}
             name="description"
             variant="outlined"
             value={descriptionValue}
@@ -112,11 +143,13 @@ export default function ProjectSettings() {
             style={{ marginRight: 30 }}
           />
         </Grid>
-        <Grid container justify="flex-end">
-          <Button type="submit" variant="outlined" color="secondary">
-            save
-          </Button>
-        </Grid>
+        {auth.userId === projectDetail.creator._id && (
+          <Grid container justify="flex-end">
+            <Button type="submit" variant="outlined" color="secondary">
+              save
+            </Button>
+          </Grid>
+        )}
       </form>
       <Divider />
       <form style={{ padding: 20 }}>
@@ -138,7 +171,6 @@ export default function ProjectSettings() {
             onBlur={apiKeyBlurHandler}
             error={apiKeyHasError}
             helperText={apiKeyHasError && apiKeyErrorMessage}
-            style={{ maxWidth: 350, minWidth: 350 }}
           />
           <Tooltip title="Reset Api Key">
             <Button
@@ -152,9 +184,11 @@ export default function ProjectSettings() {
           </Tooltip>
         </Grid>
       </form>
-      <Grid container justify="center">
-        <DeleteProjectConfirmationModal id={projectId} />
-      </Grid>
+      {auth.userId === projectDetail.creator._id && (
+        <Grid container justify="center">
+          <DeleteProjectConfirmationModal id={projectId} />
+        </Grid>
+      )}
     </Card>
   );
 }

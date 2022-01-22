@@ -36,6 +36,15 @@ const userSchema = new Schema({
       required: true,
     },
   ],
+  verified: {
+    type: Boolean,
+    required: true,
+    default: false,
+  },
+  // these fields isn't always required
+  verificationToken: String,
+  resetToken: String,
+  resetTokenExpiration: Date,
 });
 
 module.exports = mongoose.model('User', userSchema);

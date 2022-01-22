@@ -1,6 +1,6 @@
 import { Card} from '@material-ui/core';
-import ProjectListTable from './ProjectListTable';
 import {useStyles} from '../../hooks/useStyles'
+import ProjectListTable from './ProjectListTable';
 
 function ProjectList() {
   const classes = useStyles();

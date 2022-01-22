@@ -2,6 +2,10 @@ import { makeStyles } from '@material-ui/core';
 
 export const useStyles = makeStyles((theme) => ({
   // auth styling
+  notFoundPageImage: {
+    maxWidth: '400px',
+    minWidth: '400px',
+  },
   paperStyle: {
     width: 340,
     height: 470,
@@ -396,11 +400,11 @@ export const useStyles = makeStyles((theme) => ({
       display: 'block',
     },
   },
-  ticketDetailCard:{
-    width:'50%',
-    height:'100%',
+  ticketDetailCard: {
+    width: '50%',
+    height: '100%',
     [theme.breakpoints.down(900)]: {
-      width:'100%',
+      width: '100%',
       height: '75vh',
     },
   },

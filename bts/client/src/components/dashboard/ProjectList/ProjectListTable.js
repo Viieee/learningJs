@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useContext } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Grid,
@@ -8,9 +8,10 @@ import {
   Button,
   Link,
 } from '@material-ui/core';
-import useTable from '../../hooks/useTable';
-import { useStyles } from '../../hooks/useStyles';
 import { Add } from '@material-ui/icons';
+import { useStyles } from '../../hooks/useStyles';
+import { AuthContext } from '../../context/auth-context';
+import useTable from '../../hooks/useTable';
 import NewProjectModal from './NewProjectModal';
 
 const headCells = [
@@ -19,43 +20,41 @@ const headCells = [
   { id: 'creator', label: 'Creator' },
 ];
 
-function ItemLink(props) {
-  return (
-    <>
-      <Link
-        component={RouterLink}
-        to={{
-          pathname: `/dashboard/project/${props.item._id}`,
-          state: {
-            item: props.item,
-          },
-        }}
-      >
-        {props.item.title}
-      </Link>
-    </>
-  );
-}
-
 export default function ProjectListTable() {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
   const [open, setOpen] = React.useState(false);
   const [rows, setRows] = React.useState([]);
+  const [newProject, setNewProject] = React.useState(null);
+
+  // socket io
+  useEffect(() => {
+    auth.socket.on('loadProject', (data) => {
+      setNewProject(data.project);
+    });
+  }, [auth.socket]);
 
   useEffect(() => {
-    fetch('http://localhost:8080/project/', {
+    newProject && setRows((prev) => [newProject, ...prev]);
+  }, [newProject]);
+
+  useEffect(() => {
+    fetch('http://192.168.1.5:8080/project/', {
       headers: {
-        // Authorization: 'Bearer ' + this.props.token,
-        // 'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + auth.token,
       },
     })
       .then((res) => {
+        if (res.status === 403) {
+          auth.logout();
+        }
         return res.json();
       })
       .then((resData) => {
         setRows(resData.projects);
-      });
-  }, []);
+      })
+      .catch((err) => {});
+  }, [auth]);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(rows, headCells, 10);
@@ -89,11 +88,15 @@ export default function ProjectListTable() {
           {recordsAfterPagingAndSorting().map((item, index) => (
             <TableRow key={item._id}>
               <TableCell>
-                <ItemLink item={item} />
+                <Link
+                  component={RouterLink}
+                  to={`/dashboard/project/${item._id}`}
+                >
+                  {item.title}
+                </Link>
               </TableCell>
               <TableCell>{item.description}</TableCell>
-              <TableCell>{item.creator}</TableCell>
-              {/* <ProjectDropdown/> */}
+              <TableCell>{item.creator.userName}</TableCell>
             </TableRow>
           ))}
         </TableBody>

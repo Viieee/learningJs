@@ -1,4 +1,4 @@
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 import ProjectDetail from '../dashboard/ProjectDetail/ProjectDetail';
 import AccountSettings from '../dashboard/settings/account/AccountsSettings';
@@ -31,7 +31,7 @@ export default function Project() {
           <ProjectSettings />
         </Grid>
       </Route>
-      <Route path="/account/settings">
+      <Route path="/account/settings" exact>
         <Grid
           container
           direction="row"
@@ -40,6 +40,9 @@ export default function Project() {
         >
           <AccountSettings />
         </Grid>
+      </Route>
+      <Route path="*">
+        <Redirect to="/dashboard" />
       </Route>
     </Switch>
   );

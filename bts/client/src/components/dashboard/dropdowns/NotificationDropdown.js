@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Popover, Box, Link, Badge } from '@material-ui/core';
 import { Notifications } from '@material-ui/icons';
-import NotificationCard from './NotificationCard';
 import { useStyles } from '../../hooks/useStyles';
+import NotificationCard from './NotificationCard';
 
 export default function NotificationDropdown() {
   const classes = useStyles();

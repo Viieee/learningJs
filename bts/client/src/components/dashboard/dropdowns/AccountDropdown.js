@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import {
   Menu,
   MenuItem,
@@ -8,10 +9,12 @@ import {
   IconButton,
   Avatar,
 } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
 import { Settings, ExitToApp as Logout } from '@material-ui/icons';
+import { AuthContext } from '../../context/auth-context';
 
 export default function AccountDropdown(props) {
+  const auth = useContext(AuthContext);
+  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -61,7 +64,13 @@ export default function AccountDropdown(props) {
             Settings
           </MenuItem>
         </Link>
-        <Link color="inherit" component={RouterLink} to="/logout">
+        <Link
+          color="inherit"
+          onClick={() => {
+            auth.logout();
+            // history.push('/signin');
+          }}
+        >
           <MenuItem>
             <ListItemIcon>
               <Logout fontSize="small" />

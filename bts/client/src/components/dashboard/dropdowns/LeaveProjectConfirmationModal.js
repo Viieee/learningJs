@@ -1,37 +1,46 @@
+import { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Button,
   Container,
   Modal,
-  Snackbar,
   Grid,
   Typography,
   ListItemIcon,
   MenuItem,
 } from '@material-ui/core';
 import { ExitToApp as Logout } from '@material-ui/icons';
-import { useState } from 'react';
 import { useStyles } from '../../hooks/useStyles';
-import Alert from '@mui/material/Alert';
+import { AuthContext } from '../../context/auth-context';
 
-function MuiAlert(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
 export default function LeaveProjectConfirmationModal(props) {
   const classes = useStyles();
-  const [openAlert, setOpenAlert] = useState(false);
+  const auth = useContext(AuthContext);
+  const history = useHistory();
   const [open, setOpen] = useState(false);
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenAlert(false);
-  };
+  const { projectDetail } = props;
+  console.log(projectDetail);
   function deleteModal() {
     setOpen(true);
   }
-  function confirmedDeletion(item) {
-    console.log(item);
+
+  function leaveProjectHandler() {
+    fetch(`http://192.168.1.5:8080/project/${projectDetail._id}/leave`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+      },
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          throw new Error('error happened!');
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        history.replace('/dashboard');
+      })
+      .catch((err) => {});
   }
   return (
     <>
@@ -56,9 +65,7 @@ export default function LeaveProjectConfirmationModal(props) {
               Are you sure you want to leave this project?
             </Typography>
             <Button
-              onClick={() => {
-                confirmedDeletion(props.project);
-              }}
+              onClick={leaveProjectHandler}
               variant="outlined"
               color="primary"
               style={{ marginRight: 20 }}
@@ -75,16 +82,6 @@ export default function LeaveProjectConfirmationModal(props) {
           </Grid>
         </Container>
       </Modal>
-      <Snackbar
-        open={openAlert}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      >
-        <MuiAlert onClose={handleClose} severity="success">
-          Member Added!
-        </MuiAlert>
-      </Snackbar>
     </>
   );
 }

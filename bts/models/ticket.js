@@ -24,20 +24,23 @@ const ticketSchema = new Schema(
       type: String,
       required: true,
     },
-    // assignedDevs: [
-    //   {
-    //     member: {
-    // type: Schema.Types.ObjectId,
-    // ref: 'User',
-    //   required: true,
-    //     },
-    //   },
-    // ],
-    // creator: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: 'User',
-    //   required: true,
-    // },
+    assignedDevs: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+    ],
+    project:{
+      type: Schema.Types.ObjectId,
+      ref: 'Project',
+      required: true,
+    },
+    creator: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     timeEnd: {
       type: Date,
       required: true,

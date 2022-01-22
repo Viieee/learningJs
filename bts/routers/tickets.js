@@ -3,11 +3,20 @@ const express = require('express');
 const Router = express.Router();
 
 const ticketController = require('../controllers/tickets');
+const checkAuth = require('../middleware/check-auth');
 
-// get /project/ticket
-Router.get('/ticket', ticketController.getTickets);
+Router.use(checkAuth);
 
-// post /project/ticket
-Router.post('/ticket', ticketController.postTicket);
+// get /ticket/
+Router.get('/', ticketController.getTickets);
+
+// get /ticket/:ticketId
+Router.get('/:ticketId', ticketController.getATicket);
+
+// patch /ticket/:ticketId/
+Router.patch('/:ticketId', ticketController.editTicket);
+
+// delete  /ticket/:ticketId/
+Router.delete('/:ticketId', ticketController.deleteTicket);
 
 module.exports = Router;

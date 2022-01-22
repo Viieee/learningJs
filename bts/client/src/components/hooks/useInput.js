@@ -20,22 +20,34 @@ function inputStateReducer(state = initialInputState, action) {
   }
 }
 
-function useInput(functionValidator, inputErrorMessage, customInitialState = initialInputState) {
+function useInput(
+  functionValidator,
+  inputErrorMessage,
+  customInitialState = initialInputState
+) {
   const [fieldState, dispatchFunction] = useReducer(
     inputStateReducer,
     customInitialState
   );
 
   const [errorMessage, setErrorMessage] = useState(null);
+  const [hasError, setHasError] = useState(false);
 
   const valueIsValid = functionValidator(fieldState.value);
-  let hasError = !valueIsValid && fieldState.isTouched;
+  // let hasError = !valueIsValid && fieldState.isTouched;
 
   useEffect(() => {
+    setHasError(!valueIsValid && fieldState.isTouched);
     if (hasError) {
       setErrorMessage(inputErrorMessage);
     }
-  }, [hasError, inputErrorMessage, errorMessage]);
+  }, [
+    valueIsValid,
+    fieldState.isTouched,
+    hasError,
+    inputErrorMessage,
+    errorMessage,
+  ]);
 
   // field onChange handler
   const onChangeHandler = (event) => {
@@ -61,6 +73,7 @@ function useInput(functionValidator, inputErrorMessage, customInitialState = ini
     reset,
     errorMessage,
     setErrorMessage,
+    setHasError,
   };
 }
 
