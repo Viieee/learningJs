@@ -69,7 +69,7 @@ mongoose
         });
       });
       socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('client disconnected');
       });
     });
   })

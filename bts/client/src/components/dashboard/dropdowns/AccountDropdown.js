@@ -1,5 +1,5 @@
 import { useState, useContext } from 'react';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import {
   Menu,
   MenuItem,
@@ -12,9 +12,8 @@ import {
 import { Settings, ExitToApp as Logout } from '@material-ui/icons';
 import { AuthContext } from '../../context/auth-context';
 
-export default function AccountDropdown(props) {
+export default function AccountDropdown({ userData }) {
   const auth = useContext(AuthContext);
-  const history = useHistory();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -33,11 +32,9 @@ export default function AccountDropdown(props) {
         aria-haspopup="true"
         aria-expanded={open ? 'true' : undefined}
       >
-        <Avatar
-          style={{ width: 32, height: 32 }}
-          alt="Remy Sharp"
-          src="https://images.pexels.com/photos/8647814/pexels-photo-8647814.jpeg?auto=compress&cs=tinysrgb&dpr=2&w=500"
-        />
+        <Avatar style={{ width: 32, height: 32 }}>
+          {/* {!userData.user.imageUrl && userData.acronym} */}
+        </Avatar>
       </IconButton>
       <Menu
         anchorEl={anchorEl}
@@ -68,7 +65,6 @@ export default function AccountDropdown(props) {
           color="inherit"
           onClick={() => {
             auth.logout();
-            // history.push('/signin');
           }}
         >
           <MenuItem>

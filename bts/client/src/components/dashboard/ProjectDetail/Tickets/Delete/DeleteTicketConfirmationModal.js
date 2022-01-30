@@ -3,33 +3,21 @@ import {
   Button,
   Container,
   Modal,
-  Snackbar,
   Grid,
   Typography,
   ListItemIcon,
   MenuItem,
 } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
-import Alert from '@mui/material/Alert';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../../../context/auth-context';
 import { useStyles } from '../../../../hooks/useStyles';
 
-function MuiAlert(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
 export default function DeleteTicketConfirmationModal(props) {
   const auth = useContext(AuthContext);
   const classes = useStyles();
-  // let history = useHistory();
-  const [openAlert, setOpenAlert] = useState(false);
   const [open, setOpen] = useState(false);
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
 
-    setOpenAlert(false);
-  };
   function deleteModal() {
     setOpen(true);
   }
@@ -48,8 +36,12 @@ export default function DeleteTicketConfirmationModal(props) {
       })
       .then((resData) => {
         setOpen(false);
+        props.setAnchorOptions(null);
+        return toast.success('ticket deleted!');
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toast.error('something went wrong.');
+      });
   }
   return (
     <>
@@ -93,16 +85,6 @@ export default function DeleteTicketConfirmationModal(props) {
           </Grid>
         </Container>
       </Modal>
-      <Snackbar
-        open={openAlert}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      >
-        <MuiAlert onClose={handleClose} severity="success">
-          Ticket deleted!
-        </MuiAlert>
-      </Snackbar>
     </>
   );
 }

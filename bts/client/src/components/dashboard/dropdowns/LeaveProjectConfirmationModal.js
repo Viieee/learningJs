@@ -10,6 +10,7 @@ import {
   MenuItem,
 } from '@material-ui/core';
 import { ExitToApp as Logout } from '@material-ui/icons';
+import { toast } from 'react-toastify';
 import { useStyles } from '../../hooks/useStyles';
 import { AuthContext } from '../../context/auth-context';
 
@@ -19,7 +20,6 @@ export default function LeaveProjectConfirmationModal(props) {
   const history = useHistory();
   const [open, setOpen] = useState(false);
   const { projectDetail } = props;
-  console.log(projectDetail);
   function deleteModal() {
     setOpen(true);
   }
@@ -38,9 +38,12 @@ export default function LeaveProjectConfirmationModal(props) {
         return res.json();
       })
       .then((resData) => {
-        history.replace('/dashboard');
+        toast.success('left project');
+        return history.replace('/dashboard');
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toast.error('something went wrong');
+      });
   }
   return (
     <>

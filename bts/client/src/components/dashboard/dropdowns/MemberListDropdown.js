@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { Menu, Link, Box } from '@material-ui/core';
-import { MoreVert } from '@material-ui/icons';
-import DeleteTicketConfirmationModal from '../ProjectDetail/Tickets/Delete/DeleteTicketConfirmationModal';
-import EditTicketModalButton from './EditTicketModalButton';
-export default function TicketDropdown(props) {
+import { Menu, Link, Box, MenuItem, ListItemIcon } from '@material-ui/core';
+import { MoreVert, Edit } from '@material-ui/icons';
+import DeleteMemberConfirmationModal from '../ProjectDetail/Members/Delete/DeleteMemberConfirmationModal';
+
+export default function MemberListDropDown(props) {
   const [anchorEl, setAnchorOptions] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -38,8 +38,17 @@ export default function TicketDropdown(props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <EditTicketModalButton ticket={props.ticket} projectDetail={props.projectDetail} setAnchorOptions={setAnchorOptions}/>
-        <DeleteTicketConfirmationModal ticket={props.ticket} setAnchorOptions={setAnchorOptions}/> 
+        <MenuItem
+          onClick={() => {
+            props.setEditMode(true);
+          }}
+        >
+          <ListItemIcon>
+            <Edit fontSize="small" />
+          </ListItemIcon>
+          Edit Role
+        </MenuItem>
+        <DeleteMemberConfirmationModal item={props.item} />
       </Menu>
     </Box>
   );

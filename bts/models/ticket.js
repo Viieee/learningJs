@@ -10,7 +10,6 @@ const ticketSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     status: {
       type: String,
@@ -28,10 +27,10 @@ const ticketSchema = new Schema(
       {
         type: Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+        // required: true,
       },
     ],
-    project:{
+    project: {
       type: Schema.Types.ObjectId,
       ref: 'Project',
       required: true,
@@ -45,6 +44,27 @@ const ticketSchema = new Schema(
       type: Date,
       required: true,
     },
+    comments: [
+      {
+        body: {
+          type: String,
+          // required: true,
+        },
+        creator: {
+          type: Schema.Types.ObjectId,
+          ref: 'User',
+          // required: true,
+        },
+        // parentId: {
+        //   type: Schema.Types.ObjectId,
+        //   default: null,
+        // },
+        createdAt: {
+          type: Date,
+          required: true,
+        },
+      },
+    ],
   },
   { timestamps: true }
 );

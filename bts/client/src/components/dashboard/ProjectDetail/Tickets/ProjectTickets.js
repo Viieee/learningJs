@@ -4,10 +4,10 @@ import ProjectTicketsTable from './Table/ProjectTicketsTable';
 
 function ProjectTickets(props) {
   const classes = useStyles();
-  const { projectDetail } = props;
+  const { projectDetail, role } = props;
   return (
     <Card className={classes.cardProjectTicket}>
-      <ProjectTicketsTable projectDetail={projectDetail}/>
+      <ProjectTicketsTable projectDetail={projectDetail} role={role} />
     </Card>
   );
 }

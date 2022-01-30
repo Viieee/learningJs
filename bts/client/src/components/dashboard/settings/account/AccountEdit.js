@@ -3,6 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { Typography, TextField, Grid, Button } from '@material-ui/core';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../../context/auth-context';
 import { useStyles } from '../../../hooks/useStyles';
 import useInput from '../../../hooks/useInput';
@@ -84,9 +85,13 @@ export default function AccountEdit({ user }) {
           throw new Error('Password is invalid, please try again.');
         }
         if (res.status === 201) {
+          toast.success(
+            'email changed, please check your email to verify the new email before re-login.'
+          );
           return auth.logout();
         }
         if (res.status === 200) {
+          toast.success('username changed successfully.');
           return history.replace('/dashboard');
         }
       })

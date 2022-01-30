@@ -7,16 +7,6 @@ module.exports = async (req, res, next) => {
     return next();
   }
   try {
-    // const checkTokenExpirationMiddleware = store => next => action => {
-    //   const token =
-    //     JSON.parse(localStorage.getItem("user")) &&
-    //     JSON.parse(localStorage.getItem("user"))["token"];
-    //   if (jwtDecode(token).exp < Date.now() / 1000) {
-    //     next(action);
-    //     localStorage.clear();
-    //   }
-    //   next(action);
-    // };W
     const token = req.headers.authorization.split(' ')[1]; // Authorization: 'Bearer TOKEN'
     if (!token) {
       throw new Error('Authentication failed!');

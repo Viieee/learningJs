@@ -8,7 +8,7 @@ const projectSchema = new Schema(
     },
     description: {
       type: String,
-      required: true,
+      // required: true,
     },
     creator: {
       type: Schema.Types.ObjectId,
@@ -37,24 +37,12 @@ const projectSchema = new Schema(
     ],
     apiKey: {
       type: String,
-      required: true,
+      default: null,
     },
+    apiPrefix: String,
   },
   { timestamps: true }
 );
-
-// projectSchema.methods.deleteMember = function (id) {
-//   // delete project's member using id
-//   const updatedProjectMember = this.members.filter((member) => {
-//     return member.member.toString() !== id.toString();
-//   });
-
-//   // rewritting the value of the members
-//   this.members = updatedProjectMember;
-
-//   // saving the change
-//   return this.save();
-// };
 
 // exporting the mongose model
 module.exports = mongoose.model('Project', projectSchema);

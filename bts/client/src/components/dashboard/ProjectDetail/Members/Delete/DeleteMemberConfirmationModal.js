@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -6,19 +7,25 @@ import {
   Snackbar,
   Grid,
   Typography,
-  Link,
+  // Link,
+  ListItemIcon,
+  MenuItem,
 } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
 import Alert from '@mui/material/Alert';
 import { useStyles } from '../../../../hooks/useStyles';
+import { AuthContext } from '../../../../context/auth-context';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
 export default function DeleteMemberConfirmationModal(props) {
   const classes = useStyles();
+  const auth = useContext(AuthContext);
   const [openAlert, setOpenAlert] = useState(false);
   const [open, setOpen] = useState(false);
+  const params = useParams();
+  const { projectId } = params;
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -30,13 +37,33 @@ export default function DeleteMemberConfirmationModal(props) {
     setOpen(true);
   }
   function confirmedDeletion(item) {
-    console.log(item);
+    // /:projectId/apiKey
+    fetch(
+      `http://192.168.1.5:8080/project/${projectId}/member/${props.item._id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
+      .then((res) => {
+        return res.json();
+      })
+      .then((resData) => {
+        // history.push('/dashboard');
+        window.location.reload(false);
+      })
+      .catch((err) => console.log(err));
   }
   return (
     <>
-      <Link component="button" onClick={deleteModal}>
-        <DeleteOutline style={{ marginTop: 10, color: 'red' }} />
-      </Link>
+      <MenuItem style={{ color: 'red' }} onClick={deleteModal}>
+        <ListItemIcon>
+          <DeleteOutline style={{ color: 'red' }} />
+        </ListItemIcon>
+        Delete
+      </MenuItem>
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
@@ -73,7 +100,7 @@ export default function DeleteMemberConfirmationModal(props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <MuiAlert onClose={handleClose} severity="success">
-          Member Added!
+          Member deleted
         </MuiAlert>
       </Snackbar>
     </>

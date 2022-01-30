@@ -7,10 +7,16 @@ const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 
 const transporter = nodemailer.createTransport({
+  host: 'smtp-mail.outlook.com', // hostname
   service: 'hotmail',
+  secure: true,
   auth: {
-    user: process.env.AUTH_USER,
+    user: 'BtsVie@outlook.com',
     pass: process.env.AUTH_PASS,
+  },
+  tls: {
+    // do not fail on invalid certs
+    rejectUnauthorized: false,
   },
 });
 
@@ -89,7 +95,6 @@ exports.signup = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
-  let loadedUser;
 
   let user;
   try {
@@ -146,6 +151,7 @@ exports.login = async (req, res, next) => {
     message: 'login successfull!',
     token: token,
     userId: user._id.toString(),
+    userName: user.userName,
   });
 };
 
@@ -166,7 +172,6 @@ exports.postReset = async (req, res, next) => {
   try {
     // user = await User.findOne({ email: email });
     user = await User.findOne({ email: email });
-    console.log(user);
     if (!user) {
       const error = new Error('email is not registered yet');
       error.statusCode = 404;
@@ -341,13 +346,18 @@ exports.verifyAccount = async (req, res, next) => {
 
 exports.getUser = async (req, res, next) => {
   let user;
+  let acronym;
   try {
-    user = await User.findById(req.userId).select('userName email');
+    user = await User.findById(req.userId).select(
+      'userName email notifications imageUrl'
+    );
     if (!user) {
       const error = new Error('cannot find the user with provided id');
       error.statusCode = 404;
       return next(error);
     }
+    var matches = user.userName.match(/\b(\w)/g); // ['J','S','O','N']
+    acronym = matches.join('').slice(0, 2); // JSON
   } catch (err) {
     const error = new Error('getting account failed');
     error.statusCode = 500;
@@ -356,6 +366,7 @@ exports.getUser = async (req, res, next) => {
 
   res.status(200).json({
     user: user,
+    userInitial: acronym,
   });
 };
 
@@ -430,4 +441,53 @@ exports.editUser = async (req, res, next) => {
       user: user,
     });
   }
+};
+
+exports.editPassword = async (req, res, next) => {
+  const userId = req.params.userId;
+  const { currentPassword, newPassword } = req.body;
+
+  let user;
+  try {
+    user = await User.findById(userId);
+    if (!user) {
+      const error = new Error("the user doesn't exist!");
+      error.statusCode = 404;
+      return next(error);
+    }
+  } catch (err) {
+    const error = new Error('editing password failed');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  let checkPass;
+  try {
+    checkPass = await bcrypt.compare(currentPassword, user.password);
+    if (!checkPass) {
+      // if the password doesn't matched
+      const error = new Error("password doesn't match!");
+      error.statusCode = 401;
+      return next(error);
+    }
+  } catch (err) {
+    const error = new Error('editing password failed');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  let hashedPassword;
+  try {
+    hashedPassword = await bcrypt.hash(newPassword, 12);
+    user.password = hashedPassword;
+    await user.save();
+  } catch (err) {
+    const error = new Error('editing password failed');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  res.status(201).json({
+    message: 'password changed!',
+  });
 };

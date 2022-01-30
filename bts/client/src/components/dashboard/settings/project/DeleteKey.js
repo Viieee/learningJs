@@ -1,5 +1,4 @@
 import { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import {
   Button,
   Container,
@@ -7,20 +6,19 @@ import {
   Snackbar,
   Grid,
   Typography,
+  Link,
 } from '@material-ui/core';
 import { DeleteOutline } from '@material-ui/icons';
-import { toast } from 'react-toastify';
-import { useStyles } from '../../../hooks/useStyles';
 import Alert from '@mui/material/Alert';
 import { AuthContext } from '../../../context/auth-context';
+import { useStyles } from '../../../hooks/useStyles';
 
 function MuiAlert(props) {
   return <Alert elevation={6} variant="filled" {...props} />;
 }
-export default function DeleteProjectConfirmationModal(props) {
+export default function DeleteKey(props) {
   const classes = useStyles();
   const auth = useContext(AuthContext);
-  let history = useHistory();
   const [openAlert, setOpenAlert] = useState(false);
   const [open, setOpen] = useState(false);
   const handleClose = (event, reason) => {
@@ -33,35 +31,30 @@ export default function DeleteProjectConfirmationModal(props) {
   function deleteModal() {
     setOpen(true);
   }
-  function confirmedDeletion(item) {
-    fetch(`http://192.168.1.5:8080/project/${item}`, {
+  function confirmDeletionHandler() {
+    // /:projectId/apiKey
+    fetch(`http://192.168.1.5:8080/project/${props.projectId}/apiKey`, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
     })
       .then((res) => {
-        if (res.status !== 200) {
-          throw new Error();
-        }
         return res.json();
       })
       .then((resData) => {
-        toast.success('Project deleted!');
-        return history.push('/dashboard');
+        // history.push('/dashboard');
+        window.location.reload(false);
       })
-      .catch((err) => toast.error('Something went wrong'));
+      .catch((err) => console.log(err));
   }
   return (
     <>
-      <Button
-        variant="outlined"
-        color="primary"
-        style={{ maxWidth: 200, minWidth: 200, color: 'red' }}
-        onClick={deleteModal}
-      >
-        <DeleteOutline /> Delete Project
-      </Button>
+      <Link component="button" onClick={deleteModal}>
+        <DeleteOutline
+          style={{ color: 'red', marginLeft: 20, marginBottom: 12 }}
+        />
+      </Link>
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
@@ -69,12 +62,10 @@ export default function DeleteProjectConfirmationModal(props) {
         >
           <Grid container justify="flex-end">
             <Typography style={{ marginBottom: 30 }}>
-              Are you sure you want to delete this user from the project?
+              Are you sure you want to delete the API Key?
             </Typography>
             <Button
-              onClick={() => {
-                confirmedDeletion(props.id);
-              }}
+              onClick={confirmDeletionHandler}
               variant="outlined"
               color="primary"
               style={{ marginRight: 20 }}
@@ -98,7 +89,7 @@ export default function DeleteProjectConfirmationModal(props) {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
       >
         <MuiAlert onClose={handleClose} severity="success">
-          Member Added!
+          deleted!
         </MuiAlert>
       </Snackbar>
     </>

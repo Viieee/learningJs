@@ -24,7 +24,6 @@ export default function AccountSettings() {
         return res.json();
       })
       .then((resData) => {
-        console.log(resData.user);
         setUserData(resData.user);
       })
       .catch((err) => {});
@@ -43,6 +42,25 @@ export default function AccountSettings() {
       )}
       {userData && (
         <Fragment>
+          {/* <input
+            color="primary"
+            accept="image/*"
+            type="file"
+            onChange={onChange}
+            id="icon-button-file"
+            style={{ display: 'none' }}
+          />
+          <label htmlFor="icon-button-file">
+            <Button
+              variant="contained"
+              component="span"
+              className={classes.button}
+              size="large"
+              color="primary"
+            >
+              <ImageIcon className={classes.extendedIcon} />
+            </Button>
+          </label> */}
           <Typography variant="h6">Account Settings</Typography>
           <Divider />
           <AccountEdit user={userData} />

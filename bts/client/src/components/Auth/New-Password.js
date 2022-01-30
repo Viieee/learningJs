@@ -79,7 +79,6 @@ export default function NewPassword() {
       })
       .then((resData) => {
         setLoading(false);
-        console.log(resData.userId);
         setUserId(resData.userId);
       })
       .catch((err) => {});

@@ -5,9 +5,10 @@ import {
   Route,
   Redirect,
   BrowserRouter,
-  useHistory,
+  // useHistory,
 } from 'react-router-dom';
 import { io } from 'socket.io-client';
+import { ToastContainer } from 'react-toastify';
 import { AuthContext } from './components/context/auth-context';
 import { useAuth } from './components/hooks/auth-hook';
 import Auth from './components/pages/Auth';
@@ -15,11 +16,12 @@ import ForgotPassword from './components/auth/Forgot-Password';
 import NewPassword from './components/auth/New-Password';
 import VerifyAccount from './components/auth/Verify-Account';
 import Dashboard from './components/pages/Dashboard';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const { token, login, logout, userId } = useAuth();
   let socket = useRef();
-  let history = useHistory();
+  // let history = useHistory();
   let routes;
   if (!token) {
     routes = (
@@ -83,8 +85,20 @@ function App() {
         login: login,
         logout: logout,
         socket: socket.current,
+        // history: history,
       }}
     >
+      <ToastContainer
+        position="bottom-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
       <BrowserRouter>
         <main>{routes}</main>
       </BrowserRouter>

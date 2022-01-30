@@ -19,6 +19,7 @@ const notificationSchema = new Schema(
       type: Boolean,
       required: true,
     },
+    customLink: String,
   },
   { timestamps: true }
 );

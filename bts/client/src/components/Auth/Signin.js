@@ -90,7 +90,7 @@ function Signin() {
         return res.json();
       })
       .then((resData) => {
-        auth.login(resData.userId, resData.token);
+        auth.login(resData.userId,resData.token);
         resetEmail();
         resetPassword();
         history.replace('/dashboard');

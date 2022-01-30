@@ -1,27 +1,15 @@
-import { useState, useContext } from 'react';
-import {
-  Button,
-  Container,
-  Modal,
-  Snackbar,
-  TextField,
-  Grid,
-} from '@material-ui/core';
-import Alert from '@mui/material/Alert';
+import { useContext } from 'react';
+import { Button, Container, Modal, TextField, Grid } from '@material-ui/core';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/auth-context';
 import { useStyles } from '../../hooks/useStyles';
 import useInput from '../../hooks/useInput';
-
-function MuiAlert(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
 
 const isEmptyTitle = (value) => value.trim().length >= 3;
 
 const NewProjectModal = (props) => {
   const auth = useContext(AuthContext);
   const classes = useStyles();
-  const [openAlert, setOpenAlert] = useState(false);
 
   const {
     value: titleValue,
@@ -45,19 +33,12 @@ const NewProjectModal = (props) => {
     // setErrorMessage: setNameErrorMessage
   } = useInput(isEmptyTitle, 'name should be longer than 3 characters');
 
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenAlert(false);
-  };
-
   function submitHandler(e) {
     e.preventDefault();
     if (!titleIsValid) {
       return;
     }
+    console.log(typeof descValue);
     fetch('http://192.168.1.5:8080/project/', {
       method: 'POST',
       headers: {
@@ -70,91 +51,87 @@ const NewProjectModal = (props) => {
       }),
     })
       .then((res) => {
+        if (res.status === 404) {
+          return auth.logout();
+        }
+        if (res.status !== 201) {
+          throw new Error();
+        }
         return res.json();
       })
       .then((resData) => {
         auth.socket.emit('addProject', { project: resData.project });
-        setOpenAlert(true);
+        toast.success('New Project Added!');
         props.setOpen(false);
         resetTitle();
         resetDesc();
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        toast.error('Something went wrong, please try again.');
+      });
   }
 
   return (
-    <>
-      <Modal onBackdropClick={() => props.setOpen(false)} open={props.open}>
-        <Container className={classes.containerNewProjectModal}>
-          <form
-            className={classes.formNewProjectModal}
-            autoComplete="off"
-            onSubmit={submitHandler}
-          >
-            <div className={classes.itemNewProjectModal}>
-              <TextField
-                required
-                name="title"
-                value={titleValue}
-                onChange={titleChangeHandler}
-                onBlur={titleBlurHandler}
-                error={titleHasError}
-                helperText={titleHasError && titleErrorMessage}
-                id="standard-basic"
-                label="Project Title"
-                size="small"
-                style={{ width: '100%' }}
-              />
-            </div>
-            <div className={classes.itemNewProjectModal}>
-              <TextField
-                name="description"
-                value={descValue}
-                onChange={descChangeHandler}
-                onBlur={descBlurHandler}
-                id="outlined-multiline-static"
-                multiline
-                rows={4}
-                defaultValue="Tell your story..."
+    <Modal onBackdropClick={() => props.setOpen(false)} open={props.open}>
+      <Container className={classes.containerNewProjectModal}>
+        <form
+          className={classes.formNewProjectModal}
+          autoComplete="off"
+          onSubmit={submitHandler}
+        >
+          <div className={classes.itemNewProjectModal}>
+            <TextField
+              required
+              name="title"
+              value={titleValue}
+              onChange={titleChangeHandler}
+              onBlur={titleBlurHandler}
+              error={titleHasError}
+              helperText={titleHasError && titleErrorMessage}
+              id="standard-basic"
+              label="Project Title"
+              size="small"
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div className={classes.itemNewProjectModal}>
+            <TextField
+              name="description"
+              value={descValue}
+              onChange={descChangeHandler}
+              onBlur={descBlurHandler}
+              id="outlined-multiline-static"
+              multiline
+              rows={4}
+              defaultValue="Tell your story..."
+              variant="outlined"
+              label="Description"
+              size="small"
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div className={classes.itemNewProjectModal}>
+            <Grid container justify="flex-end">
+              <Button
+                type="submit"
                 variant="outlined"
-                label="Description"
-                size="small"
-                style={{ width: '100%' }}
-              />
-            </div>
-            <div className={classes.itemNewProjectModal}>
-              <Grid container justify="flex-end">
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginRight: 20 }}
-                >
-                  Create
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => props.setOpen(false)}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </div>
-          </form>
-        </Container>
-      </Modal>
-      <Snackbar
-        open={openAlert}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      >
-        <MuiAlert onClose={handleClose} severity="success">
-          Project Created!
-        </MuiAlert>
-      </Snackbar>
-    </>
+                color="primary"
+                style={{ marginRight: 20 }}
+              >
+                Create
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => props.setOpen(false)}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </div>
+        </form>
+      </Container>
+    </Modal>
   );
 };
 

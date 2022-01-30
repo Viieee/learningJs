@@ -151,17 +151,18 @@ export const useStyles = makeStyles((theme) => ({
       height: '70vh',
     },
     '& tr': {
-      padding: 5,
+      // padding: 5,
+      // textAlign: 'center',
     },
     '& th': {
-      maxWidth: 100,
-      minWidth: 100,
-      textAlign: 'center',
+      // maxWidth: 100,
+      // minWidth: 100,
+      padding: 10,
     },
     '& td': {
       height: 40,
       padding: 5,
-      textAlign: 'center',
+      // align: 'center',
     },
   },
   containerNewProjectModal: {
@@ -293,6 +294,22 @@ export const useStyles = makeStyles((theme) => ({
       height: '22vh',
     },
   },
+  containerApiKeyModal: {
+    width: 'max-content',
+    height: 200,
+    backgroundColor: 'white',
+    position: 'absolute',
+    padding: 20,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    margin: 'auto',
+    [theme.breakpoints.down('500')]: {
+      width: '90vw',
+      height: '25vh',
+    },
+  },
   formNewMemberModal: {
     padding: theme.spacing(2),
   },
@@ -352,9 +369,25 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
     },
   },
+  // containerNewTicketModal: {
+  //   width: 400,
+  //   height: 480,
+  //   backgroundColor: 'white',
+  //   position: 'absolute',
+  //   padding: 10,
+  //   top: 0,
+  //   bottom: 0,
+  //   left: 0,
+  //   right: 0,
+  //   margin: 'auto',
+  //   [theme.breakpoints.down('sm')]: {
+  //     width: '90vw',
+  //     height: '58vh',
+  //   },
+  // },
   containerNewTicketModal: {
     width: 400,
-    height: 480,
+    height: 550,
     backgroundColor: 'white',
     position: 'absolute',
     padding: 10,
@@ -365,7 +398,7 @@ export const useStyles = makeStyles((theme) => ({
     margin: 'auto',
     [theme.breakpoints.down('sm')]: {
       width: '90vw',
-      height: '58vh',
+      height: '62vh',
     },
   },
   formNewTicketModal: {
@@ -405,8 +438,23 @@ export const useStyles = makeStyles((theme) => ({
     height: '100%',
     [theme.breakpoints.down(900)]: {
       width: '100%',
+      height: '25vh',
+    },
+  },
+  // comment section
+  commentSectionCard: {
+    width: '50%',
+    height: '100%',
+    // overflow: 'auto',
+    [theme.breakpoints.down(900)]: {
+      width: '100%',
       height: '75vh',
     },
+  },
+  comments: {
+    overflow: 'auto',
+    width: '100%',
+    height: '58vh',
   },
   // settings
   cardSettingsBase: {

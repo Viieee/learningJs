@@ -45,7 +45,7 @@ export default function ProjectListTable() {
       },
     })
       .then((res) => {
-        if (res.status === 403) {
+        if (res.status === 404) {
           auth.logout();
         }
         return res.json();
@@ -84,19 +84,19 @@ export default function ProjectListTable() {
       </Grid>
       <TblContainer className={classes.containerProject}>
         <TblHead />
-        <TableBody>
+        <TableBody >
           {recordsAfterPagingAndSorting().map((item, index) => (
             <TableRow key={item._id}>
-              <TableCell>
+              <TableCell align="center">
                 <Link
                   component={RouterLink}
                   to={`/dashboard/project/${item._id}`}
                 >
                   {item.title}
                 </Link>
-              </TableCell>
-              <TableCell>{item.description}</TableCell>
-              <TableCell>{item.creator.userName}</TableCell>
+              </TableCell >
+              <TableCell align="center">{item.description}</TableCell>
+              <TableCell align="center">{item.creator.userName}</TableCell>
             </TableRow>
           ))}
         </TableBody>

@@ -1,5 +1,6 @@
 import { Grid, ThemeProvider } from '@material-ui/core';
 import { Switch, Route, Redirect } from 'react-router-dom';
+
 import { useStyles } from '../hooks/useStyles';
 import theme from '../../theme';
 import SideDrawer from '../layout/SideDrawer';
@@ -24,6 +25,7 @@ function Dashboard() {
             <div className={classes.projectContent}>
               <Switch>
                 <Route path="/dashboard" exact>
+                  
                   <ProjectList />
                 </Route>
                 <Route path="/dashboard/tickets">

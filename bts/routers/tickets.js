@@ -19,4 +19,7 @@ Router.patch('/:ticketId', ticketController.editTicket);
 // delete  /ticket/:ticketId/
 Router.delete('/:ticketId', ticketController.deleteTicket);
 
+// post /ticket/:ticketId/comment
+Router.post('/:ticketId/comment', ticketController.addComment);
+
 module.exports = Router;

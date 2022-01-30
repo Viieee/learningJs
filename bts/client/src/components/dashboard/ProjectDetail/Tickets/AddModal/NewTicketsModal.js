@@ -4,7 +4,6 @@ import {
   Button,
   Container,
   Modal,
-  Snackbar,
   TextField,
   Grid,
   MenuItem,
@@ -12,21 +11,18 @@ import {
   InputLabel,
   FormControl,
 } from '@material-ui/core';
-import Alert from '@mui/material/Alert';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../../../context/auth-context';
 import { useStyles } from '../../../../hooks/useStyles';
 import useInput from '../../../../hooks/useInput';
-
-function MuiAlert(props) {
-  return <Alert elevation={6} variant="filled" {...props} />;
-}
 
 const isEmptyTitle = (value) => value.trim().length >= 3;
 let initialPriority = 'Medium';
 let initialStatus = 'New';
 let initialType = 'Bug';
 let initialDevs = [];
-let initialLength = 1;
+// let initialLength = 1;
 let initialTitleInputState = {
   value: '',
   isTouched: false,
@@ -35,6 +31,7 @@ let initialDescriptionInputState = {
   value: '',
   isTouched: false,
 };
+let initialEndDate = new Date();
 
 export default function NewTicketModal({
   open,
@@ -42,6 +39,7 @@ export default function NewTicketModal({
   edit = false,
   ticket = null,
   projectDetail,
+  setAnchorOptions,
 }) {
   const auth = useContext(AuthContext);
   const classes = useStyles();
@@ -59,10 +57,13 @@ export default function NewTicketModal({
     initialPriority = ticket.priority;
     initialStatus = ticket.status;
     initialType = ticket.type;
+    initialEndDate = new Date(ticket.timeEnd);
+    // if (existedMembers.indexOf(assigned.toString()) === -1) {
+    //   existedMembers.push(assigned.toString());
+    // }
     for (var dev of ticket.assignedDevs) {
-      initialDevs.push(dev._id);
+      if (initialDevs.indexOf(dev._id) === -1) initialDevs.push(dev._id);
     }
-    console.log(initialDevs);
   }
 
   let {
@@ -95,13 +96,16 @@ export default function NewTicketModal({
     initialDescriptionInputState
   );
 
-  const [openAlert, setOpenAlert] = useState(false);
   const [priority, setPriority] = useState(initialPriority);
   const [status, setStatus] = useState(initialStatus);
   const [type, setType] = useState(initialType);
   const [personName, setPersonName] = useState(initialDevs);
-  const [ticketLength, setTicketLength] = useState(initialLength);
+  const [endDate, setEndDate] = useState(initialEndDate);
+  // const [ticketLength, setTicketLength] = useState(initialLength);
 
+  const handleChangeDate = (newValue) => {
+    setEndDate(newValue);
+  };
   function handleChangePriority(event) {
     setPriority(event.target.value);
   }
@@ -111,9 +115,7 @@ export default function NewTicketModal({
   function handleChangeType(event) {
     setType(event.target.value);
   }
-  function handleChangeLength(event) {
-    setTicketLength(event.target.value);
-  }
+
   const handleChangeMultiple = (event) => {
     const { options } = event.target;
     const value = [];
@@ -123,13 +125,6 @@ export default function NewTicketModal({
       }
     }
     setPersonName(value);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setOpenAlert(false);
   };
 
   function submitHandler(e) {
@@ -151,22 +146,25 @@ export default function NewTicketModal({
           priority: priority,
           type: type,
           assignedDevs: personName,
-          timeEnd: ticketLength,
+          timeEnd: new Date(endDate),
         }),
       })
         .then((res) => {
           if (res.status !== 201) {
-            return;
+            throw new Error();
           }
           return res.json();
         })
         .then((resData) => {
-          setOpenAlert(true);
           setOpen(false);
           resetTitle();
           resetDesc();
+          return toast.success('new ticket created');
+          // setAnchorOptions(null);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          toast.error('something went wrong.');
+        });
     } else {
       fetch(`http://192.168.1.5:8080/ticket/${ticket._id}`, {
         method: 'PATCH',
@@ -181,183 +179,170 @@ export default function NewTicketModal({
           priority: priority,
           type: type,
           assignedDevs: personName,
-          timeEnd: ticketLength,
+          timeEnd: new Date(endDate),
         }),
       })
         .then((res) => {
-          if (res.status !== 201) {
-            return;
+          if (res.status !== 200) {
+            throw new Error();
           }
           return res.json();
         })
         .then((resData) => {
-          setOpenAlert(true);
           setOpen(false);
           resetTitle();
           resetDesc();
+          setAnchorOptions(null);
+          return toast.success('ticket updated!');
         })
-        .catch((err) => console.log(err));
+        .catch((err) => toast.error('something went wrong.'));
     }
   }
   return (
-    <>
-      <Modal onBackdropClick={() => setOpen(false)} open={open}>
-        <Container className={classes.containerNewTicketModal}>
-          <form
-            className={classes.formNewTicketModal}
-            autoComplete="off"
-            onSubmit={submitHandler}
-          >
-            <div className={classes.itemNewTicketModal}>
+    <Modal onBackdropClick={() => setOpen(false)} open={open}>
+      <Container className={classes.containerNewTicketModal}>
+        <form
+          className={classes.formNewTicketModal}
+          autoComplete="off"
+          onSubmit={submitHandler}
+        >
+          <div className={classes.itemNewTicketModal}>
+            <TextField
+              required
+              name="title"
+              value={titleValue}
+              onChange={titleChangeHandler}
+              onBlur={titleBlurHandler}
+              error={titleHasError}
+              helperText={titleHasError && titleErrorMessage}
+              id="standard-basic"
+              label="Ticket Title"
+              size="small"
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div className={classes.itemNewTicketModal}>
+            <TextField
+              name="description"
+              value={descValue}
+              onChange={descChangeHandler}
+              onBlur={descBlurHandler}
+              id="outlined-multiline-static"
+              multiline
+              rows={4}
+              defaultValue="Tell your story..."
+              variant="outlined"
+              label="Description"
+              size="small"
+              style={{ width: '100%' }}
+            />
+          </div>
+          <div className={classes.itemNewTicketModal}>
+            <Grid container justify="flex-end">
+              <DateTimePicker
+                label="Date&Time picker"
+                value={endDate}
+                onChange={handleChangeDate}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    style={{ maxWidth: '190px', minWidth: '190px' }}
+                  />
+                )}
+              />
+            </Grid>
+          </div>
+          <div className={classes.itemNewTicketModal}>
+            <Grid container justify="flex-end">
               <TextField
+                select
                 required
-                name="title"
-                value={titleValue}
-                onChange={titleChangeHandler}
-                onBlur={titleBlurHandler}
-                error={titleHasError}
-                helperText={titleHasError && titleErrorMessage}
-                id="standard-basic"
-                label="Ticket Title"
-                size="small"
-                style={{ width: '100%' }}
-              />
-            </div>
-            <div className={classes.itemNewTicketModal}>
+                value={priority}
+                label="priority"
+                onChange={handleChangePriority}
+                style={{ marginRight: 20 }}
+              >
+                <MenuItem value="Low">Low</MenuItem>
+                <MenuItem value="Medium">Medium</MenuItem>
+                <MenuItem value="High">High</MenuItem>
+              </TextField>
+
               <TextField
-                name="description"
-                value={descValue}
-                onChange={descChangeHandler}
-                onBlur={descBlurHandler}
-                id="outlined-multiline-static"
-                multiline
-                rows={4}
-                defaultValue="Tell your story..."
-                variant="outlined"
-                label="Description"
-                size="small"
-                style={{ width: '100%' }}
-              />
-            </div>
-            <div className={classes.itemNewTicketModal}>
-              <Grid container justify="flex-end">
-                <TextField
-                  id="outlined-number"
-                  label="Time (hour(s))"
-                  type="number"
-                  value={ticketLength}
-                  onChange={handleChangeLength}
+                select
+                required
+                label="Status"
+                value={status}
+                style={{ marginRight: 20 }}
+                onChange={handleChangeStatus}
+              >
+                <MenuItem value="New">New</MenuItem>
+                <MenuItem value="Open">Open</MenuItem>
+                <MenuItem value="In Progress">In Progress</MenuItem>
+                <MenuItem value="Resolved">Resolved</MenuItem>
+                <MenuItem value="Info Required">Info Required</MenuItem>
+              </TextField>
+            </Grid>
+          </div>
+          <div className={classes.itemNewTicketModal}>
+            <Grid container justify="flex-end">
+              <FormControl style={{ margin: 1, minWidth: 120, maxWidth: 300 }}>
+                <InputLabel shrink htmlFor="select-multiple-native">
+                  Assigned Member
+                </InputLabel>
+                <Select
+                  multiple
+                  native
+                  value={personName}
+                  // @ts-ignore Typings are not considering `native`
+                  onChange={handleChangeMultiple}
+                  label="Native"
+                  style={{ marginRight: 30 }}
                   inputProps={{
-                    min: 0,
+                    id: 'select-multiple-native',
                   }}
-                  InputLabelProps={{
-                    shrink: true,
-                  }}
-                  style={{ maxWidth: 70, minWidth: 70, marginRight: 10 }}
-                />
-                <TextField
-                  select
-                  required
-                  value={priority}
-                  label="priority"
-                  onChange={handleChangePriority}
-                  style={{ marginRight: 20 }}
                 >
-                  <MenuItem value="Low">Low</MenuItem>
-                  <MenuItem value="Medium">Medium</MenuItem>
-                  <MenuItem value="High">High</MenuItem>
-                </TextField>
+                  {projectDetail.members.map((member) => (
+                    <option key={member.member._id} value={member.member._id}>
+                      {member.member.userName}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+              <TextField
+                select
+                required
+                label="Type"
+                value={type}
+                onChange={handleChangeType}
+              >
+                <MenuItem value="Bug">Bug</MenuItem>
+                <MenuItem value="Task">Task</MenuItem>
+                <MenuItem value="Feature Request">Feature Request</MenuItem>
+              </TextField>
+            </Grid>
+          </div>
 
-                <TextField
-                  select
-                  required
-                  label="Status"
-                  value={status}
-                  style={{ marginRight: 20 }}
-                  onChange={handleChangeStatus}
-                >
-                  <MenuItem value="New">New</MenuItem>
-                  <MenuItem value="Open">Open</MenuItem>
-                  <MenuItem value="In Progress">In Progress</MenuItem>
-                  <MenuItem value="Resolved">Resolved</MenuItem>
-                  <MenuItem value="Info Required">Info Required</MenuItem>
-                </TextField>
-              </Grid>
-            </div>
-            <div className={classes.itemNewTicketModal}>
-              <Grid container justify="flex-end">
-                <FormControl
-                  style={{ margin: 1, minWidth: 120, maxWidth: 300 }}
-                >
-                  <InputLabel shrink htmlFor="select-multiple-native">
-                    Assigned Member
-                  </InputLabel>
-                  <Select
-                    multiple
-                    native
-                    value={personName}
-                    // @ts-ignore Typings are not considering `native`
-                    onChange={handleChangeMultiple}
-                    label="Native"
-                    style={{ marginRight: 30 }}
-                    inputProps={{
-                      id: 'select-multiple-native',
-                    }}
-                  >
-                    {projectDetail.members.map((member) => (
-                      <option key={member.member._id} value={member.member._id}>
-                        {member.member.userName}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-                <TextField
-                  select
-                  required
-                  label="Type"
-                  value={type}
-                  onChange={handleChangeType}
-                >
-                  <MenuItem value="Bug">Bug</MenuItem>
-                  <MenuItem value="Task">Task</MenuItem>
-                  <MenuItem value="Feature Request">Feature Request</MenuItem>
-                </TextField>
-              </Grid>
-            </div>
-
-            <div className={classes.itemNewTicketModal}>
-              <Grid container justify="flex-end">
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginRight: 20 }}
-                >
-                  Create
-                </Button>
-                <Button
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-            </div>
-          </form>
-        </Container>
-      </Modal>
-      <Snackbar
-        open={openAlert}
-        autoHideDuration={4000}
-        onClose={handleClose}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      >
-        <MuiAlert onClose={handleClose} severity="success">
-          {edit && 'Ticket Edited!'}
-          {!edit && 'Ticket Created!'}
-        </MuiAlert>
-      </Snackbar>
-    </>
+          <div className={classes.itemNewTicketModal}>
+            <Grid container justify="flex-end">
+              <Button
+                type="submit"
+                variant="outlined"
+                color="primary"
+                style={{ marginRight: 20 }}
+              >
+                Create
+              </Button>
+              <Button
+                variant="outlined"
+                color="secondary"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+            </Grid>
+          </div>
+        </form>
+      </Container>
+    </Modal>
   );
 }

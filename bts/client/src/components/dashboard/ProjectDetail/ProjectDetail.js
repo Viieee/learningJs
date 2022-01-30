@@ -2,6 +2,7 @@ import { useEffect, useContext, useState } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import { Grid, Typography } from '@material-ui/core';
 import CircularProgress from '@mui/material/CircularProgress';
+import { toast } from 'react-toastify';
 import { AuthContext } from '../../context/auth-context';
 import { useStyles } from '../../hooks/useStyles';
 import Members from './Members/Members';
@@ -15,6 +16,7 @@ export default function ProjectDetail() {
   const history = useHistory();
   const { projectId } = params;
   const [projectDetail, setProjectDetail] = useState(null);
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
     fetch(`http://192.168.1.5:8080/project/${projectId}`, {
@@ -24,15 +26,19 @@ export default function ProjectDetail() {
     })
       .then((res) => {
         if (res.status === 404 || res.status === 500 || res.status === 401) {
-          history.push('/dashboard');
+          throw new Error();
         }
         return res.json();
       })
       .then((resData) => {
-        console.log(resData.project);
         setProjectDetail(resData.project);
+        setRole(resData.role);
+        // console.log(role);
       })
-      .catch((err) => {});
+      .catch((err) => {
+        toast.error('Something went wrong!');
+        return history.push('/dashboard');
+      });
   }, [auth.token, history, projectId, auth.userId]);
 
   useEffect(() => {
@@ -53,8 +59,8 @@ export default function ProjectDetail() {
             <ProjectDetailSettingsDropdown projectDetail={projectDetail} />
           </Grid>
           <div className={classes.projectTicketDetail}>
-            <Members projectDetail={projectDetail} />
-            <ProjectTickets projectDetail={projectDetail} />
+            <Members projectDetail={projectDetail} role={role} />
+            <ProjectTickets projectDetail={projectDetail} role={role} />
           </div>
         </div>
       )}

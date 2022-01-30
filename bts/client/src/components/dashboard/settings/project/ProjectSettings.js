@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useParams, useHistory, useLocation } from 'react-router-dom';
 import {
   Card,
@@ -7,13 +7,16 @@ import {
   TextField,
   Grid,
   Button,
-  Tooltip,
+  // Tooltip,
 } from '@material-ui/core';
-import { Restore } from '@material-ui/icons';
+// import { Restore } from '@material-ui/icons';
+import { toast } from 'react-toastify';
 import { useStyles } from '../../../hooks/useStyles';
 import { AuthContext } from '../../../context/auth-context';
 import useInput from '../../../hooks/useInput';
 import DeleteProjectConfirmationModal from './DeleteProjectConfirmationModal';
+import ApiKeyModal from './ApiKeyModal';
+import ApiKeyCard from './ApiKeyCard';
 
 const isEmptyTitle = (value) => value.trim().length >= 3;
 
@@ -22,6 +25,7 @@ export default function ProjectSettings() {
   const location = useLocation();
   const { projectDetail } = location.state;
   const auth = useContext(AuthContext);
+  const [apiPrefix, setApiFrefix] = useState(null);
   const classes = useStyles();
   const params = useParams();
   const { projectId } = params;
@@ -53,23 +57,23 @@ export default function ProjectSettings() {
     isTouched: false,
   });
 
-  const {
-    value: apiKeyValue,
-    // isValid: apiKeyValid,
-    hasError: apiKeyHasError,
-    onChangeHandler: apiKeyChangeHandler,
-    onBlurHandler: apiKeyBlurHandler,
-    // reset: resetapiKey,
-    errorMessage: apiKeyErrorMessage,
-    // setErrorMessage: setapiKeyErrorMessage,
-  } = useInput(
-    isEmptyTitle,
-    'password length should be more than 7 characters',
-    {
-      value: projectDetail.apiKey,
-      isTouched: false,
-    }
-  );
+  useEffect(() => {
+    fetch(`http://192.168.1.5:8080/project/${projectDetail._id}/key`, {
+      headers: {
+        Authorization: 'Bearer ' + auth.token,
+      },
+    })
+      .then((res) => {
+        if (res.status === 404 || res.status === 500 || res.status === 401) {
+          history.push('/dashboard');
+        }
+        return res.json();
+      })
+      .then((resData) => {
+        setApiFrefix(resData.apiKey);
+      })
+      .catch((err) => {});
+  }, [auth.token, history, projectDetail._id]);
 
   function submitHandler(e) {
     e.preventDefault();
@@ -88,9 +92,18 @@ export default function ProjectSettings() {
       }),
     })
       .then((res) => {
+        if (res.status !== 200) {
+          throw new Error();
+        }
         return res.json();
       })
-      .then((resData) => history.push('/dashboard'));
+      .then((resData) => {
+        toast.success('Project edited!');
+        return history.push('/dashboard');
+      })
+      .catch((err) => {
+        toast.error('Project editing failed!');
+      });
   }
 
   return (
@@ -152,40 +165,17 @@ export default function ProjectSettings() {
         )}
       </form>
       <Divider />
-      <form style={{ padding: 20 }}>
+      {auth.userId === projectDetail.creator._id && (
         <Grid
-          className={classes.accountSettingsForm}
           container
-          direction="row"
-          justifyContent="space-evenly"
+          direction="column"
+          justifyContent="center"
           alignItems="center"
         >
-          <Typography>API Key</Typography>
-          <TextField
-            disabled="true"
-            name="apiKey"
-            variant="outlined"
-            type="text"
-            onChange={apiKeyChangeHandler}
-            value={apiKeyValue}
-            onBlur={apiKeyBlurHandler}
-            error={apiKeyHasError}
-            helperText={apiKeyHasError && apiKeyErrorMessage}
-          />
-          <Tooltip title="Reset Api Key">
-            <Button
-              type="submit"
-              variant="outlined"
-              color="secondary"
-              style={{ maxWidth: 40, minWidth: 40 }}
-            >
-              <Restore />
-            </Button>
-          </Tooltip>
-        </Grid>
-      </form>
-      {auth.userId === projectDetail.creator._id && (
-        <Grid container justify="center">
+          {!apiPrefix && <ApiKeyModal projectId={projectDetail._id} />}
+          {apiPrefix && (
+            <ApiKeyCard prefix={apiPrefix} projectId={projectDetail._id} />
+          )}
           <DeleteProjectConfirmationModal id={projectId} />
         </Grid>
       )}

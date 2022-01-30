@@ -61,4 +61,6 @@ router.get('/user', checkAuth, authController.getUser);
 
 router.patch('/user/:userId', checkAuth, authController.editUser);
 
+router.patch('/user/:userId/password', checkAuth, authController.editPassword);
+
 module.exports = router;

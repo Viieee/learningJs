@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from 'react';
-import { TableBody, TableRow, TableCell, Grid } from '@material-ui/core';
+import { Link as RouterLink } from 'react-router-dom';
+import { TableBody, TableRow, TableCell, Grid, Link } from '@material-ui/core';
 import useTable from '../../hooks/useTable';
 import { useStyles } from '../../hooks/useStyles';
 import { AuthContext } from '../../context/auth-context';
@@ -9,7 +10,6 @@ const headCells = [
   { id: 'project', label: 'Project' },
   { id: 'title', label: 'Ticket' },
   { id: 'status', label: 'Status' },
-  // { id: 'estimatedTime', label: 'Estimated Time', disableSorting: true },
   { id: 'timeEnd', label: 'Estimated Time' },
   { id: 'priority', label: 'Priority' },
 ];
@@ -57,8 +57,22 @@ export default function TicketListTable() {
             const timeDeficit = endDateTotal - startDateTotal;
             return (
               <TableRow key={item._id}>
-                <TableCell>{item.project.title}</TableCell>
-                <TableCell>{item.title}</TableCell>
+                <TableCell>
+                  <Link
+                    component={RouterLink}
+                    to={`/dashboard/project/${item.project._id}`}
+                  >
+                    {item.project.title}
+                  </Link>
+                </TableCell>
+                <TableCell>
+                  <Link
+                    component={RouterLink}
+                    to={`/dashboard/project/${item.project._id}/ticket/${item._id}`}
+                  >
+                    {item.title}
+                  </Link>
+                </TableCell>
                 <TableCell>{item.status}</TableCell>
                 <TableCell>
                   <Timer timeDeficit={timeDeficit} />

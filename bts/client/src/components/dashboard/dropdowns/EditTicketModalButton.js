@@ -15,7 +15,7 @@ export default function EditTicketModalButton(props) {
         </ListItemIcon>
         Edit
       </MenuItem>
-      <NewTicketModal open={open} setOpen={setOpen} edit={true} ticket={props.ticket} projectDetail={props.projectDetail} />
+      <NewTicketModal open={open} setAnchorOptions={props.setAnchorOptions} setOpen={setOpen} edit={true} ticket={props.ticket} projectDetail={props.projectDetail} />
     </>
   );
 }
