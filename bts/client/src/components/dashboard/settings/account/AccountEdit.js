@@ -68,7 +68,7 @@ export default function AccountEdit({ user }) {
     if (!emailIsValid && !passwordValid && !nameIsValid) {
       return;
     }
-    fetch(`http://192.168.1.5:8080/auth/user/${user._id}`, {
+    fetch(`http://192.168.1.2:8080/auth/user/${user._id}`, {
       method: 'PATCH',
       headers: {
         Authorization: 'Bearer ' + auth.token,

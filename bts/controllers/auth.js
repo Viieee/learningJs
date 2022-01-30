@@ -7,13 +7,14 @@ const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp-mail.outlook.com', // hostname
+  // host: 'smtp-mail.outlook.com', // hostname
   service: 'hotmail',
-  secure: true,
+  secureConnection: false,
   auth: {
-    user: 'BtsVie@outlook.com',
+    user: process.env.AUTH_USER,
     pass: process.env.AUTH_PASS,
   },
+  requireTLS: true,
   tls: {
     // do not fail on invalid certs
     rejectUnauthorized: false,

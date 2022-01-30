@@ -22,7 +22,7 @@ export default function DeleteTicketConfirmationModal(props) {
     setOpen(true);
   }
   function confirmedDeletion(ticket) {
-    fetch(`http://192.168.1.5:8080/ticket/${ticket._id}`, {
+    fetch(`http://192.168.1.2:8080/ticket/${ticket._id}`, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + auth.token,

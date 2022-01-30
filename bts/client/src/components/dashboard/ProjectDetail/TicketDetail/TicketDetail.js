@@ -17,7 +17,7 @@ export default function TicketDetail(props) {
   const [deficit, setDeficit] = useState(null);
   const [devs, setDevs] = useState([]);
   useEffect(() => {
-    fetch(`http://192.168.1.5:8080/ticket/${ticketId}`, {
+    fetch(`http://192.168.1.2:8080/ticket/${ticketId}`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },

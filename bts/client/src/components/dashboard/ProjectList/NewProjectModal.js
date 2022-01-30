@@ -39,7 +39,7 @@ const NewProjectModal = (props) => {
       return;
     }
     console.log(typeof descValue);
-    fetch('http://192.168.1.5:8080/project/', {
+    fetch('http://192.168.1.2:8080/project/', {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + auth.token,

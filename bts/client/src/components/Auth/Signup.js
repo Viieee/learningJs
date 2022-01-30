@@ -105,7 +105,7 @@ const Signup = () => {
       return;
     }
 
-    fetch('http://192.168.1.5:8080/auth/signup', {
+    fetch('http://192.168.1.2:8080/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

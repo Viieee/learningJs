@@ -70,7 +70,7 @@ export default function NewPassword() {
   );
 
   useEffect(() => {
-    fetch(`http://192.168.1.5:8080/auth/new-password/${token}`)
+    fetch(`http://192.168.1.2:8080/auth/new-password/${token}`)
       .then((res) => {
         if (res.status !== 200) {
           history.replace('/signin');
@@ -89,7 +89,7 @@ export default function NewPassword() {
     if (!passwordValid) {
       return;
     }
-    fetch(`http://192.168.1.5:8080/auth/new-password/${token}`, {
+    fetch(`http://192.168.1.2:8080/auth/new-password/${token}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

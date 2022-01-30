@@ -39,7 +39,7 @@ export default function ProjectListTable() {
   }, [newProject]);
 
   useEffect(() => {
-    fetch('http://192.168.1.5:8080/project/', {
+    fetch('http://192.168.1.2:8080/project/', {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
