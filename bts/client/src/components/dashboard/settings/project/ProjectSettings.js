@@ -174,7 +174,12 @@ export default function ProjectSettings() {
         >
           {!apiPrefix && <ApiKeyModal projectId={projectDetail._id} />}
           {apiPrefix && (
-            <ApiKeyCard prefix={apiPrefix} projectId={projectDetail._id} />
+            <div>
+              <Typography>
+                Api link {`http://192.168.1.5:8080/api/${projectDetail._id}`}
+              </Typography>
+              <ApiKeyCard prefix={apiPrefix} projectId={projectDetail._id} />
+            </div>
           )}
           <DeleteProjectConfirmationModal id={projectId} />
         </Grid>

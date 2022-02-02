@@ -12,7 +12,7 @@ export default function ApiKeyCard(props) {
       >
         <Typography>prefix: {props.prefix}</Typography>
         <Tooltip title="Delete Api Key">
-          <DeleteKey projectId={props.projectId}/>
+          <DeleteKey projectId={props.projectId} />
         </Tooltip>
       </Grid>
     </div>
