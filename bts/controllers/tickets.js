@@ -1,6 +1,7 @@
 const Ticket = require('../models/ticket');
 const User = require('../models/user');
 const Project = require('../models/project');
+const Comment = require('../models/comment');
 const mongoose = require('mongoose');
 
 exports.getTickets = async (req, res, next) => {
@@ -35,8 +36,15 @@ exports.getATicket = async (req, res, next) => {
   try {
     ticket = await Ticket.findById(ticketId)
       .populate({
-        path: 'creator project assignedDevs comments.creator',
+        path: 'creator project assignedDevs',
         select: 'userName title members',
+      })
+      .populate({
+        path: 'comments',
+        populate: {
+          path: 'creator',
+          select: 'userName',
+        },
       })
       .sort({ 'comments.createdAt': -1 });
 
@@ -79,8 +87,9 @@ exports.editTicket = async (req, res, next) => {
     req.body;
 
   let ticket;
-  let leftOut = [];
-  let newMembers = [];
+  let project;
+  let leftOut;
+  let newMember;
   try {
     ticket = await Ticket.findById(ticketId);
     if (!ticket) {
@@ -88,27 +97,33 @@ exports.editTicket = async (req, res, next) => {
       error.statusCode = 404;
       return next(error);
     }
-    assignedDevs.map((assigned) => {
-      ticket.assignedDevs.filter((dev) => {
-        if (assigned.toString() !== dev.toString()) {
-          if (leftOut.indexOf(dev) === -1) {
-            leftOut.push(dev);
-          }
-        }
-      });
-    });
+    project = await Project.findById(ticket.project);
+    if (!project) {
+      const error = new Error('project not found');
+      error.statusCode = 404;
+      return next(error);
+    }
+    // var array1 = ['cat', 'sum', 'fun', 'run'];
+    // var array2 = ['bat', 'cat', 'dog', 'sun', 'hut', 'gut'];
+    // const intersection = array1.filter((element) => array2.includes(element));
+    // console.log(intersection);
 
-    ticket.assignedDevs.map((dev) => {
-      assignedDevs.filter((assigned) => {
-        if (
-          assigned.toString() !== dev.toString() &&
-          assigned.toString() !== ticket.creator.toString()
-        ) {
-          if (newMembers.indexOf(assigned.toString()) === -1) {
-            newMembers.push(assigned.toString());
-          }
-        }
-      });
+    let checkInputData = project.members.filter((member) =>
+      assignedDevs.includes(member.member.toString())
+    );
+    let checkCurrentAssigned = project.members.filter((member) =>
+      ticket.assignedDevs.includes(member.member)
+    );
+    leftOut = checkCurrentAssigned.filter(
+      (member) => !checkInputData.includes(member)
+    );
+    newMember = checkInputData.filter((member) => {
+      if (
+        !checkCurrentAssigned.includes(member) &&
+        member.member.toString() !== ticket.creator.toString()
+      ) {
+        return member;
+      }
     });
   } catch (err) {
     const error = new Error('editing project failed, please try again.');
@@ -120,7 +135,7 @@ exports.editTicket = async (req, res, next) => {
   try {
     if (leftOut.length > 0) {
       leftOut.map(async (member) => {
-        let user = await User.findById(member);
+        let user = await User.findById(member.member);
         if (!user) {
           const error = new Error('user not found');
           error.statusCode = 404;
@@ -128,7 +143,6 @@ exports.editTicket = async (req, res, next) => {
         }
         user.tickets.pull(ticketId);
         await user.save();
-        leftOut = [];
       });
     }
   } catch (err) {
@@ -137,19 +151,18 @@ exports.editTicket = async (req, res, next) => {
     return next(error);
   }
 
-  // adding ticket from new members
+  // adding ticket to new members
   try {
-    if (newMembers.length > 0) {
-      newMembers.map(async (member) => {
-        let user = await User.findById(member);
-        if (!user) {
+    if (newMember.length > 0) {
+      newMember.map(async (member) => {
+        let newUser = await User.findById(member.member);
+        if (!newUser) {
           const error = new Error('user not found');
           error.statusCode = 404;
           return next(error);
         }
-        user.tickets.push(ticket._id);
-        await user.save();
-        newMembers = [];
+        newUser.tickets.push(ticketId);
+        await newUser.save();
       });
     }
   } catch (err) {
@@ -250,7 +263,7 @@ exports.deleteTicket = async (req, res, next) => {
     error.statusCode = 500;
     return next(error);
   }
-  res.status(200).json({ message: 'deleted ticket.' });
+  res.status(200).json({ message: 'deleted ticket.', ticket: ticketId });
 };
 
 exports.addComment = async (req, res, next) => {
@@ -269,11 +282,19 @@ exports.addComment = async (req, res, next) => {
     error.statusCode = 500;
     return next(error);
   }
-  const newComment = {
+  const newComment = new Comment({
     body: comment,
     creator: user._id,
-    createdAt: new Date(),
-  };
+    ticket: ticketId,
+  });
+
+  try {
+    await newComment.save();
+  } catch (err) {
+    const error = new Error('adding comment failed, please try again');
+    error.statusCode = 500;
+    return next(error);
+  }
 
   let ticket;
   try {
@@ -286,5 +307,69 @@ exports.addComment = async (req, res, next) => {
     return next(error);
   }
 
-  res.status(200).json({ message: 'comment sent!' });
+  let socketData;
+  try {
+    socketData = await Comment.findById(newComment._id).populate({
+      path: 'creator',
+      select: 'userName',
+    });
+  } catch (err) {
+    const error = new Error('adding comment failed, please try again');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  res.status(200).json({
+    message: 'comment sent!',
+    comment: socketData,
+  });
+};
+
+exports.deleteComment = async (req, res, next) => {
+  const { commentId, ticketId } = req.params;
+
+  let ticket;
+  let comment;
+  try {
+    ticket = await Ticket.findById(ticketId);
+    if (!ticket) {
+      const error = new Error('ticket not found');
+      error.statusCode = 404;
+      return next(error);
+    }
+    comment = await Comment.findById(commentId);
+    if (!comment) {
+      const error = new Error('comment not found');
+      error.statusCode = 404;
+      return next(error);
+    }
+    if (comment.creator.toString() !== req.userId.toString()) {
+      const error = new Error('unauthorized.');
+      error.statusCode = 401;
+      return next(error);
+    }
+  } catch (err) {
+    const error = new Error('adding comment failed, please try again');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  try {
+    ticket.comments.pull(comment);
+    await ticket.save();
+  } catch (err) {
+    const error = new Error('adding comment failed, please try again');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  try {
+    await Comment.findByIdAndDelete(commentId);
+  } catch (err) {
+    const error = new Error('adding comment failed, please try again');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  res.status(200).json({ message: 'comment deleted!', comment: commentId });
 };

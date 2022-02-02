@@ -1,10 +1,12 @@
 require('dotenv').config();
 const User = require('../models/user');
+const Notification = require('../models/notification');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const mongoose = require('mongoose');
+const { read } = require('fs');
 
 const transporter = nodemailer.createTransport({
   // host: 'smtp-mail.outlook.com', // hostname
@@ -50,7 +52,7 @@ exports.signup = async (req, res, next) => {
   }
   const newUser = new User({
     userName: userName,
-    email: email,
+    email: email.toLowerCase(),
     password: hashedPassword,
     projects: [],
     tickets: [],
@@ -68,7 +70,7 @@ exports.signup = async (req, res, next) => {
 
   try {
     const nodeEmail = {
-      from: 'btsvie@outlook.com',
+      from: 'bugtrackervie@outlook.com',
       to: email,
       subject: 'Signup succeeded!',
       html: `
@@ -190,7 +192,7 @@ exports.postReset = async (req, res, next) => {
   try {
     // sending the email
     const nodeEmail = {
-      from: 'btsvie@outlook.com',
+      from: 'bugtrackervie@outlook.com',
       to: email,
       subject: 'Password Reset',
       html: `
@@ -286,7 +288,7 @@ exports.postNewPassword = async (req, res, next) => {
   try {
     // sending the email
     const nodeEmail = {
-      from: 'btsvie@outlook.com',
+      from: 'bugtrackervie@outlook.com',
       to: user.email,
       subject: 'password changed!',
       html: `
@@ -349,16 +351,34 @@ exports.getUser = async (req, res, next) => {
   let user;
   let acronym;
   try {
-    user = await User.findById(req.userId).select(
-      'userName email notifications imageUrl'
-    );
+    user = await User.findById(req.userId)
+      .select('userName email notifications imageUrl')
+      .populate({
+        path: 'notifications',
+        options: {
+          limit: 5,
+        },
+      });
     if (!user) {
       const error = new Error('cannot find the user with provided id');
       error.statusCode = 404;
       return next(error);
     }
-    var matches = user.userName.match(/\b(\w)/g); // ['J','S','O','N']
-    acronym = matches.join('').slice(0, 2); // JSON
+    var matches = user.userName.match(/\b(\w)/g);
+    acronym = matches.join('').slice(0, 2);
+  } catch (err) {
+    const error = new Error('getting account failed');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  let unreadNotifications;
+  try {
+    unreadNotifications = user.notifications.filter((noti) => {
+      if (noti.read === false) {
+        return noti;
+      }
+    });
   } catch (err) {
     const error = new Error('getting account failed');
     error.statusCode = 500;
@@ -368,12 +388,15 @@ exports.getUser = async (req, res, next) => {
   res.status(200).json({
     user: user,
     userInitial: acronym,
+    unreadNotifications: unreadNotifications.length,
   });
 };
 
 exports.editUser = async (req, res, next) => {
   const userId = req.params.userId;
   const { userName, email, password } = req.body;
+
+  console.log('body', req.body);
   let user;
   try {
     user = await User.findById(userId);
@@ -410,7 +433,7 @@ exports.editUser = async (req, res, next) => {
       user.verificationToken = token;
       emailChange = true;
       const nodeEmail = {
-        from: 'btsvie@outlook.com',
+        from: 'bugtrackervie@outlook.com',
         to: email,
         subject: 'Email change request!',
         html: `
@@ -424,6 +447,10 @@ exports.editUser = async (req, res, next) => {
         }
         console.log('sent: ' + info.response);
       });
+    }
+    if (req.file) {
+      const imageUrl = req.file.path.replace('\\', '/');
+      user.imageUrl = imageUrl;
     }
     user.userName = userName;
     await user.save();
@@ -484,6 +511,34 @@ exports.editPassword = async (req, res, next) => {
     await user.save();
   } catch (err) {
     const error = new Error('editing password failed');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  res.status(201).json({
+    message: 'password changed!',
+  });
+};
+
+exports.readAllNoti = async (req, res, next) => {
+  let user;
+  try {
+    user = await User.findById(req.userId).populate('notifications');
+    let unreadNoti = user.notifications.filter((notification) => {
+      if (notification.read === false) {
+        return notification;
+      }
+    });
+
+    unreadNoti.map(async (notification) => {
+      let readNoti = await Notification.findById(notification._id);
+      readNoti.read = true;
+      await readNoti.save();
+    });
+
+    user.save();
+  } catch (err) {
+    const error = new Error('reading notification failed');
     error.statusCode = 500;
     return next(error);
   }

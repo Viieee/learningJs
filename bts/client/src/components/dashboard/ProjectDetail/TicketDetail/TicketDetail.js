@@ -15,21 +15,30 @@ export default function TicketDetail(props) {
   const { ticketId } = params;
   const [detail, setDetail] = useState(null);
   const [deficit, setDeficit] = useState(null);
+  const [comments, setComments] = useState(null);
   const [devs, setDevs] = useState([]);
+
   useEffect(() => {
-    fetch(`http://192.168.1.2:8080/ticket/${ticketId}`, {
+    auth.socket.emit('joinRoom', { username: auth.userId, room: ticketId });
+  }, [auth.socket, auth.userId, ticketId]);
+
+  useEffect(() => {
+    fetch(`http://192.168.1.5:8080/ticket/${ticketId}`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
     })
       .then((res) => {
-        if (res.status === 401) {
+        if (res.status === 401 || res.status === 404 || res.status === 500) {
           history.replace('/dashboard');
         }
         return res.json();
       })
       .then((resData) => {
+        console.log(resData.ticket.comments);
         setDetail(resData.ticket);
+        setComments(resData.ticket.comments);
+        // console.log(comments);
         let devs = [];
         for (var dev of resData.ticket.assignedDevs) {
           devs.push(dev.userName);
@@ -63,7 +72,7 @@ export default function TicketDetail(props) {
       {detail && deficit && (
         <div className={classes.ticketDetailContent} style={{ marginTop: 10 }}>
           <TicketInformation detail={detail} deficit={deficit} devs={devs} />
-          <Comments comments={detail.comments}/>
+          <Comments comments={comments} setComments={setComments} />
         </div>
       )}
     </Container>

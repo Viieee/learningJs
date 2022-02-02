@@ -34,7 +34,7 @@ export default function DeleteProjectConfirmationModal(props) {
     setOpen(true);
   }
   function confirmedDeletion(item) {
-    fetch(`http://192.168.1.2:8080/project/${item}`, {
+    fetch(`http://192.168.1.5:8080/project/${item}`, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + auth.token,

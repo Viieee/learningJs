@@ -39,7 +39,7 @@ export default function DeleteMemberConfirmationModal(props) {
   function confirmedDeletion(item) {
     // /:projectId/apiKey
     fetch(
-      `http://192.168.1.2:8080/project/${projectId}/member/${props.item._id}`,
+      `http://192.168.1.5:8080/project/${projectId}/member/${props.item._id}`,
       {
         method: 'DELETE',
         headers: {
@@ -51,8 +51,9 @@ export default function DeleteMemberConfirmationModal(props) {
         return res.json();
       })
       .then((resData) => {
+        auth.socket.emit('deleteMemberList', { member: resData.userId });
         // history.push('/dashboard');
-        window.location.reload(false);
+        // window.location.reload(false);
       })
       .catch((err) => console.log(err));
   }

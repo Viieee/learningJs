@@ -46,23 +46,8 @@ const ticketSchema = new Schema(
     },
     comments: [
       {
-        body: {
-          type: String,
-          // required: true,
-        },
-        creator: {
-          type: Schema.Types.ObjectId,
-          ref: 'User',
-          // required: true,
-        },
-        // parentId: {
-        //   type: Schema.Types.ObjectId,
-        //   default: null,
-        // },
-        createdAt: {
-          type: Date,
-          required: true,
-        },
+        type: Schema.Types.ObjectId,
+        ref: 'Comment',
       },
     ],
   },

@@ -22,4 +22,7 @@ Router.delete('/:ticketId', ticketController.deleteTicket);
 // post /ticket/:ticketId/comment
 Router.post('/:ticketId/comment', ticketController.addComment);
 
+// delete /ticket/:ticketId/comment
+Router.delete('/:ticketId/comment/:commentId', ticketController.deleteComment);
+
 module.exports = Router;

@@ -1,12 +1,15 @@
 import { useContext, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Typography, TextField, Grid, Button } from '@material-ui/core';
+// import { Image } from '@material-ui/icons';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import { toast } from 'react-toastify';
 import { AuthContext } from '../../../context/auth-context';
 import { useStyles } from '../../../hooks/useStyles';
 import useInput from '../../../hooks/useInput';
+// import ImageUpload from './ImageUpload';
+// import { useForm } from '../../../hooks/file-hook';
 
 const isEmail = (value) =>
   /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i.test(
@@ -19,8 +22,23 @@ export default function AccountEdit({ user }) {
   const classes = useStyles();
   const auth = useContext(AuthContext);
   const history = useHistory();
+  // const [image, setImage] = useState(false);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+
+  // const [formState, inputHandler] = useForm(
+  //   {
+  //     email: {
+  //       value: '',
+  //       isValid: false,
+  //     },
+  //     password: {
+  //       value: '',
+  //       isValid: false,
+  //     },
+  //   },
+  //   false
+  // );
   const {
     value: nameValue,
     isValid: nameIsValid,
@@ -68,7 +86,7 @@ export default function AccountEdit({ user }) {
     if (!emailIsValid && !passwordValid && !nameIsValid) {
       return;
     }
-    fetch(`http://192.168.1.2:8080/auth/user/${user._id}`, {
+    fetch(`http://192.168.1.5:8080/auth/user/${user._id}`, {
       method: 'PATCH',
       headers: {
         Authorization: 'Bearer ' + auth.token,
@@ -114,6 +132,21 @@ export default function AccountEdit({ user }) {
           {errorMessage}
         </Alert>
       )}
+      {/* <Grid
+        className={classes.accountSettingsForm}
+        container
+        direction="row"
+        justifyContent="space-evenly"
+        alignItems="center"
+      >
+        <Typography>Profile Picture</Typography>
+        <ImageUpload
+          id="image"
+          onInput={inputHandler}
+          setImage={setImage}
+          // imageChangeHandler={imageChangeHandler}
+        />
+      </Grid> */}
       <Grid
         className={classes.accountSettingsForm}
         container

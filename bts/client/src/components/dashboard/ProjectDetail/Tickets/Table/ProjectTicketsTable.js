@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 import {
   TableBody,
@@ -9,6 +9,7 @@ import {
   Link,
 } from '@material-ui/core';
 import { Add } from '@material-ui/icons';
+import { AuthContext } from '../../../../context/auth-context';
 import { useStyles } from '../../../../hooks/useStyles';
 import useTable from '../../../../hooks/useTable';
 import NewTicketModal from '../AddModal/NewTicketsModal';
@@ -23,15 +24,44 @@ const headCells = [
 
 export default function ProjectTicketsTable(props) {
   const match = useRouteMatch();
-  const [open, setOpen] = React.useState(false);
-  const { projectDetail } = props;
+  const auth = useContext(AuthContext);
+  const [open, setOpen] = useState(false);
+  const [newTicket, setNewTicket] = useState(null);
+  const [deletedTicket, setDeletedTicket] = useState(null);
+  const { projectDetail, projectTickets, setProjectTickets } = props;
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(projectDetail.tickets, headCells, 5);
+    useTable(projectTickets, headCells, 5);
 
   const classes = useStyles();
   function modalHandler() {
     setOpen(true);
   }
+
+  // socket io
+  useEffect(() => {
+    auth.socket.on('ticket', (data) => {
+      setNewTicket(data.ticket);
+    });
+  }, [auth.socket]);
+
+  useEffect(() => {
+    newTicket && setProjectTickets((prev) => [newTicket, ...prev]);
+  }, [newTicket, projectDetail, setProjectTickets]);
+
+  useEffect(() => {
+    auth.socket.on('deletedTicket', (data) => {
+      setDeletedTicket(data.ticket);
+    });
+  }, [auth.socket]);
+
+  useEffect(() => {
+    deletedTicket &&
+      setProjectTickets((tickets) =>
+        tickets.filter(
+          (ticket) => ticket._id.toString() !== deletedTicket.toString()
+        )
+      );
+  }, [setProjectTickets, deletedTicket]);
 
   return (
     <div>

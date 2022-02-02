@@ -20,7 +20,7 @@ function Navbar(props) {
   const auth = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   useEffect(() => {
-    fetch(`http://192.168.1.2:8080/auth/user`, {
+    fetch(`http://192.168.1.5:8080/auth/user`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
@@ -32,8 +32,8 @@ function Navbar(props) {
         return res.json();
       })
       .then((resData) => {
-        setUserData(resData.user);
-        console.log(resData);
+        setUserData(resData);
+        
       })
       .catch((err) => {});
   }, [auth]);
@@ -60,7 +60,9 @@ function Navbar(props) {
               </Typography>
             </Grid>
             <div className={classes.icons}>
-              <NotificationDropdown />
+              <NotificationDropdown
+                userData={userData}
+              />
               <AccountDropdown userData={userData} />
             </div>
           </Toolbar>

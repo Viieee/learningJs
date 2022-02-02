@@ -69,7 +69,7 @@ export default function PasswordEdit() {
     if (!currentPasswordValid && !newPasswordValid && confirmPasswordValid) {
       return;
     }
-    fetch(`http://192.168.1.2:8080/auth/user/${auth.userId}/password`, {
+    fetch(`http://192.168.1.5:8080/auth/user/${auth.userId}/password`, {
       method: 'PATCH',
       headers: {
         Authorization: 'Bearer ' + auth.token,

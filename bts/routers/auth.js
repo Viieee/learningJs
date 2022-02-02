@@ -20,6 +20,8 @@ router.get('/verify-account/:token', authController.verifyAccount);
 
 router.get('/user', checkAuth, authController.getUser);
 
+router.post('/user/notifications', checkAuth, authController.readAllNoti);
+
 router.patch('/user/:userId', checkAuth, authController.editUser);
 
 router.patch('/user/:userId/password', checkAuth, authController.editPassword);

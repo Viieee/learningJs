@@ -26,7 +26,7 @@ export default function CommentForm() {
     if (!commentIsValid) {
       return;
     }
-    fetch(`http://192.168.1.2:8080/ticket/${ticketId}/comment`, {
+    fetch(`http://192.168.1.5:8080/ticket/${ticketId}/comment`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + auth.token,
@@ -37,12 +37,14 @@ export default function CommentForm() {
       }),
     })
       .then((res) => {
-        if (res.status !== 201) {
+        if (res.status !== 200) {
           return;
         }
         return res.json();
       })
       .then((resData) => {
+        console.log(resData.comment);
+        auth.socket.emit('addComment', { comment: resData.comment });
         resetComment();
       })
       .catch((err) => console.log(err));

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   TableBody,
@@ -32,14 +32,14 @@ function CustomRow({ item, role, creator }) {
   const params = useParams();
   const { projectId } = params;
   const auth = React.useContext(AuthContext);
-  console.log(creator);
+  // console.log(creator);
   // const [editMode, setEditMode] = React.useState(false);
   function handleChangeRole(event) {
     setEditRole(event.target.value);
   }
   function editHandler() {
     fetch(
-      `http://192.168.1.2:8080/project/${projectId}/member/${item.member._id}`,
+      `http://192.168.1.5:8080/project/${projectId}/member/${item.member._id}`,
       {
         method: 'PATCH',
         headers: {
@@ -115,7 +115,6 @@ function CustomRow({ item, role, creator }) {
             <Cancel />
           </IconButton>
         </Grid>
-        // <DeleteMemberConfirmationModal item={item.member} />
       )}
     </TableRow>
   );
@@ -123,12 +122,41 @@ function CustomRow({ item, role, creator }) {
 
 export default function MembersTable(props) {
   const classes = useStyles();
-  // const auth = useContext(AuthContext);
-  const { projectDetail } = props;
+  const auth = useContext(AuthContext);
+  const { projectDetail, projectMembers, setProjectMembers } = props;
   const [open, setOpen] = React.useState(false);
+  const [newMember, setNewMember] = React.useState(null);
+  const [deleteMember, setDeleteMember] = React.useState(null);
+
+  // socket io
+  useEffect(() => {
+    auth.socket.on('member', (data) => {
+      setNewMember(data.member);
+    });
+  }, [auth.socket]);
+
+  useEffect(() => {
+    auth.socket.on('deletedMember', (data) => {
+      setDeleteMember(data.member);
+      console.log(deleteMember);
+    });
+  }, [auth.socket, deleteMember]);
+
+  useEffect(() => {
+    newMember && setProjectMembers((prev) => [...prev, newMember]);
+  }, [newMember, projectDetail, setProjectMembers]);
+
+  useEffect(() => {
+    deleteMember &&
+      setProjectMembers((members) =>
+        members.filter(
+          (member) => member.member._id.toString() !== deleteMember.toString()
+        )
+      );
+  }, [deleteMember, setProjectMembers]);
 
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
-    useTable(projectDetail.members, headCells);
+    useTable(projectMembers, headCells);
 
   function modalHandler() {
     setOpen(true);

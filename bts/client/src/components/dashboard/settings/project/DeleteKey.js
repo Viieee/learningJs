@@ -33,7 +33,7 @@ export default function DeleteKey(props) {
   }
   function confirmDeletionHandler() {
     // /:projectId/apiKey
-    fetch(`http://192.168.1.2:8080/project/${props.projectId}/apiKey`, {
+    fetch(`http://192.168.1.5:8080/project/${props.projectId}/apiKey`, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + auth.token,

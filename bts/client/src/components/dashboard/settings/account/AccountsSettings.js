@@ -1,5 +1,13 @@
 import { useState, useEffect, useContext, Fragment } from 'react';
-import { Card, Divider, Typography, Grid } from '@material-ui/core';
+import {
+  Card,
+  Divider,
+  Typography,
+  Grid,
+  // ImageIcon,
+  // Button,
+} from '@material-ui/core';
+// import { Image } from '@material-ui/icons';
 import CircularProgress from '@mui/material/CircularProgress';
 import { AuthContext } from '../../../context/auth-context';
 import { useStyles } from '../../../hooks/useStyles';
@@ -12,7 +20,7 @@ export default function AccountSettings() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.1.2:8080/auth/user`, {
+    fetch(`http://192.168.1.5:8080/auth/user`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
@@ -42,25 +50,6 @@ export default function AccountSettings() {
       )}
       {userData && (
         <Fragment>
-          {/* <input
-            color="primary"
-            accept="image/*"
-            type="file"
-            onChange={onChange}
-            id="icon-button-file"
-            style={{ display: 'none' }}
-          />
-          <label htmlFor="icon-button-file">
-            <Button
-              variant="contained"
-              component="span"
-              className={classes.button}
-              size="large"
-              color="primary"
-            >
-              <ImageIcon className={classes.extendedIcon} />
-            </Button>
-          </label> */}
           <Typography variant="h6">Account Settings</Typography>
           <Divider />
           <AccountEdit user={userData} />

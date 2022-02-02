@@ -26,7 +26,7 @@ export default function ApiKeyModal({ projectId }) {
 
   function apiKeyModalHandler() {
     setOpen(true);
-    fetch(`http://192.168.1.2:8080/project/${projectId}/apiKey`, {
+    fetch(`http://192.168.1.5:8080/project/${projectId}/apiKey`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },

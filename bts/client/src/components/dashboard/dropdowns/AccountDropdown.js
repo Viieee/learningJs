@@ -33,7 +33,7 @@ export default function AccountDropdown({ userData }) {
         aria-expanded={open ? 'true' : undefined}
       >
         <Avatar style={{ width: 32, height: 32 }}>
-          {/* {!userData.user.imageUrl && userData.acronym} */}
+          {userData.userInitial}
         </Avatar>
       </IconButton>
       <Menu

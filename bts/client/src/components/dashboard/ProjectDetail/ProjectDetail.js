@@ -16,10 +16,12 @@ export default function ProjectDetail() {
   const history = useHistory();
   const { projectId } = params;
   const [projectDetail, setProjectDetail] = useState(null);
+  const [projectMembers, setProjectMembers] = useState(null);
+  const [projectTickets, setProjectTickets] = useState(null);
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.1.2:8080/project/${projectId}`, {
+    fetch(`http://192.168.1.5:8080/project/${projectId}`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
@@ -31,6 +33,9 @@ export default function ProjectDetail() {
         return res.json();
       })
       .then((resData) => {
+        // console.log(resData);
+        setProjectMembers(resData.project.members);
+        setProjectTickets(resData.project.tickets);
         setProjectDetail(resData.project);
         setRole(resData.role);
         // console.log(role);
@@ -59,8 +64,18 @@ export default function ProjectDetail() {
             <ProjectDetailSettingsDropdown projectDetail={projectDetail} />
           </Grid>
           <div className={classes.projectTicketDetail}>
-            <Members projectDetail={projectDetail} role={role} />
-            <ProjectTickets projectDetail={projectDetail} role={role} />
+            <Members
+              projectDetail={projectDetail}
+              role={role}
+              projectMembers={projectMembers}
+              setProjectMembers={setProjectMembers}
+            />
+            <ProjectTickets
+              projectDetail={projectDetail}
+              role={role}
+              projectTickets={projectTickets}
+              setProjectTickets={setProjectTickets}
+            />
           </div>
         </div>
       )}
