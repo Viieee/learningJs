@@ -14,7 +14,7 @@ export default function NotificationDropdown({ userData }) {
   const handleClick = (event) => {
     setAnchorOptions(event.currentTarget);
     setNotisOpened(true);
-    fetch('http://192.168.1.5:8080/auth/user/notifications', {
+    fetch('https://protected-basin-15687.herokuapp.com/auth/user/notifications', {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + auth.token,

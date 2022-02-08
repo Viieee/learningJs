@@ -15,10 +15,6 @@ const userSchema = new Schema({
     type: String,
     required: true,
   },
-  imageUrl: {
-    type: String,
-    default: null,
-  },
   projects: [
     {
       type: Schema.Types.ObjectId,

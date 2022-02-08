@@ -23,7 +23,7 @@ export default function TicketDetail(props) {
   }, [auth.socket, auth.userId, ticketId]);
 
   useEffect(() => {
-    fetch(`http://192.168.1.5:8080/ticket/${ticketId}`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticketId}`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },

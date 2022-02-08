@@ -21,7 +21,7 @@ export default function TicketListTable() {
   const classes = useStyles();
   const auth = useContext(AuthContext);
   useEffect(() => {
-    fetch('http://192.168.1.5:8080/ticket/', {
+    fetch('https://protected-basin-15687.herokuapp.com/ticket/', {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },

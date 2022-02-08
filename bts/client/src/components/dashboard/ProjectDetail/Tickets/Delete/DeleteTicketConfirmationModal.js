@@ -22,7 +22,7 @@ export default function DeleteTicketConfirmationModal(props) {
     setOpen(true);
   }
   function confirmedDeletion(ticket) {
-    fetch(`http://192.168.1.5:8080/ticket/${ticket._id}`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticket._id}`, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + auth.token,
@@ -55,7 +55,7 @@ export default function DeleteTicketConfirmationModal(props) {
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
-          style={{ height: 'max-content' }}
+          style={{ height: 'max-content', width: 325 }}
         >
           <Grid container justify="flex-end">
             <Typography

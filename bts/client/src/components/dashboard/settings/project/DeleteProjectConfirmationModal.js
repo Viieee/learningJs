@@ -34,7 +34,7 @@ export default function DeleteProjectConfirmationModal(props) {
     setOpen(true);
   }
   function confirmedDeletion(item) {
-    fetch(`http://192.168.1.5:8080/project/${item}`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/project/${item}`, {
       method: 'DELETE',
       headers: {
         Authorization: 'Bearer ' + auth.token,
@@ -65,7 +65,7 @@ export default function DeleteProjectConfirmationModal(props) {
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
-          style={{ height: 'max-content' }}
+          style={{ height: 'max-content', width: 325 }}
         >
           <Grid container justify="flex-end">
             <Typography style={{ marginBottom: 30 }}>

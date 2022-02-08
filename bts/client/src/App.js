@@ -52,7 +52,7 @@ function App() {
       </Switch>
     );
   } else {
-    socket.current = io('http://192.168.1.5:8080', {
+    socket.current = io('https://protected-basin-15687.herokuapp.com', {
       transports: ['websocket'],
       upgrade: false,
     });

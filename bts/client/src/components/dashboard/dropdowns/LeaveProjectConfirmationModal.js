@@ -25,7 +25,7 @@ export default function LeaveProjectConfirmationModal(props) {
   }
 
   function leaveProjectHandler() {
-    fetch(`http://192.168.1.5:8080/project/${projectDetail._id}/leave`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}/leave`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + auth.token,
@@ -56,7 +56,7 @@ export default function LeaveProjectConfirmationModal(props) {
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
-          style={{ height: 'max-content' }}
+          style={{ height: 'max-content', width: 325 }}
         >
           <Grid container justify="flex-end">
             <Typography

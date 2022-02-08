@@ -39,7 +39,7 @@ export default function DeleteMemberConfirmationModal(props) {
   function confirmedDeletion(item) {
     // /:projectId/apiKey
     fetch(
-      `http://192.168.1.5:8080/project/${projectId}/member/${props.item._id}`,
+      `https://protected-basin-15687.herokuapp.com/project/${projectId}/member/${props.item._id}`,
       {
         method: 'DELETE',
         headers: {
@@ -68,7 +68,7 @@ export default function DeleteMemberConfirmationModal(props) {
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
-          style={{ height: 'max-content' }}
+          style={{ height: 'max-content', width: 325 }}
         >
           <Grid container justify="flex-end">
             <Typography style={{ marginBottom: 30 }}>

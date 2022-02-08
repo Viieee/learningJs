@@ -43,7 +43,7 @@ function ForgotPassword() {
     if (!emailIsValid) {
       return;
     }
-    fetch('http://192.168.1.5:8080/auth/forget-password', {
+    fetch('https://protected-basin-15687.herokuapp.com/auth/forget-password', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

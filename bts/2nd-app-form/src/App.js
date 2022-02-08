@@ -27,12 +27,12 @@ function App() {
 
   function submitHandler(e) {
     e.preventDefault();
-    fetch(`http://192.168.1.5:8080/api/61f8ffb14a0cd06d56c117f2/`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/api/61f8ffb14a0cd06d56c117f2/`, {
       method: 'POST',
       headers: {
         Authorization:
           'Bearer ' +
-          '81e9147559616cf14932a1840ad3b947cd09322bf46f23d8d1ea42c2cf797f25',
+          'b24f69bb986a5d8aca0423ac10e931a8fd32a44f4a6529d3d3ea04f7a18d8c12',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({

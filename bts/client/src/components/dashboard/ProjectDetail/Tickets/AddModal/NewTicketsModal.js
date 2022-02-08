@@ -133,7 +133,7 @@ export default function NewTicketModal({
       return;
     }
     if (!edit) {
-      fetch(`http://192.168.1.5:8080/project/${projectId}/ticket`, {
+      fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}/ticket`, {
         method: 'POST',
         headers: {
           Authorization: 'Bearer ' + auth.token,
@@ -167,7 +167,7 @@ export default function NewTicketModal({
           toast.error('something went wrong.');
         });
     } else {
-      fetch(`http://192.168.1.5:8080/ticket/${ticket._id}`, {
+      fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticket._id}`, {
         method: 'PATCH',
         headers: {
           Authorization: 'Bearer ' + auth.token,

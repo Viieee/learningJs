@@ -39,7 +39,7 @@ function CustomRow({ item, role, creator }) {
   }
   function editHandler() {
     fetch(
-      `http://192.168.1.5:8080/project/${projectId}/member/${item.member._id}`,
+      `https://protected-basin-15687.herokuapp.com/project/${projectId}/member/${item.member._id}`,
       {
         method: 'PATCH',
         headers: {

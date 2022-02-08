@@ -21,7 +21,7 @@ export default function ProjectDetail() {
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.1.5:8080/project/${projectId}`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },

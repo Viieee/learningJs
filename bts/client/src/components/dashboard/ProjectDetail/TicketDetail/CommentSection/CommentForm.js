@@ -26,7 +26,7 @@ export default function CommentForm() {
     if (!commentIsValid) {
       return;
     }
-    fetch(`http://192.168.1.5:8080/ticket/${ticketId}/comment`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticketId}/comment`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + auth.token,

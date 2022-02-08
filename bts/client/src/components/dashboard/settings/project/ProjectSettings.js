@@ -58,7 +58,7 @@ export default function ProjectSettings() {
   });
 
   useEffect(() => {
-    fetch(`http://192.168.1.5:8080/project/${projectDetail._id}/key`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}/key`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },
@@ -80,7 +80,7 @@ export default function ProjectSettings() {
     if (!nameIsValid) {
       return;
     }
-    fetch(`http://192.168.1.5:8080/project/${projectDetail._id}`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}`, {
       method: 'PATCH',
       headers: {
         Authorization: 'Bearer ' + auth.token,
@@ -176,7 +176,7 @@ export default function ProjectSettings() {
           {apiPrefix && (
             <div>
               <Typography>
-                Api link {`http://192.168.1.5:8080/api/${projectDetail._id}`}
+                Api link {`https://protected-basin-15687.herokuapp.com/api/${projectDetail._id}`}
               </Typography>
               <ApiKeyCard prefix={apiPrefix} projectId={projectDetail._id} />
             </div>

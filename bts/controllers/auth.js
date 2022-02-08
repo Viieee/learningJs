@@ -9,17 +9,11 @@ const mongoose = require('mongoose');
 const { read } = require('fs');
 
 const transporter = nodemailer.createTransport({
-  // host: 'smtp-mail.outlook.com', // hostname
-  service: 'hotmail',
-  secureConnection: false,
+  host: 'smtp-mail.outlook.com', // hostname
+  port: 587,
   auth: {
     user: process.env.AUTH_USER,
     pass: process.env.AUTH_PASS,
-  },
-  requireTLS: true,
-  tls: {
-    // do not fail on invalid certs
-    rejectUnauthorized: false,
   },
 });
 
@@ -70,11 +64,11 @@ exports.signup = async (req, res, next) => {
 
   try {
     const nodeEmail = {
-      from: 'bugtrackervie@outlook.com',
+      from: process.env.AUTH_USER,
       to: email,
       subject: 'Signup succeeded!',
       html: `
-    <p> Click this <a href="http://192.168.1.5:3000/verify-account/${token}">link</a> to verify your account </p>
+    <p> Click this <a href="https://protected-basin-15687.herokuapp.com/verify-account/${token}">link</a> to verify your account </p>
     `,
     };
     transporter.sendMail(nodeEmail, function (err, info) {
@@ -192,12 +186,12 @@ exports.postReset = async (req, res, next) => {
   try {
     // sending the email
     const nodeEmail = {
-      from: 'bugtrackervie@outlook.com',
+      from: process.env.AUTH_USER,
       to: email,
       subject: 'Password Reset',
       html: `
           <p> You requested a password reset </p>
-          <p> Click this <a href="http://192.168.1.5:3000/new-password/${token}">link</a> to set a new password </p>
+          <p> Click this <a href="https://protected-basin-15687.herokuapp.com/new-password/${token}">link</a> to set a new password </p>
           <p> The link will be valid for 1 hour </p>
         `,
     };
@@ -288,7 +282,7 @@ exports.postNewPassword = async (req, res, next) => {
   try {
     // sending the email
     const nodeEmail = {
-      from: 'bugtrackervie@outlook.com',
+      from: process.env.AUTH_USER,
       to: user.email,
       subject: 'password changed!',
       html: `
@@ -433,11 +427,11 @@ exports.editUser = async (req, res, next) => {
       user.verificationToken = token;
       emailChange = true;
       const nodeEmail = {
-        from: 'bugtrackervie@outlook.com',
+        from: process.env.AUTH_USER,
         to: email,
         subject: 'Email change request!',
         html: `
-      <p> Click this <a href="http://192.168.1.5:3000/verify-account/${token}">link</a> to verify your account </p>
+      <p> Click this <a href="https://protected-basin-15687.herokuapp.com/verify-account/${token}">link</a> to verify your account </p>
       `,
       };
       transporter.sendMail(nodeEmail, function (err, info) {

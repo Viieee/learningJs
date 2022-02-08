@@ -32,7 +32,7 @@ export default function NewMemberModal(props) {
     if (!emailIsValid) {
       return;
     }
-    fetch(`http://192.168.1.5:8080/project/${projectId}/member`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}/member`, {
       method: 'POST',
       headers: {
         Authorization: 'Bearer ' + auth.token,

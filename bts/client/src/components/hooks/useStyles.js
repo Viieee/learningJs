@@ -217,6 +217,10 @@ export const useStyles = makeStyles((theme) => ({
     '& th': {
       maxWidth: 100,
       minWidth: 100,
+      [theme.breakpoints.down(600)]: {
+        maxWidth: 50,
+        minWidth: 50,
+      },
       padding: 5,
       textAlign: 'center',
     },
@@ -268,8 +272,8 @@ export const useStyles = makeStyles((theme) => ({
       maxWidth: 220,
       minWidth: 220,
       [theme.breakpoints.down(600)]: {
-        maxWidth: 50,
-        minWidth: 50,
+        maxWidth: 125,
+        minWidth: 125,
       },
       overflow: 'auto',
       whiteSpace: 'nowrap',
@@ -455,6 +459,9 @@ export const useStyles = makeStyles((theme) => ({
     [theme.breakpoints.down(900)]: {
       width: '100%',
       height: '75vh',
+    },
+    [theme.breakpoints.down(500)]: {
+      marginTop: 85,
     },
   },
   comments: {

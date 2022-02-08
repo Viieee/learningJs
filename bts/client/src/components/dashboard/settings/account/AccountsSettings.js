@@ -20,7 +20,7 @@ export default function AccountSettings() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    fetch(`http://192.168.1.5:8080/auth/user`, {
+    fetch(`https://protected-basin-15687.herokuapp.com/auth/user`, {
       headers: {
         Authorization: 'Bearer ' + auth.token,
       },

@@ -105,7 +105,7 @@ const Signup = () => {
       return;
     }
 
-    fetch('http://192.168.1.5:8080/auth/signup', {
+    fetch('https://protected-basin-15687.herokuapp.com/auth/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

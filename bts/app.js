@@ -36,6 +36,12 @@ app.use('/project', projectRouter);
 app.use('/ticket', ticketRouter);
 app.use('/api', apiRouter);
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, '/client/build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  });
+}
 app.use((req, res, next) => {
   const error = new Error('Could not find this route.');
   error.statusCode = 404;
@@ -53,7 +59,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(process.env.MONGO_SERVER)
   .then((res) => {
-    const server = app.listen(8080); // ? node server
+    const server = app.listen(process.env.PORT); // ? node server
     // websocket
     const io = require('./socket').init(server);
     io.on('connection', (socket) => {
