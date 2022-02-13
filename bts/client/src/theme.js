@@ -13,7 +13,7 @@ const theme = createTheme({
     }
   },
   typography: {
-    fontFamily: 'Arial, Raleway, Lato',
+    fontFamily: 'Arial',
   },
   overrides: {
     MuiButton: {

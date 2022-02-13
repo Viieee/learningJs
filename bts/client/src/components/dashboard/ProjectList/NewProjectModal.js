@@ -38,17 +38,22 @@ const NewProjectModal = (props) => {
     if (!titleIsValid) {
       return;
     }
-    fetch('https://protected-basin-15687.herokuapp.com/project/', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: titleValue,
-        description: descValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/project/'
+        : 'https://protected-basin-15687.herokuapp.com/project/',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: titleValue,
+          description: descValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 404) {
           return auth.logout();

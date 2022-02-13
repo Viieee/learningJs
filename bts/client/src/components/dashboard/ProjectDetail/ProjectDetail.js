@@ -21,11 +21,16 @@ export default function ProjectDetail() {
   const [role, setRole] = useState(null);
 
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}`, {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectId}`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectId}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 404 || res.status === 500 || res.status === 401) {
           throw new Error();
@@ -33,12 +38,10 @@ export default function ProjectDetail() {
         return res.json();
       })
       .then((resData) => {
-        // console.log(resData);
         setProjectMembers(resData.project.members);
         setProjectTickets(resData.project.tickets);
         setProjectDetail(resData.project);
         setRole(resData.role);
-        // console.log(role);
       })
       .catch((err) => {
         toast.error('Something went wrong!');
@@ -73,6 +76,8 @@ export default function ProjectDetail() {
             <ProjectTickets
               projectDetail={projectDetail}
               role={role}
+              projectMembers={projectMembers}
+              setProjectMembers={setProjectMembers}
               projectTickets={projectTickets}
               setProjectTickets={setProjectTickets}
             />

@@ -1,13 +1,5 @@
 import { useState, useEffect, useContext, Fragment } from 'react';
-import {
-  Card,
-  Divider,
-  Typography,
-  Grid,
-  // ImageIcon,
-  // Button,
-} from '@material-ui/core';
-// import { Image } from '@material-ui/icons';
+import { Card, Divider, Typography, Grid } from '@material-ui/core';
 import CircularProgress from '@mui/material/CircularProgress';
 import { AuthContext } from '../../../context/auth-context';
 import { useStyles } from '../../../hooks/useStyles';
@@ -20,11 +12,16 @@ export default function AccountSettings() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/user`, {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/user`
+        : `https://protected-basin-15687.herokuapp.com/auth/user`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 404 || res.status === 500 || res.status === 401) {
           auth.logout();

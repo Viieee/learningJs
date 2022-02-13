@@ -13,7 +13,11 @@ export default function VerifyAccount() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/verify-account/${token}`)
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/verify-account/${token}`
+        : `https://protected-basin-15687.herokuapp.com/auth/verify-account/${token}`
+    )
       .then((res) => {
         if (res.status !== 200) {
           history.replace('/signin');

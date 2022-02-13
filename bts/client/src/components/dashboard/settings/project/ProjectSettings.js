@@ -58,11 +58,16 @@ export default function ProjectSettings() {
   });
 
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}/key`, {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectDetail._id}/key`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}/key`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 404 || res.status === 500 || res.status === 401) {
           history.push('/dashboard');
@@ -80,17 +85,22 @@ export default function ProjectSettings() {
     if (!nameIsValid) {
       return;
     }
-    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        title: nameValue,
-        description: descriptionValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectDetail._id}`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectDetail._id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: nameValue,
+          description: descriptionValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           throw new Error();
@@ -176,7 +186,10 @@ export default function ProjectSettings() {
           {apiPrefix && (
             <div>
               <Typography>
-                Api link {`https://protected-basin-15687.herokuapp.com/api/${projectDetail._id}`}
+                Api link
+                {process.env.NODE_ENV === 'development'
+                  ? `http://192.168.1.9:8080/api/${projectDetail._id}`
+                  : `https://protected-basin-15687.herokuapp.com/api/${projectDetail._id}`}
               </Typography>
               <ApiKeyCard prefix={apiPrefix} projectId={projectDetail._id} />
             </div>

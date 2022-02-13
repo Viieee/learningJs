@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState } from 'react';
+import { useEffect, useContext, useState, Suspense, lazy } from 'react';
 import { Link as RouterLink, useRouteMatch } from 'react-router-dom';
 import {
   TableBody,
@@ -12,8 +12,11 @@ import { Add } from '@material-ui/icons';
 import { AuthContext } from '../../../../context/auth-context';
 import { useStyles } from '../../../../hooks/useStyles';
 import useTable from '../../../../hooks/useTable';
-import NewTicketModal from '../AddModal/NewTicketsModal';
-import TicketDropdown from '../../../dropdowns/TicketDropdown';
+// import NewTicketModal from '../AddModal/NewTicketsModal';
+// import TicketDropdown from '../../../dropdowns/TicketDropdown';
+
+const NewTicketModal = lazy(() => import('../AddModal/NewTicketsModal'));
+const TicketDropdown = lazy(() => import('../../../dropdowns/TicketDropdown'));
 
 const headCells = [
   { id: 'title', label: 'Ticket Title', disableSorting: true },
@@ -28,7 +31,13 @@ export default function ProjectTicketsTable(props) {
   const [open, setOpen] = useState(false);
   const [newTicket, setNewTicket] = useState(null);
   const [deletedTicket, setDeletedTicket] = useState(null);
-  const { projectDetail, projectTickets, setProjectTickets } = props;
+  const {
+    projectDetail,
+    projectTickets,
+    setProjectTickets,
+    projectMembers,
+    setProjectMembers,
+  } = props;
   const { TblContainer, TblHead, TblPagination, recordsAfterPagingAndSorting } =
     useTable(projectTickets, headCells, 5);
 
@@ -77,16 +86,23 @@ export default function ProjectTicketsTable(props) {
             variant="outlined"
             className={classes.buttonAddStyleDashboard}
             onClick={modalHandler}
+            style={{
+              backgroundColor: '#14960b',
+            }}
           >
             <Add />
             New
           </Button>
         )}
-        <NewTicketModal
-          open={open}
-          setOpen={setOpen}
-          projectDetail={projectDetail}
-        />
+        <Suspense fallback={<div />}>
+          <NewTicketModal
+            open={open}
+            setOpen={setOpen}
+            projectDetail={projectDetail}
+            projectMembers={projectMembers}
+            setProjectMembers={setProjectMembers}
+          />
+        </Suspense>
       </Grid>
       <TblContainer className={classes.containerProjectTickets}>
         <TblHead />
@@ -107,7 +123,14 @@ export default function ProjectTicketsTable(props) {
               <TableCell>{ticket.status}</TableCell>
               <TableCell>{ticket.creator.userName}</TableCell>
               {props.role === 'admin' && (
-                <TicketDropdown ticket={ticket} projectDetail={projectDetail} />
+                <Suspense fallback={<div />}>
+                  <TicketDropdown
+                    ticket={ticket}
+                    projectDetail={projectDetail}
+                    projectMembers={projectMembers}
+                    setProjectMembers={setProjectMembers}
+                  />
+                </Suspense>
               )}
             </TableRow>
           ))}

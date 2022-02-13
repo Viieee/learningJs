@@ -21,11 +21,16 @@ export default function TicketListTable() {
   const classes = useStyles();
   const auth = useContext(AuthContext);
   useEffect(() => {
-    fetch('https://protected-basin-15687.herokuapp.com/ticket/', {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/ticket/'
+        : 'https://protected-basin-15687.herokuapp.com/ticket/',
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 403) {
           auth.logout();

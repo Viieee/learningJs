@@ -5,6 +5,8 @@ import { AuthContext } from '../../context/auth-context';
 import { useStyles } from '../../hooks/useStyles';
 import NotificationCard from './NotificationCard';
 
+// const NotificationCard = lazy(() => import('./NotificationCard'));
+
 export default function NotificationDropdown({ userData }) {
   const classes = useStyles();
   const auth = useContext(AuthContext);
@@ -14,12 +16,17 @@ export default function NotificationDropdown({ userData }) {
   const handleClick = (event) => {
     setAnchorOptions(event.currentTarget);
     setNotisOpened(true);
-    fetch('https://protected-basin-15687.herokuapp.com/auth/user/notifications', {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/auth/user/notifications'
+        : 'https://protected-basin-15687.herokuapp.com/auth/user/notifications',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 403) {
           auth.logout();
@@ -42,6 +49,7 @@ export default function NotificationDropdown({ userData }) {
         <Link component="button" color="inherit" onClick={handleClick}>
           <Notifications />
         </Link>
+
         <Popover
           anchorEl={anchorEl}
           id="project-menu"

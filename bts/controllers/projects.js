@@ -2,11 +2,11 @@ const Ticket = require('../models/ticket');
 const Project = require('../models/project');
 const User = require('../models/user');
 const Notification = require('../models/notification');
+const Comment = require('../models/comment');
 const mongoose = require('mongoose');
 const crypto = require('crypto');
 const bcrypt = require('bcryptjs');
 const schedule = require('node-schedule');
-const ticket = require('../models/ticket');
 
 exports.getProjects = async (req, res, next) => {
   let currentUserProjects;
@@ -297,6 +297,23 @@ exports.deleteProject = async (req, res, next) => {
   }
 
   let creator;
+  try {
+    project.tickets.map(async (ticket) => {
+      creator = await User.findById(ticket.creator);
+      if (!creator) {
+        const error = new Error('user not found');
+        error.statusCode = 404;
+        return next(error);
+      }
+      await creator.tickets.pull(ticket._id);
+      await creator.save();
+    });
+  } catch (err) {
+    const error = new Error('deleting project failed, please try again.');
+    error.statusCode = 500;
+    return next(error);
+  }
+
   // deleting tickets of project from project members and project creator
   try {
     project.tickets.map(async (ticket) => {
@@ -315,14 +332,6 @@ exports.deleteProject = async (req, res, next) => {
         await currentDev.tickets.pull(ticket._id);
         await currentDev.save();
       });
-      creator = await User.findById(ticket.creator);
-      if (!creator) {
-        const error = new Error('user not found');
-        error.statusCode = 404;
-        return next(error);
-      }
-      creator.tickets.pull(ticket._id);
-      await creator.save();
     });
   } catch (err) {
     const error = new Error('deleting project failed, please try again.');
@@ -333,6 +342,9 @@ exports.deleteProject = async (req, res, next) => {
   // deleting tickets
   try {
     project.tickets.map(async (ticket) => {
+      ticket.comments.map(async (comment) => {
+        await Comment.findByIdAndDelete(comment);
+      });
       await Ticket.findByIdAndDelete(ticket._id);
     });
   } catch (err) {
@@ -392,8 +404,6 @@ exports.addingMember = async (req, res, next) => {
 
   let project;
   try {
-    const sess = await mongoose.startSession();
-    sess.startTransaction();
     project = await Project.findById(projectId).populate({
       path: 'members.member',
       select: 'userName email',
@@ -416,6 +426,25 @@ exports.addingMember = async (req, res, next) => {
       error.statusCode = 401;
       return next(error);
     }
+    let checkingExistingMember = project.members.find((member) => {
+      if (member.member.email === email) {
+        return member;
+      }
+    });
+    if (checkingExistingMember) {
+      const error = new Error('member is already inside of the project');
+      error.statusCode = 409;
+      return next(error);
+    }
+  } catch (err) {
+    const error = new Error('adding member failed, please try again.');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  try {
+    const sess = await mongoose.startSession();
+    sess.startTransaction();
     await project.members.push({ member: user._id, role: 'dev' });
     await project.save({ session: sess });
     await user.projects.push(project);
@@ -434,6 +463,7 @@ exports.addingMember = async (req, res, next) => {
     read: false,
     customLink: `project/${projectId}`,
   });
+
   try {
     const sess = await mongoose.startSession();
     sess.startTransaction();
@@ -552,6 +582,7 @@ exports.leaveProject = async (req, res, next) => {
       await currentTicket.assignedDevs.pull(req.userId);
       await currentTicket.save();
       await user.tickets.pull(ticket._id);
+      await user.save();
     });
   } catch (err) {
     const error = new Error('leaving project failed, please try again.');
@@ -584,6 +615,12 @@ exports.leaveProject = async (req, res, next) => {
 
   try {
     if (project.members.length === 0) {
+      project.tickets.map(async (ticket) => {
+        ticket.comments.map(async (comment) => {
+          await Comment.findByIdAndDelete(comment);
+        });
+        await Ticket.findByIdAndDelete(ticket._id);
+      });
       await Project.findByIdAndRemove(projectId);
     }
   } catch (err) {
@@ -801,11 +838,31 @@ exports.addingTicket = async (req, res, next) => {
   }
 
   try {
+    assignedDevs.map(async (dev) => {
+      let userNoti = await User.findById(dev);
+      let newTicketNoti = new Notification({
+        title: 'New Ticket Assigned to You!',
+        description: "you've been assigned to a new ticket, check it out!",
+        to: dev,
+        read: false,
+        customLink: `project/${projectId}/ticket/${newTicket._id}`,
+      });
+      await newTicketNoti.save();
+      userNoti.notifications.push(newTicketNoti);
+      await userNoti.save();
+    });
+  } catch (err) {
+    const error = new Error('posting ticket failed, please try again.');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  try {
     const date = new Date(new Date(timeEnd).getTime() - 1000 * 60 * 60);
 
     const job = schedule.scheduleJob(date, function () {
       assignedDevs.map(async (dev) => {
-        let user = await User.findById(dev);
+        let userScheduledNoti = await User.findById(dev);
         let scheduledNoti = new Notification({
           title: 'Ticket Deadline Coming Soon!',
           description:
@@ -815,8 +872,8 @@ exports.addingTicket = async (req, res, next) => {
           customLink: `project/${projectId}/ticket/${newTicket._id}`,
         });
         await scheduledNoti.save();
-        user.notifications.push(scheduledNoti);
-        await user.save();
+        userScheduledNoti.notifications.push(scheduledNoti);
+        await userScheduledNoti.save();
       });
     });
   } catch (err) {
@@ -825,9 +882,9 @@ exports.addingTicket = async (req, res, next) => {
     return next(error);
   }
 
-  // res.status(201).json({ ticket: newTicket });
   res.status(201).json({
     ticket: {
+      _id: newTicket._id,
       title: newTicket.title,
       description: newTicket.description,
       status: newTicket.status,

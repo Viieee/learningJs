@@ -26,11 +26,16 @@ export default function ApiKeyModal({ projectId }) {
 
   function apiKeyModalHandler() {
     setOpen(true);
-    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}/apiKey`, {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectId}/apiKey`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectId}/apiKey`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 404 || res.status === 500) {
           history.replace('/dashboard');

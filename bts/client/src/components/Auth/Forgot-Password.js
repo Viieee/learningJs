@@ -43,15 +43,20 @@ function ForgotPassword() {
     if (!emailIsValid) {
       return;
     }
-    fetch('https://protected-basin-15687.herokuapp.com/auth/forget-password', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: emailValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/auth/forget-password'
+        : 'https://protected-basin-15687.herokuapp.com/auth/forget-password',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 404) {
           throw new Error('Email is not registered.');

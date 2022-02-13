@@ -105,17 +105,22 @@ const Signup = () => {
       return;
     }
 
-    fetch('https://protected-basin-15687.herokuapp.com/auth/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: emailValue,
-        password: passwordValue,
-        userName: nameValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/auth/signup'
+        : 'https://protected-basin-15687.herokuapp.com/auth/signup',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailValue,
+          password: passwordValue,
+          userName: nameValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 409) {
           throw new Error('Email is already registered!');

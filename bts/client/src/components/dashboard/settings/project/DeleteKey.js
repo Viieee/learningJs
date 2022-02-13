@@ -33,12 +33,17 @@ export default function DeleteKey(props) {
   }
   function confirmDeletionHandler() {
     // /:projectId/apiKey
-    fetch(`https://protected-basin-15687.herokuapp.com/project/${props.projectId}/apiKey`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${props.projectId}/apiKey`
+        : `https://protected-basin-15687.herokuapp.com/project/${props.projectId}/apiKey`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         return res.json();
       })
@@ -58,7 +63,7 @@ export default function DeleteKey(props) {
       <Modal onBackdropClick={() => setOpen(false)} open={open}>
         <Container
           className={classes.containerNewMemberModal}
-          style={{ height: 'max-content', width: 325  }}
+          style={{ height: 'max-content', width: 325 }}
         >
           <Grid container justify="flex-end">
             <Typography style={{ marginBottom: 30 }}>

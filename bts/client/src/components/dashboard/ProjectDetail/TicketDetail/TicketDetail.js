@@ -23,11 +23,16 @@ export default function TicketDetail(props) {
   }, [auth.socket, auth.userId, ticketId]);
 
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticketId}`, {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/ticket/${ticketId}`
+        : `https://protected-basin-15687.herokuapp.com/ticket/${ticketId}`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 401 || res.status === 404 || res.status === 500) {
           history.replace('/dashboard');

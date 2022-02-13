@@ -69,17 +69,22 @@ export default function PasswordEdit() {
     if (!currentPasswordValid && !newPasswordValid && confirmPasswordValid) {
       return;
     }
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/user/${auth.userId}/password`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        currentPassword: currentPasswordValue,
-        newPassword: newPasswordValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/user/${auth.userId}/password`
+        : `https://protected-basin-15687.herokuapp.com/auth/user/${auth.userId}/password`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          currentPassword: currentPasswordValue,
+          newPassword: newPasswordValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401) {
           throw new Error("Password doesn't matched");

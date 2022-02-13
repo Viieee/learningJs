@@ -39,7 +39,9 @@ export default function DeleteMemberConfirmationModal(props) {
   function confirmedDeletion(item) {
     // /:projectId/apiKey
     fetch(
-      `https://protected-basin-15687.herokuapp.com/project/${projectId}/member/${props.item._id}`,
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectId}/member/${props.item._id}`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectId}/member/${props.item._id}`,
       {
         method: 'DELETE',
         headers: {

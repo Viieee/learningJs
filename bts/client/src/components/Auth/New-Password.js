@@ -70,7 +70,11 @@ export default function NewPassword() {
   );
 
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/new-password/${token}`)
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/new-password/${token}`
+        : `https://protected-basin-15687.herokuapp.com/auth/new-password/${token}`
+    )
       .then((res) => {
         if (res.status !== 200) {
           history.replace('/signin');
@@ -89,16 +93,21 @@ export default function NewPassword() {
     if (!passwordValid) {
       return;
     }
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/new-password/${token}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userId: userId,
-        newPassword: passwordValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/new-password/${token}`
+        : `https://protected-basin-15687.herokuapp.com/auth/new-password/${token}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: userId,
+          newPassword: passwordValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 404 || res.status === 500) {
           return history.replace('/signin');

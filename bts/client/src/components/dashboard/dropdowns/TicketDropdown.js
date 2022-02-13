@@ -38,8 +38,17 @@ export default function TicketDropdown(props) {
         transformOrigin={{ horizontal: 'right', vertical: 'top' }}
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <EditTicketModalButton ticket={props.ticket} projectDetail={props.projectDetail} setAnchorOptions={setAnchorOptions}/>
-        <DeleteTicketConfirmationModal ticket={props.ticket} setAnchorOptions={setAnchorOptions}/> 
+        <EditTicketModalButton
+          ticket={props.ticket}
+          projectDetail={props.projectDetail}
+          setAnchorOptions={setAnchorOptions}
+          projectMembers={props.projectMembers}
+          setProjectMembers={props.setProjectMembers}
+        />
+        <DeleteTicketConfirmationModal
+          ticket={props.ticket}
+          setAnchorOptions={setAnchorOptions}
+        />
       </Menu>
     </Box>
   );

@@ -103,24 +103,14 @@ export const useStyles = makeStyles((theme) => ({
     },
   },
   buttonSettingsStyleDashboard: {
-    backgroundColor: '#3b3737',
-    marginRight: 120,
-    marginBottom: 10,
-    fontSize: 11,
-    padding: 5,
-    textAlign: 'center',
-    minWidth: '40px',
-    maxWidth: '40px',
-    minHeight: '35px',
-    maxHeight: '35px',
     '&:hover': {
       color: 'grey',
     },
     [theme.breakpoints.down(600)]: {
       marginRight: 35,
     },
-    [theme.breakpoints.up(1400)]: {
-      marginRight: 200,
+    [theme.breakpoints.down(1200)]: {
+      marginRight: 80,
     },
   },
   dashboardContentContainer: {
@@ -261,7 +251,7 @@ export const useStyles = makeStyles((theme) => ({
       height: '35vh',
     },
     [theme.breakpoints.down(600)]: {
-      width: 'auto',
+      width: 'fit-content',
       height: '32vh',
       fontSize: 11,
     },
@@ -272,8 +262,8 @@ export const useStyles = makeStyles((theme) => ({
       maxWidth: 220,
       minWidth: 220,
       [theme.breakpoints.down(600)]: {
-        maxWidth: 125,
-        minWidth: 125,
+        maxWidth: 155,
+        minWidth: 155,
       },
       overflow: 'auto',
       whiteSpace: 'nowrap',
@@ -379,22 +369,6 @@ export const useStyles = makeStyles((theme) => ({
       textAlign: 'center',
     },
   },
-  // containerNewTicketModal: {
-  //   width: 400,
-  //   height: 480,
-  //   backgroundColor: 'white',
-  //   position: 'absolute',
-  //   padding: 10,
-  //   top: 0,
-  //   bottom: 0,
-  //   left: 0,
-  //   right: 0,
-  //   margin: 'auto',
-  //   [theme.breakpoints.down('sm')]: {
-  //     width: '90vw',
-  //     height: '58vh',
-  //   },
-  // },
   containerNewTicketModal: {
     width: 400,
     height: 550,

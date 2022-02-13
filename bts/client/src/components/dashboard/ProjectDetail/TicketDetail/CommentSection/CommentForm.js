@@ -26,16 +26,21 @@ export default function CommentForm() {
     if (!commentIsValid) {
       return;
     }
-    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticketId}/comment`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        comment: commentValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/ticket/${ticketId}/comment`
+        : `https://protected-basin-15687.herokuapp.com/ticket/${ticketId}/comment`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          comment: commentValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           return;

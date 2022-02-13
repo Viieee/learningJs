@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, Suspense, lazy } from 'react';
 import { Box, CssBaseline, Drawer } from '@material-ui/core';
-import Navbar from './Navbar';
-import SideDrawerContent from './SideDrawer-Content';
+
+const Navbar = lazy(() => import('./Navbar'));
+const SideDrawerContent = lazy(() => import('./SideDrawer-Content'));
 
 const drawerWidth = 220;
 
@@ -16,7 +17,9 @@ function SideDrawer(props) {
   return (
     <Box style={{ display: 'flex' }}>
       <CssBaseline />
-      <Navbar handleDrawerToggle={handleDrawerToggle} />
+      <Suspense fallback={<div />}>
+        <Navbar handleDrawerToggle={handleDrawerToggle} />
+      </Suspense>
       <Box
         component="nav"
         style={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -27,7 +30,9 @@ function SideDrawer(props) {
           open={mobileOpen}
           onClose={handleDrawerToggle}
         >
-          <SideDrawerContent handleDrawerToggle={handleDrawerToggle} />
+          <Suspense fallback={<div />}>
+            <SideDrawerContent handleDrawerToggle={handleDrawerToggle} />
+          </Suspense>
         </Drawer>
       </Box>
       <Box

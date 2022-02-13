@@ -86,18 +86,23 @@ export default function AccountEdit({ user }) {
     if (!emailIsValid && !passwordValid && !nameIsValid) {
       return;
     }
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/user/${user._id}`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        userName: nameValue,
-        email: emailValue,
-        password: passwordValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/user/${user._id}`
+        : `https://protected-basin-15687.herokuapp.com/auth/user/${user._id}`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userName: nameValue,
+          email: emailValue,
+          password: passwordValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401) {
           throw new Error('Password is invalid, please try again.');

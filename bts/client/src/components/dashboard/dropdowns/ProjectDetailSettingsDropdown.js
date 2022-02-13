@@ -28,6 +28,18 @@ export default function ProjectDetailSettingsDropdown(props) {
       <Button
         variant="outlined"
         className={classes.buttonSettingsStyleDashboard}
+        style={{
+          backgroundColor: '#3b3737',
+          marginRight: 150,
+          marginBottom: 10,
+          fontSize: 11,
+          padding: 5,
+          textAlign: 'center',
+          minWidth: '40px',
+          maxWidth: '40px',
+          minHeight: '35px',
+          maxHeight: '35px',
+        }}
         onClick={handleClick}
       >
         <MoreHoriz />

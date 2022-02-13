@@ -1,4 +1,11 @@
-import { Fragment, useEffect, useContext, useState } from 'react';
+import {
+  Fragment,
+  useEffect,
+  useContext,
+  useState,
+  Suspense,
+  lazy,
+} from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   AppBar,
@@ -13,18 +20,27 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useStyles } from '../hooks/useStyles';
 import { AuthContext } from '../context/auth-context';
 import AccountDropdown from '../dashboard/dropdowns/AccountDropdown';
-import NotificationDropdown from '../dashboard/dropdowns/NotificationDropdown';
+// import NotificationDropdown from '../dashboard/dropdowns/NotificationDropdown';
+
+const NotificationDropdown = lazy(() =>
+  import('../dashboard/dropdowns/NotificationDropdown')
+);
 
 function Navbar(props) {
   const classes = useStyles();
   const auth = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   useEffect(() => {
-    fetch(`https://protected-basin-15687.herokuapp.com/auth/user`, {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/auth/user`
+        : `https://protected-basin-15687.herokuapp.com/auth/user`,
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 404 || res.status === 500 || res.status === 401) {
           auth.logout();
@@ -33,7 +49,6 @@ function Navbar(props) {
       })
       .then((resData) => {
         setUserData(resData);
-        
       })
       .catch((err) => {});
   }, [auth]);
@@ -60,9 +75,9 @@ function Navbar(props) {
               </Typography>
             </Grid>
             <div className={classes.icons}>
-              <NotificationDropdown
-                userData={userData}
-              />
+              <Suspense fallback={<div />}>
+                <NotificationDropdown userData={userData} />
+              </Suspense>
               <AccountDropdown userData={userData} />
             </div>
           </Toolbar>

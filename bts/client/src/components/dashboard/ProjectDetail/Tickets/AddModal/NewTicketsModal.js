@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   Button,
@@ -39,12 +39,15 @@ export default function NewTicketModal({
   edit = false,
   ticket = null,
   projectDetail,
+  projectMembers,
+  setProjectMembers,
   setAnchorOptions,
 }) {
   const auth = useContext(AuthContext);
   const classes = useStyles();
   const params = useParams();
   const { projectId } = params;
+
   if (edit) {
     initialTitleInputState = {
       value: ticket.title,
@@ -133,22 +136,27 @@ export default function NewTicketModal({
       return;
     }
     if (!edit) {
-      fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}/ticket`, {
-        method: 'POST',
-        headers: {
-          Authorization: 'Bearer ' + auth.token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: titleValue,
-          description: descValue,
-          status: status,
-          priority: priority,
-          type: type,
-          assignedDevs: personName,
-          timeEnd: new Date(endDate),
-        }),
-      })
+      fetch(
+        process.env.NODE_ENV === 'development'
+          ? `http://192.168.1.9:8080/project/${projectId}/ticket`
+          : `https://protected-basin-15687.herokuapp.com/project/${projectId}/ticket`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: 'Bearer ' + auth.token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: titleValue,
+            description: descValue,
+            status: status,
+            priority: priority,
+            type: type,
+            assignedDevs: personName,
+            timeEnd: new Date(endDate),
+          }),
+        }
+      )
         .then((res) => {
           if (res.status !== 201) {
             throw new Error();
@@ -167,22 +175,27 @@ export default function NewTicketModal({
           toast.error('something went wrong.');
         });
     } else {
-      fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticket._id}`, {
-        method: 'PATCH',
-        headers: {
-          Authorization: 'Bearer ' + auth.token,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          title: titleValue,
-          description: descValue,
-          status: status,
-          priority: priority,
-          type: type,
-          assignedDevs: personName,
-          timeEnd: new Date(endDate),
-        }),
-      })
+      fetch(
+        process.env.NODE_ENV === 'development'
+          ? `http://192.168.1.9:8080/ticket/${ticket._id}`
+          : `https://protected-basin-15687.herokuapp.com/ticket/${ticket._id}`,
+        {
+          method: 'PATCH',
+          headers: {
+            Authorization: 'Bearer ' + auth.token,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: titleValue,
+            description: descValue,
+            status: status,
+            priority: priority,
+            type: type,
+            assignedDevs: personName,
+            timeEnd: new Date(endDate),
+          }),
+        }
+      )
         .then((res) => {
           if (res.status !== 200) {
             throw new Error();
@@ -302,7 +315,7 @@ export default function NewTicketModal({
                     id: 'select-multiple-native',
                   }}
                 >
-                  {projectDetail.members.map((member) => (
+                  {projectMembers.map((member) => (
                     <option key={member.member._id} value={member.member._id}>
                       {member.member.userName}
                     </option>

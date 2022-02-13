@@ -257,6 +257,16 @@ exports.deleteTicket = async (req, res, next) => {
   }
 
   try {
+    ticket.comments.map(async (comment) => {
+      await Comment.findByIdAndDelete(comment);
+    });
+  } catch (err) {
+    const error = new Error('deleting ticket failed, please try again.');
+    error.statusCode = 500;
+    return next(error);
+  }
+
+  try {
     await Ticket.findByIdAndRemove(ticketId);
   } catch (err) {
     const error = new Error('deleting ticket failed, please try again.');

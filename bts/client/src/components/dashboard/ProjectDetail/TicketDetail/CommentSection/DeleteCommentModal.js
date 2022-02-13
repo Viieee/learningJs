@@ -19,12 +19,17 @@ export default function DeleteCommentModal({ commentId }) {
   const [open, setOpen] = useState(false);
   function confirmDeletion() {
     // /:projectId/apiKey
-    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticketId}/comment/${commentId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/ticket/${ticketId}/comment/${commentId}`
+        : `https://protected-basin-15687.herokuapp.com/ticket/${ticketId}/comment/${commentId}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         return res.json();
       })

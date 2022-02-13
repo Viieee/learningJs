@@ -22,12 +22,17 @@ export default function DeleteTicketConfirmationModal(props) {
     setOpen(true);
   }
   function confirmedDeletion(ticket) {
-    fetch(`https://protected-basin-15687.herokuapp.com/ticket/${ticket._id}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/ticket/${ticket._id}`
+        : `https://protected-basin-15687.herokuapp.com/ticket/${ticket._id}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status !== 200) {
           throw new Error('error happened!');

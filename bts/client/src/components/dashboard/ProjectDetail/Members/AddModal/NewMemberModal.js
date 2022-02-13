@@ -32,16 +32,21 @@ export default function NewMemberModal(props) {
     if (!emailIsValid) {
       return;
     }
-    fetch(`https://protected-basin-15687.herokuapp.com/project/${projectId}/member`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: emailValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectId}/member`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectId}/member`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status !== 201) {
           throw new Error();

@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Suspense, lazy } from 'react';
 import { useParams } from 'react-router-dom';
 import {
   TableBody,
@@ -15,16 +15,18 @@ import { toast } from 'react-toastify';
 import { AuthContext } from '../../../../context/auth-context';
 import { useStyles } from '../../../../hooks/useStyles';
 import useTable from '../../../../hooks/useTable';
-import NewMemberModal from '../AddModal/NewMemberModal';
-// import DeleteMemberConfirmationModal from '../Delete/DeleteMemberConfirmationModal';
-import MemberListDropDown from '../../../dropdowns/MemberListDropdown';
+// import NewMemberModal from '../AddModal/NewMemberModal';
+// import MemberListDropDown from '../../../dropdowns/MemberListDropdown';
+
+const NewMemberModal = lazy(() => import('../AddModal/NewMemberModal'));
+const MemberListDropDown = lazy(() =>
+  import('../../../dropdowns/MemberListDropdown')
+);
 
 const headCells = [
   { id: 'userName', label: 'Name' },
   { id: 'role', label: 'Role' },
 ];
-
-// let initialRole = 'dev';
 
 function CustomRow({ item, role, creator }) {
   const [editMode, setEditMode] = React.useState(false);
@@ -32,14 +34,14 @@ function CustomRow({ item, role, creator }) {
   const params = useParams();
   const { projectId } = params;
   const auth = React.useContext(AuthContext);
-  // console.log(creator);
-  // const [editMode, setEditMode] = React.useState(false);
   function handleChangeRole(event) {
     setEditRole(event.target.value);
   }
   function editHandler() {
     fetch(
-      `https://protected-basin-15687.herokuapp.com/project/${projectId}/member/${item.member._id}`,
+      process.env.NODE_ENV === 'development'
+        ? `http://192.168.1.9:8080/project/${projectId}/member/${item.member._id}`
+        : `https://protected-basin-15687.herokuapp.com/project/${projectId}/member/${item.member._id}`,
       {
         method: 'PATCH',
         headers: {
@@ -88,8 +90,9 @@ function CustomRow({ item, role, creator }) {
         !editMode &&
         item.member._id !== creator._id) ||
         (role === 'admin' && !editMode && item.role !== 'admin')) && (
-        <MemberListDropDown item={item.member} setEditMode={setEditMode} />
-        // <DeleteMemberConfirmationModal item={item.member} />
+        <Suspense fallback={<div />}>
+          <MemberListDropDown item={item.member} setEditMode={setEditMode} />
+        </Suspense>
       )}
       {role === 'admin' && editMode && (
         <Grid
@@ -175,12 +178,17 @@ export default function MembersTable(props) {
             variant="outlined"
             className={classes.buttonAddStyleDashboard}
             onClick={modalHandler}
+            style={{
+              backgroundColor: '#14960b',
+            }}
           >
             <Add />
             New
           </Button>
         )}
-        <NewMemberModal open={open} setOpen={setOpen} />
+        <Suspense fallback={<div />}>
+          <NewMemberModal open={open} setOpen={setOpen} />
+        </Suspense>
       </Grid>
       <TblContainer className={classes.containerNewMember}>
         <TblHead />

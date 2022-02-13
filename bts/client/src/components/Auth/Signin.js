@@ -62,16 +62,21 @@ function Signin() {
     if (!emailIsValid && !passwordValid) {
       return;
     }
-    fetch('https://protected-basin-15687.herokuapp.com/auth/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: emailValue.toLowerCase(),
-        password: passwordValue,
-      }),
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/auth/signin'
+        : 'https://protected-basin-15687.herokuapp.com/auth/signin',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: emailValue.toLowerCase(),
+          password: passwordValue,
+        }),
+      }
+    )
       .then((res) => {
         if (res.status === 401) {
           throw new Error('Email or password is invalid, please try again.');
@@ -90,7 +95,7 @@ function Signin() {
         return res.json();
       })
       .then((resData) => {
-        auth.login(resData.userId,resData.token);
+        auth.login(resData.userId, resData.token);
         resetEmail();
         resetPassword();
         history.replace('/dashboard');

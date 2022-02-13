@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, Suspense, lazy } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 import {
   Grid,
@@ -12,7 +12,9 @@ import { Add } from '@material-ui/icons';
 import { useStyles } from '../../hooks/useStyles';
 import { AuthContext } from '../../context/auth-context';
 import useTable from '../../hooks/useTable';
-import NewProjectModal from './NewProjectModal';
+// import NewProjectModal from './NewProjectModal';
+
+const NewProjectModal = lazy(() => import('./NewProjectModal'));
 
 const headCells = [
   { id: 'title', label: 'Title' },
@@ -39,11 +41,16 @@ export default function ProjectListTable() {
   }, [newProject]);
 
   useEffect(() => {
-    fetch('https://protected-basin-15687.herokuapp.com/project/', {
-      headers: {
-        Authorization: 'Bearer ' + auth.token,
-      },
-    })
+    fetch(
+      process.env.NODE_ENV === 'development'
+        ? 'http://192.168.1.9:8080/project/'
+        : 'https://protected-basin-15687.herokuapp.com/project/',
+      {
+        headers: {
+          Authorization: 'Bearer ' + auth.token,
+        },
+      }
+    )
       .then((res) => {
         if (res.status === 404) {
           auth.logout();
@@ -76,15 +83,20 @@ export default function ProjectListTable() {
           variant="outlined"
           className={classes.buttonAddStyleDashboard}
           onClick={modalHandler}
+          style={{
+            backgroundColor: '#14960b',
+          }}
         >
           <Add />
           New
         </Button>
-        <NewProjectModal open={open} setOpen={setOpen} />
+        <Suspense fallback={<div />}>
+          <NewProjectModal open={open} setOpen={setOpen} />
+        </Suspense>
       </Grid>
       <TblContainer className={classes.containerProject}>
         <TblHead />
-        <TableBody >
+        <TableBody>
           {recordsAfterPagingAndSorting().map((item, index) => (
             <TableRow key={item._id}>
               <TableCell align="center">
@@ -94,7 +106,7 @@ export default function ProjectListTable() {
                 >
                   {item.title}
                 </Link>
-              </TableCell >
+              </TableCell>
               <TableCell align="center">{item.description}</TableCell>
               <TableCell align="center">{item.creator.userName}</TableCell>
             </TableRow>
